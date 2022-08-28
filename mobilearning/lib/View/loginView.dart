@@ -1,9 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,11 +21,10 @@ class Login extends StatelessWidget {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              // ignore: prefer_const_literals_to_create_immutables
               children: [
                 //hello
                 ImageIcon(AssetImage('assets/images/IEI.png'),
-                color: Color.fromARGB(255, 153, 13, 13),
+                color: Color.fromRGBO(21,93,177,1),
                 size: 250,
                 ),
               
@@ -77,12 +83,12 @@ class Login extends StatelessWidget {
                 ),
                 SizedBox(height: 10,),
                 // sign in button
-                Padding(
+                GestureDetector(child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: Container(
                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 153, 13, 13),
+                      color: Color.fromRGBO(21,93,177,1),
                       border: Border.all(color: Colors.transparent),
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -91,6 +97,13 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
+                onTap: ()=>{
+                  setState((){
+                    Navigator.pushNamed(context, "/home");
+                  })
+                },
+                ),
+                
               SizedBox(height: 5,),
               Column(
                 children: [

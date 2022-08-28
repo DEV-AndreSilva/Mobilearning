@@ -1,7 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'loginView.dart';
+import 'HomeView.dart';
+import 'LoginView.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class App extends StatelessWidget {
      initialRoute: '/login' ,
      routes: {
       '/login' :(context)=> Login(),
+      '/home':(context)=> Home(),
      },
     );
     
