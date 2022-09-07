@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/View/ChatPage.dart';
 import 'package:mobilearning/View/loginView.dart';
 
 import 'Glossary.dart';
@@ -22,7 +23,7 @@ class _HomeState extends State<Home> {
 
     //páginas do bottomNavbar
     final tabPages = <Widget>[
-       Center(child: Icon(Icons.app_blocking_sharp, size: 64, color: Colors.teal,),),
+       Center(child: ChatPage()),
        Center(child: Icon(Icons.access_alarm_outlined, size: 64, color: Colors.teal,),),
        Center(child: Glossary())
     ];
@@ -84,7 +85,14 @@ class _HomeState extends State<Home> {
       ) ,
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(21,93,177,1),
-        title: Padding(padding: EdgeInsets.only(left: 80),child: Text('Mobilearning',style: GoogleFonts.arvo(fontSize: 22)),),
+        title:  Text('English Mobilearning',style: GoogleFonts.arvo(fontSize: 22),),
+        centerTitle: true,
+        
+        shape: const RoundedRectangleBorder(
+    	borderRadius: BorderRadius.vertical(
+    	bottom: Radius.circular(20),
+    ),
+  ),
       ),
       body: SafeArea(
       child:  IndexedStack( //manter as informações na pilha ao mudar de página
