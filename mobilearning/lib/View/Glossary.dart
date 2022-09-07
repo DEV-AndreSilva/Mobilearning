@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/Models/glossaryWordModel.dart';
+import 'package:mobilearning/Widgets/GlossaryList.dart';
 
 
 class Glossary extends StatefulWidget {
@@ -17,46 +19,46 @@ class Glossary extends StatefulWidget {
 class _GlossaryState extends State<Glossary> {
 
   //lista de dados completa
- final List<Map<String, dynamic>> users = [
-    {"id": 1, "englishWord": "Book", "portugueseWord": "Livro", "englishDefinition":"Texts grouped into pages texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 2, "englishWord": "Time ", "portugueseWord": "Tempo", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 3, "englishWord": "People", "portugueseWord": "Pessoas", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 4, "englishWord": "Way ", "portugueseWord": "Modo", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 5, "englishWord": "Water ", "portugueseWord": "Água", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 6, "englishWord": "Words ", "portugueseWord": "Palavras", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 7, "englishWord": "Man ", "portugueseWord": "Homem", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 8, "englishWord": "Work", "portugueseWord": "Trabalho", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 9, "englishWord": "Part  ", "portugueseWord": "Parte", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
-    {"id": 10, "englishWord": "Place ", "portugueseWord": "Lugar", "englishDefinition":"Texts grouped into pages", "portugueseDefinition":"Textos agrupados em paginas"},
+ List<GlossaryWord> words = [
+   GlossaryWord (id: 1, englishWord: "Book", portugueseWord: "Livro", englishDefinition:"Texts grouped into pages texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 2, englishWord: "Time ", portugueseWord: "Tempo", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 3, englishWord: "People", portugueseWord: "Pessoas", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 4, englishWord: "Way ", portugueseWord: "Modo", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 5, englishWord: "Water ", portugueseWord: "Água", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 6, englishWord: "Words ", portugueseWord: "Palavras", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 7, englishWord: "Man ", portugueseWord: "Homem", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 8, englishWord: "Work", portugueseWord: "Trabalho", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 9, englishWord: "Part  ", portugueseWord: "Parte", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+    GlossaryWord (id: 10, englishWord: "Place ", portugueseWord: "Lugar", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
   ];
 
   // lista de dados que sera exibida
-  List<Map<String, dynamic>> foundUsers = [];
+  List<GlossaryWord> foundWords = [];
 
   @override
   initState() {
     //No começo todos os dados serão exibidos
-    foundUsers = users;
+    foundWords = words;
     super.initState();
   }
 
 
   // Função que é chamada quando o campo de texto muda
   void runFilter(String enteredKeyword) {
-    List<Map<String, dynamic>> results = [];
+    List<GlossaryWord>  results = [];
 
      // Se o Campo de texto está em branco ou com apenas espaços exibe todos os registros
     if (enteredKeyword.isEmpty) {
-      results = users;
+      results = words;
     }
      else {
       // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
-      results = users.where((user) => user["englishWord"].toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
+      results = words.where((word) => word.englishWord.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
     }
 
     // Refresh the UI
     setState(() {
-      foundUsers = results;
+      foundWords = results;
     });
   }
 
@@ -67,67 +69,52 @@ class _GlossaryState extends State<Glossary> {
       children: [const SizedBox(
         height: 20,
       ),
+      
       TextField(onChanged: (value) => runFilter(value),
         decoration: const InputDecoration(
         labelText: 'Search a word', suffixIcon: Icon(Icons.search) ),
       ),
-      const SizedBox(height: 20,),
-      Expanded(child: foundUsers.isNotEmpty?
-              ListView.builder(
-                itemCount: foundUsers.length,
-                itemBuilder: (context,index)=> Card(
-                  key: ValueKey(foundUsers[index]["id"]),
-                  color: Color.fromRGBO(129,201,250,1),
-                  elevation: 4,
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: ExpansionTile(
-                    textColor: Colors.amberAccent,
-                    title : Text('${foundUsers[index]["englishWord"]}',style: GoogleFonts.arvo(fontSize: 17,fontWeight: FontWeight.bold)),
-                    subtitle: Text('${foundUsers[index]["portugueseWord"]}', style: GoogleFonts.arvo(fontSize: 17)),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20,bottom: 10),
-                        child: Column(
-                          children: [
 
-                            Padding(
-                                    padding: const EdgeInsets.only(top: 10,bottom: 10),
-                                    child: Column(
-                                      children: [
-                                        Text("English Definition:",
-                                            style: GoogleFonts.arvo(fontSize: 17,fontWeight: FontWeight.bold)),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Flexible(child: Text(foundUsers[index]["englishDefinition"], style: GoogleFonts.arvo(fontSize: 16))),
-                                          ],
-                                          ),],
-                                    ),
-                              ),
-
-                              Padding(
-                                    padding: const EdgeInsets.only(top: 10,bottom: 10),
-                                    child: Column(
-                                      children: [
-                                        Text("Portuguese Definition:",
-                                            style: GoogleFonts.arvo(fontSize: 17,fontWeight: FontWeight.bold)),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Flexible(child: Text(foundUsers[index]["portugueseDefinition"], style: GoogleFonts.arvo(fontSize: 16))),
-                                          ],
-                                          ),],
-                                    ),
-                              ),
-                            
-                         
-                          ],
-                        ),
-                      ),
-                      
-                    ],
-                  )
+        GestureDetector(child: Padding(
+                  padding: const EdgeInsets.only( left: 75.0, right: 75.0, top: 10.0, bottom: 0.0),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(21,93,177,1),
+                      border: Border.all(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                      Text("Add new Word",style: GoogleFonts.arvo(fontSize: 18, fontWeight: FontWeight.w400,color: Colors.white),),
+                      Icon(Icons.add,color: Colors.white,) 
+                    ],)
+                    ),
                   ),
+                ),
+                onTap: ()=>{
+                  setState((){
+                    Navigator.pushNamed(context, "/home");
+                  })
+                },
+                ),
+
+      const SizedBox(height: 20,),
+
+      Expanded(child: foundWords.isNotEmpty?
+              ListView.builder(
+                itemCount: foundWords.length,
+                itemBuilder: (context,index)=>
+
+                    GlossaryList(
+                      id: foundWords[index].id,
+                      englishWord: foundWords[index].englishWord,
+                      englishDefinition: foundWords[index].englishDefinition,
+                      portugueseWord: foundWords[index].portugueseWord,
+                      portugueseDefinition: foundWords[index].portugueseDefinition,
+                    )
+
                   )
                 :
       const Text("No words found")
