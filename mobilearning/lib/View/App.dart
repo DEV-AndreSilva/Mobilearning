@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'HomeView.dart';
 import 'LoginView.dart';
+import 'C_AlunosView.dart';
+import 'C_ProfessoresView.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -15,6 +17,8 @@ class App extends StatelessWidget {
      routes: {
       '/login' :(context)=> Login(),
       '/home':(context)=> Home(),
+      '/calunos': (context)=> CAlunos(),
+      '/cprofessores': (context)=> CProfessores(),
      },
     );
     
