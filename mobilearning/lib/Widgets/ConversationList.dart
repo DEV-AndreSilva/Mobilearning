@@ -1,9 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:mobilearning/View/ChatDetailPage.dart';
 
 class ConversationList extends StatefulWidget {
@@ -14,7 +11,7 @@ class ConversationList extends StatefulWidget {
   String time;
   bool isMessageRead;
   
-  ConversationList({required this.userUid,required this.name, required this.messageText,required this.imageURL,required this.time, required this.isMessageRead});
+  ConversationList({super.key, required this.userUid,required this.name, required this.messageText,required this.imageURL,required this.time, required this.isMessageRead});
 
   @override
   State<ConversationList> createState() => _ConversationListState();

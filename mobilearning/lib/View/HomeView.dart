@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/View/ActivityPage.dart';
 import 'package:mobilearning/View/ChatPage.dart';
 import 'package:mobilearning/View/loginView.dart';
 
-import 'Glossary.dart';
+import 'GlossaryPage.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,8 +25,8 @@ class _HomeState extends State<Home> {
     //páginas do bottomNavbar
     final tabPages = <Widget>[
        Center(child: ChatPage()),
-       Center(child: Icon(Icons.access_alarm_outlined, size: 64, color: Colors.teal,),),
-       Center(child: Glossary())
+       Center(child: ActivityPage()),
+       Center(child: GlossaryPage())
     ];
 
     //Icones do bottomNavbar
