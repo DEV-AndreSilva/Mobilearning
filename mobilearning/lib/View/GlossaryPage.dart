@@ -7,16 +7,16 @@ import 'package:mobilearning/Models/glossaryWordModel.dart';
 import 'package:mobilearning/Widgets/GlossaryList.dart';
 
 
-class Glossary extends StatefulWidget {
-  const Glossary({
+class GlossaryPage extends StatefulWidget {
+  const GlossaryPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Glossary> createState() => _GlossaryState();
+  State<GlossaryPage> createState() => _GlossaryPageState();
 }
 
-class _GlossaryState extends State<Glossary> {
+class _GlossaryPageState extends State<GlossaryPage> {
 
   //lista de dados completa
  List<GlossaryWord> words = [
