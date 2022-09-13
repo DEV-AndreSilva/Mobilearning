@@ -11,13 +11,16 @@ class CAlunos extends StatefulWidget {
 class _CAlunosState extends State<CAlunos> {
   @override
   Widget build(BuildContext context) {
+
+    var larguraTela = MediaQuery.of(context).size.width;
+    var alturaTela = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Form(
+      body: ListView( children:[ Form(
                 child: Column(
                 children: <Widget>[
                 SizedBox(
-                  height: 500,
-                  width: 450,
+                  height: alturaTela*0.4,
+                  width: larguraTela*0.4,
                   child: Image.asset('assets/images/IEI.png'),
                 ),
                 Container(
@@ -129,7 +132,7 @@ class _CAlunosState extends State<CAlunos> {
                     decoration: const InputDecoration(
                       hintText: 'Rua Machado de Assis 999',
                       prefixIcon: Icon(
-                        Icons.phone,
+                        Icons.home,
                         color: Colors.blue,
                       ),
                       border: InputBorder.none,
@@ -248,9 +251,9 @@ class _CAlunosState extends State<CAlunos> {
                     keyboardType: TextInputType.phone,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
-                      hintText: '888.888.888-88',
+                      hintText: 'CPF',
                       prefixIcon: Icon(
-                        Icons.phone,
+                        Icons.featured_play_list_outlined,
                         color: Colors.blue,
                       ),
                       border: InputBorder.none,
@@ -284,6 +287,8 @@ class _CAlunosState extends State<CAlunos> {
                 ],
             ),
           ),
+      ],
+      ),
     );
 }
 }

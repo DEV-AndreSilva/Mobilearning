@@ -26,7 +26,9 @@ class _HomeState extends State<Home> {
     final tabPages = <Widget>[
        Center(child: ChatPage()),
        Center(child: ActivityPage()),
+       Center(child: GlossaryPage()),
        Center(child: GlossaryPage())
+
     ];
 
     //Icones do bottomNavbar
@@ -34,6 +36,7 @@ class _HomeState extends State<Home> {
       const BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chat'),
       const BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Activities'),
       const BottomNavigationBarItem(icon: Icon(Icons.window), label: 'Glossary'),
+      const BottomNavigationBarItem(icon: Icon(Icons.window), label: 'Fuck you'),
     ];
 
     assert(tabPages.length ==bottomNavBarItems.length);

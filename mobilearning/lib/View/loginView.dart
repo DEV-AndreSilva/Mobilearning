@@ -23,10 +23,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //hello
-                ImageIcon(AssetImage('assets/images/IEI.png'),
-                color: Color.fromRGBO(21,93,177,1),
-                size: 250,
-                ),
+                Image.asset('assets/images/IEI.png'),                
               
                 Text(
                   "Bem vindo",
