@@ -1,28 +1,33 @@
-// ignore_for_file: file_names
+// ignore_for_file: prefer_const_constructors, file_names
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-class CProfessores extends StatefulWidget {
-  const CProfessores({Key? key}) : super(key: key);
+    
+class WordPage extends StatefulWidget {
+  const WordPage({Key? key}) : super(key: key);
 
   @override
-  State<CProfessores> createState() => _CProfessoresState();
+  State<WordPage> createState() => _WordPageState();
 }
 
-class _CProfessoresState extends State<CProfessores> {
+class _WordPageState extends State<WordPage> {
   @override
   Widget build(BuildContext context) {
-
     var alturaTela = MediaQuery.of(context).size.height;
 
-        return Scaffold(
+    TextEditingController englishWord = TextEditingController();
+    TextEditingController portugueseWord = TextEditingController();
+    TextEditingController englishDefinition = TextEditingController();
+    TextEditingController portugueseDefinition = TextEditingController();
+
+    return Scaffold(
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(color: Color.fromRGBO(21, 93, 177, 1)),
+              decoration:
+                  const BoxDecoration(color: Color.fromRGBO(21, 93, 177, 1)),
               accountName: Text(
                 'André',
                 style: GoogleFonts.arvo(fontSize: 18),
@@ -73,8 +78,8 @@ class _CProfessoresState extends State<CProfessores> {
             child: Column(
               children: <Widget>[
                 Container(
-                
-                  margin:  EdgeInsets.only(top: alturaTela*0.2,right: 20,left: 20),
+                  margin: EdgeInsets.only(
+                      top: alturaTela * 0.2, right: 20, left: 20),
                   height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -87,16 +92,17 @@ class _CProfessoresState extends State<CProfessores> {
                     ],
                   ),
                   child: TextFormField(
+                    controller: englishWord,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite seu nome";
+                        return "Write the new english word";
                       }
                       return null;
                     },
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.text,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
-                      hintText: 'Nome Completo',
+                      hintText: 'Write the new english word',
                       prefixIcon: Icon(
                         Icons.person,
                         color: Colors.blue,
@@ -127,16 +133,17 @@ class _CProfessoresState extends State<CProfessores> {
                     ],
                   ),
                   child: TextFormField(
+                    controller: portugueseWord,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite um E-mail";
+                        return "Write the new portuguese word";
                       }
                       return null;
                     },
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
-                      hintText: 'E-mail',
+                      hintText: 'Write the new portuguese word',
                       prefixIcon: Icon(
                         Icons.alternate_email,
                         color: Colors.blue,
@@ -149,13 +156,14 @@ class _CProfessoresState extends State<CProfessores> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
+                  Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(20),
+                    margin: const EdgeInsets.only(
                     top: 10,
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -166,36 +174,32 @@ class _CProfessoresState extends State<CProfessores> {
                       ),
                     ],
                   ),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Digite seu endereço: ";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.phone,
-                    cursorColor: Colors.blue,
-                    decoration: const InputDecoration(
-                      hintText: 'Rua Machado de Assis 999',
-                      prefixIcon: Icon(
-                        Icons.home,
-                        color: Colors.blue,
+                  child: Column(children: [
+                    TextField(
+                      controller: englishDefinition,
+                      decoration: InputDecoration(
+                        hintText: "Write the english Definition",
+                        border: InputBorder.none,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Colors.blue)
+                         )
+                      
                       ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 4,
+                      
                     ),
-                  ),
+                  ]),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
+
+                 Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(20),
+                    margin: const EdgeInsets.only(
                     top: 10,
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -206,110 +210,25 @@ class _CProfessoresState extends State<CProfessores> {
                       ),
                     ],
                   ),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Digite seu telefone";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.phone,
-                    cursorColor: Colors.blue,
-                    decoration: const InputDecoration(
-                      hintText: 'Telefone Ex: (17) 98888-8888',
-                      prefixIcon: Icon(
-                        Icons.phone,
-                        color: Colors.blue,
+                  child: Column(children: [
+                    TextField(
+                      controller: portugueseDefinition,
+                  
+                      decoration: InputDecoration(
+                        hintText: "Write the portuguese Definition",
+                        border: InputBorder.none,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Colors.blue)
+                         )
+                      
                       ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 4,
+                      
                     ),
-                  ),
+                  ]),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 10,
-                    right: 20,
-                    left: 20,
-                  ),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 3,
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Digite sua senha";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    cursorColor: Colors.blue,
-                    decoration: const InputDecoration(
-                      hintText: 'Senha',
-                      prefixIcon: Icon(
-                        Icons.vpn_key,
-                        color: Colors.blue,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 10,
-                    right: 20,
-                    left: 20,
-                  ),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 3,
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Digite seu CPF: ";
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.phone,
-                    cursorColor: Colors.blue,
-                    decoration: const InputDecoration(
-                      hintText: 'CPF',
-                      prefixIcon: Icon(
-                        Icons.featured_play_list_outlined,
-                        color: Colors.blue,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                    ),
-                  ),
-                ),
+             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -327,11 +246,9 @@ class _CProfessoresState extends State<CProfessores> {
                       ),
                       child: TextButton(
                         onPressed: () {
-
                           setState(() {
                             Navigator.pop(context);
                           });
-
                         },
                         child: const Text(
                           'Voltar',
@@ -339,28 +256,26 @@ class _CProfessoresState extends State<CProfessores> {
                         ),
                       ),
                     ),
-
-                  Container(
-                  height: 50,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 25,
-                  ),
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
+                    Container(
+                      height: 50,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 25,
+                      ),
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Confirmar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Confirmar',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-
                   ],
                 ),
               ],
@@ -369,5 +284,5 @@ class _CProfessoresState extends State<CProfessores> {
         ],
       ),
     );
-}
+  }
 }

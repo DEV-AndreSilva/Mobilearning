@@ -1,10 +1,11 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, file_names, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GlossaryList extends StatefulWidget {
-  int id;
+  int  id;
+  int userId;
   String englishWord;
   String portugueseWord;
   String englishDefinition;
@@ -12,6 +13,7 @@ class GlossaryList extends StatefulWidget {
 
 GlossaryList ({super.key, 
   required this.id,
+  required this.userId,
   required this.englishWord,
   required this.portugueseWord,
   required this.englishDefinition,

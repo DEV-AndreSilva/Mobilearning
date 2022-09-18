@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/View/ActivityPage.dart';
 import 'package:mobilearning/View/ChatPage.dart';
-import 'package:mobilearning/View/loginView.dart';
+import 'package:mobilearning/View/ManagementPage.dart';
 
 import 'GlossaryPage.dart';
 
@@ -18,26 +18,51 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   int currentTabIndex = 0;
+  int userType =0;
 
   @override
   Widget build(BuildContext context) {
 
-    //páginas do bottomNavbar
-    final tabPages = <Widget>[
-       Center(child: ChatPage()),
-       Center(child: ActivityPage()),
-       Center(child: GlossaryPage()),
-       Center(child: GlossaryPage())
+  
+    var tabPages = <Widget>[];
+    var bottomNavBarItems = <BottomNavigationBarItem>[];
 
-    ];
+    //usuário aluno
+    if (userType == 0) {
+      //páginas do bottomNavbar
+      tabPages = <Widget>[
+        Center(child: ChatPage()),
+        Center(child: ActivityPage()),
+        Center(child: GlossaryPage()),
+      ];
 
-    //Icones do bottomNavbar
-    final bottomNavBarItems = <BottomNavigationBarItem>[
-      const BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chat'),
-      const BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Activities'),
-      const BottomNavigationBarItem(icon: Icon(Icons.window), label: 'Glossary'),
-      const BottomNavigationBarItem(icon: Icon(Icons.window), label: 'Fuck you'),
-    ];
+      //Icones do bottomNavbar
+      bottomNavBarItems = <BottomNavigationBarItem>[
+        const BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chat'),
+        const BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Activities'),
+        const BottomNavigationBarItem(icon: Icon(Icons.window), label: 'Glossary'),
+      ];
+    }
+    //professor
+    else if(userType ==1)
+    {
+          //páginas do bottomNavbar
+      tabPages = <Widget>[
+        Center(child: ManagmentPage()),
+        Center(child: ChatPage()),
+        Center(child: ActivityPage()),
+      ];
+
+      //Icones do bottomNavbar
+      bottomNavBarItems = <BottomNavigationBarItem>[
+        const BottomNavigationBarItem(icon: Icon(Icons.settings_applications), label: 'Management'),
+        const BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chat'),
+        const BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Activities'),
+      ];
+    }
+    
+
+
 
     assert(tabPages.length ==bottomNavBarItems.length);
 

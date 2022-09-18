@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names, import_of_legacy_library_into_null_safe, unused_import
 
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/glossaryWordModel.dart';
 import 'package:mobilearning/Widgets/GlossaryList.dart';
-
+import 'package:http/http.dart';
+import 'package:mobilearning/http/transactions/transaction_word.dart';
 
 class GlossaryPage extends StatefulWidget {
   const GlossaryPage({
@@ -15,32 +17,36 @@ class GlossaryPage extends StatefulWidget {
   @override
   State<GlossaryPage> createState() => _GlossaryPageState();
 }
+ 
+  Future<List<GlossaryWord>> getWords() async {
+    final Uri uri =  Uri.parse("https://mobilearning-api.herokuapp.com/word");
+    Response res = await get(uri,headers: {"authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMzIxMTUwNmYtZmNmNi00ZDg5LTk3ZmYtMTE5YzM5YjUyNzIzIiwibmJmIjoxNjYzNTExMjE4LCJleHAiOjE2NjM1MjkyMTgsImlhdCI6MTY2MzUxMTIxOH0.7IEK91eoTMq1gWQLhOrELfvLR2EUu7-oMBhZO2zoGFQ"}
+    ).timeout(Duration(seconds: 10));
+
+    if (res.statusCode == 200) {
+      List<dynamic> body = jsonDecode(res.body);
+
+      List<GlossaryWord> words = body.map((dynamic item) => GlossaryWord.fromJson(item),).toList();
+
+      return words;
+    } 
+    else {
+      throw "Unable to retrieve posts.";
+    }
+  }
+
 
 class _GlossaryPageState extends State<GlossaryPage> {
+  
+  final TransactionWebClient _webClient = TransactionWebClient();
 
   //lista de dados completa
  List<GlossaryWord> words = [
-   GlossaryWord (id: 1, englishWord: "Book", portugueseWord: "Livro", englishDefinition:"Texts grouped into pages texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 2, englishWord: "Time ", portugueseWord: "Tempo", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 3, englishWord: "People", portugueseWord: "Pessoas", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 4, englishWord: "Way ", portugueseWord: "Modo", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 5, englishWord: "Water ", portugueseWord: "Água", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 6, englishWord: "Words ", portugueseWord: "Palavras", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 7, englishWord: "Man ", portugueseWord: "Homem", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 8, englishWord: "Work", portugueseWord: "Trabalho", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 9, englishWord: "Part  ", portugueseWord: "Parte", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-    GlossaryWord (id: 10, englishWord: "Place ", portugueseWord: "Lugar", englishDefinition:"Texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
+   GlossaryWord (id: 1,userId:1, englishWord: "Book", portugueseWord: "Livro", englishDefinition:"Texts grouped into pages texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
   ];
 
   // lista de dados que sera exibida
   List<GlossaryWord> foundWords = [];
-
-  @override
-  initState() {
-    //No começo todos os dados serão exibidos
-    foundWords = words;
-    super.initState();
-  }
 
 
   // Função que é chamada quando o campo de texto muda
@@ -64,6 +70,10 @@ class _GlossaryPageState extends State<GlossaryPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    
+
+
     return Padding(padding: EdgeInsets.all(20),
     child: Column(
       children: [const SizedBox(
@@ -95,33 +105,67 @@ class _GlossaryPageState extends State<GlossaryPage> {
                 ),
                 onTap: ()=>{
                   setState((){
-                    Navigator.pushNamed(context, "/home");
+                    Navigator.pushNamed(context, "/cword");
                   })
                 },
                 ),
 
       const SizedBox(height: 20,),
 
-      Expanded(child: foundWords.isNotEmpty?
-              ListView.builder(
-                itemCount: foundWords.length,
-                itemBuilder: (context,index)=>
+      Expanded(
+          child: FutureBuilder<List<GlossaryWord>>(
+        future: _webClient.findAll(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return const CircularProgressIndicator();
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                final List<GlossaryWord>? transactions = snapshot.data;
+                if (transactions!.isNotEmpty) {
+                  return ListView.builder(
+                    itemCount: transactions.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          leading: const Icon(Icons.monetization_on),
+                          title: Text(
+                            transactions[index].englishWord.toString(),
+                            style: const TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            transactions[index].portugueseWord,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
 
-                    GlossaryList(
-                      id: foundWords[index].id,
-                      englishWord: foundWords[index].englishWord,
-                      englishDefinition: foundWords[index].englishDefinition,
-                      portugueseWord: foundWords[index].portugueseWord,
-                      portugueseDefinition: foundWords[index].portugueseDefinition,
-                    )
-
-                  )
-                :
-      const Text("No words found")
-      )
-      ],
-    
+                return const Text(
+                  'No transactions found',
+                );
+              }
+          }
+          return const Text('Unknow error');
+        },
+      ),
     ),
-    );
+      ]
+        )
+        );
+
+    
+  
   }
 }

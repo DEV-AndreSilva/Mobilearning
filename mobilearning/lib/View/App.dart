@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:mobilearning/View/WordPage.dart';
 import 'HomeView.dart';
 import 'LoginView.dart';
 import 'C_AlunosView.dart';
@@ -19,6 +20,7 @@ class App extends StatelessWidget {
       '/home':(context)=> Home(),
       '/calunos': (context)=> CAlunos(),
       '/cprofessores': (context)=> CProfessores(),
+      '/cword': (context)=> WordPage(),
      },
     );
     

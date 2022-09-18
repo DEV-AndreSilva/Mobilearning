@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, file_names
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';

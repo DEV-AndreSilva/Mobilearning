@@ -1,9 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, file_names, must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:mobilearning/Models/chatMessageModel.dart';
 
 class ChatDetailPage extends StatefulWidget {
@@ -11,7 +8,7 @@ class ChatDetailPage extends StatefulWidget {
   String imageURL;
   String name;
 
-ChatDetailPage({required this.userUid, required this.imageURL,required this.name });
+ChatDetailPage({super.key, required this.userUid, required this.imageURL,required this.name });
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -107,7 +104,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 90,
                     child: Row(
                       children: [

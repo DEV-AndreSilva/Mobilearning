@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: file_names
 
 class ChatUsers{
   String name;
