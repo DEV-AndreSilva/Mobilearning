@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/glossaryWordModel.dart';
@@ -18,22 +19,35 @@ class GlossaryPage extends StatefulWidget {
   State<GlossaryPage> createState() => _GlossaryPageState();
 }
  
-  Future<List<GlossaryWord>> getWords() async {
-    final Uri uri =  Uri.parse("https://mobilearning-api.herokuapp.com/word");
-    Response res = await get(uri,headers: {"authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMzIxMTUwNmYtZmNmNi00ZDg5LTk3ZmYtMTE5YzM5YjUyNzIzIiwibmJmIjoxNjYzNTExMjE4LCJleHAiOjE2NjM1MjkyMTgsImlhdCI6MTY2MzUxMTIxOH0.7IEK91eoTMq1gWQLhOrELfvLR2EUu7-oMBhZO2zoGFQ"}
-    ).timeout(Duration(seconds: 10));
+Future<List<GlossaryWord>> getWords() async {
+  try {
+    Options opt = Options();
+    opt.headers = {
+      "authorization":
+          "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMDcyM2U5NDQtYjk1ZC00OGFjLTkxZTEtYzJlODgxODA2MDgyIiwibmJmIjoxNjYzODczNjgzLCJleHAiOjE2NjM4OTE2ODMsImlhdCI6MTY2Mzg3MzY4M30.ngMXg7RQpBsB1FL-CVxqQZVf8Is0-MLvtD_uI90FxC0"
+    };
+    var response = await Dio()
+        .get('https://mobilearning-api.herokuapp.com/word', options: opt);
+    List<GlossaryWord> words = [];
 
-    if (res.statusCode == 200) {
-      List<dynamic> body = jsonDecode(res.body);
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.data);
+      // print(body[0]['ID']);
+      body.forEach((element) {
+        words.add(GlossaryWord.fromJson(element));
+      });
 
-      List<GlossaryWord> words = body.map((dynamic item) => GlossaryWord.fromJson(item),).toList();
-
+      print(words.length);
       return words;
-    } 
-    else {
-      throw "Unable to retrieve posts.";
     }
+  } catch (e) {
+    //print(e);
+    List<GlossaryWord> words = [];
+    return words;
   }
+  List<GlossaryWord> words = [];
+    return words;
+}
 
 
 class _GlossaryPageState extends State<GlossaryPage> {
@@ -114,7 +128,7 @@ class _GlossaryPageState extends State<GlossaryPage> {
 
       Expanded(
           child: FutureBuilder<List<GlossaryWord>>(
-        future: _webClient.findAll(),
+        future: getWords(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
