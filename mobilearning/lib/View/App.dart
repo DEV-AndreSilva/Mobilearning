@@ -6,6 +6,9 @@ import 'HomeView.dart';
 import 'LoginView.dart';
 import 'C_AlunosView.dart';
 import 'C_ProfessoresView.dart';
+import 'C_turma.dart';
+import 'C_termos.dart';
+
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -21,6 +24,8 @@ class App extends StatelessWidget {
       '/calunos': (context)=> CAlunos(),
       '/cprofessores': (context)=> CProfessores(),
       '/cword': (context)=> WordPage(),
+      '/cturma':(context) => Cturma(),
+      '/ctermos':(context) => Ctermos()
      },
     );
     

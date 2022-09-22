@@ -17,14 +17,21 @@ class GlossaryWord{
       required this.portugueseDefinition,
     });
 
-   factory GlossaryWord.fromJson(Map<String, dynamic> json) {
+   factory GlossaryWord.fromJson( dynamic json) {
+    // print(json['ID']);
+    // print(json['UserId']);
+    // print(json['PortugueseWord']);
+    // print(json['EnglishWord']);
+    // print(json['PortugueseDefinition']);
+    // print(json['EnglishDefinition']);
+
     return GlossaryWord(
-      id:  int.parse(json['userId']),
-      userId: int.parse(json['id']),
-      englishWord: json['englishWord'].toString(),
-      portugueseWord: json['portugueseWord'].toString(),
-      englishDefinition: json['englishDefinition'].toString(),
-      portugueseDefinition: json['portugueseDefinition'].toString()
+      id:  1,
+      userId: 2,
+      englishWord: json['EnglishWord'].toString(),
+      portugueseWord: json['PortugueseWord'].toString(),
+      englishDefinition: json['EnglishDefinition'].toString(),
+      portugueseDefinition: json['PortugueseDefinition'].toString()
     );
   }
 }
