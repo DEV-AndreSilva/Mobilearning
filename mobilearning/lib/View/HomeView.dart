@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/View/ActivityPage.dart';
 import 'package:mobilearning/View/ChatPage.dart';
@@ -105,8 +106,9 @@ class _HomeState extends State<Home> {
               },),
               ListTile(leading: Icon(Icons.logout),
               title: Text('Logout', style: GoogleFonts.arvo(fontSize: 16)),
-               onTap: ()=>{
-                  Navigator.pushNamed(context, '/login'),
+               onTap: ()async {
+                  await SessionManager().destroy();
+                  Navigator.pushNamed(context, '/login');
                   })
               
           ],

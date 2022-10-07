@@ -29,8 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http:
-  http_interceptor: ^1.0.1
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +40,9 @@ dependencies:
   getwidget: ^3.0.1
   carbon_icons: ^0.0.1+2
   dio:
+  flutter_session_manager: ^1.0.3
+  fluttertoast: ^8.0.9
+
 
 dev_dependencies:
   flutter_test:

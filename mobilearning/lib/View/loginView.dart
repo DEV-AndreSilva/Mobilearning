@@ -1,7 +1,13 @@
 // ignore_for_file: prefer_const_constructors, file_names
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/Models/userModel.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -11,8 +17,69 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passowordController= TextEditingController();
+
+void login(BuildContext context, String email, String password)async
+{
+  
+   try {
+  
+    var response = await Dio().post('https://mobilearning-api.herokuapp.com/user/Login', data: {'email': email, 'password': password});
+    List<dynamic> body = jsonDecode(response.data);
+    
+    int id = body[0]['Id'];
+    String userName = body[0]['Name'];
+    String userEmail = body[0]['Email'];
+
+    User user = User(Id: id, Name: userName, Email: userEmail);
+    String token = body[1];
+
+    String jsonEncodeUser = jsonEncode(user);
+    var sessionManager = SessionManager();
+
+    await sessionManager.set('UserLogin',jsonEncodeUser);
+    await sessionManager.set('BearerToken', token);
+
+     Navigator.pushNamed(context, '/home');
+   
+
+   }
+   catch(e)
+   {
+      print('Erro ao realizar login');
+      print(e);
+      emailController.clear();
+      passowordController.clear();
+
+
+        Fluttertoast.showToast(
+            msg: 'Usuario e senha invalidos!',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+            webPosition: 'center');
+      
+
+    //  ToastContext toast = ToastContext();
+    //  toast.init(context);
+     
+     // showToast("Usuário não cadastrado no sistema", duration: Toast.lengthLong);
+
+
+   }
+    //https://mobilearning-api.herokuapp.com/user/Login
+}
+
+
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
       
         backgroundColor: Colors.grey[250],
@@ -46,6 +113,7 @@ class _LoginState extends State<Login> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: emailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText:"E-mail"),
@@ -68,6 +136,7 @@ class _LoginState extends State<Login> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: passowordController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -95,9 +164,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 onTap: ()=>{
-                  setState((){
-                    Navigator.pushNamed(context, "/home");
-                  })
+                 login(context,emailController.text, passowordController.text),
                 },
                 ),
                 
@@ -113,4 +180,7 @@ class _LoginState extends State<Login> {
           ),
         ));
   }
+
+    
+
 }

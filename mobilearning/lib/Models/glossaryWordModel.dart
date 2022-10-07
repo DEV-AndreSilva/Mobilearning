@@ -26,12 +26,21 @@ class GlossaryWord{
     // print(json['EnglishDefinition']);
 
     return GlossaryWord(
-      id:  1,
-      userId: 2,
+      id:  json['ID'],
+      userId: json['UserId'],
       englishWord: json['EnglishWord'].toString(),
       portugueseWord: json['PortugueseWord'].toString(),
       englishDefinition: json['EnglishDefinition'].toString(),
       portugueseDefinition: json['PortugueseDefinition'].toString()
     );
   }
+
+    Map toJson() => {
+        'ID': id,
+        'UserId': userId,
+        'EnglishWord':englishWord,
+        'PortugueseWord':portugueseWord,
+        'EnglishDefinition':englishDefinition,
+        'PortugueseDefinition':portugueseDefinition
+      };
 }

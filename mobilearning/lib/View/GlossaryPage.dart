@@ -4,11 +4,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/glossaryWordModel.dart';
 import 'package:mobilearning/Widgets/GlossaryList.dart';
 import 'package:http/http.dart';
-import 'package:mobilearning/http/transactions/transaction_word.dart';
+import 'dart:async';
 
 class GlossaryPage extends StatefulWidget {
   const GlossaryPage({
@@ -19,82 +20,118 @@ class GlossaryPage extends StatefulWidget {
   State<GlossaryPage> createState() => _GlossaryPageState();
 }
  
-Future<List<GlossaryWord>> getWords() async {
+Future<List<GlossaryWord>> getWords(BuildContext context) async {
   try {
     Options opt = Options();
-    opt.headers = {
-      "authorization":
-          "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMDcyM2U5NDQtYjk1ZC00OGFjLTkxZTEtYzJlODgxODA2MDgyIiwibmJmIjoxNjYzODczNjgzLCJleHAiOjE2NjM4OTE2ODMsImlhdCI6MTY2Mzg3MzY4M30.ngMXg7RQpBsB1FL-CVxqQZVf8Is0-MLvtD_uI90FxC0"
-    };
-    var response = await Dio()
-        .get('https://mobilearning-api.herokuapp.com/word', options: opt);
+
+    String token= await SessionManager().get("BearerToken");
+
+    if(token != null && token != '')
+    {
+      opt.headers = {"authorization": "bearer $token"};
+    var response = await Dio().get('https://mobilearning-api.herokuapp.com/word', options: opt);
     List<GlossaryWord> words = [];
 
-    if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.data);
-      // print(body[0]['ID']);
-      body.forEach((element) {
-        words.add(GlossaryWord.fromJson(element));
-      });
+    if (response.statusCode == 200) 
+      {
+        List<dynamic> body = jsonDecode(response.data);
 
-      print(words.length);
-      return words;
+        for (var element in body) 
+        {
+          words.add(GlossaryWord.fromJson(element));
+        }
+
+        return words;
+      }
+      else
+      {
+         await SessionManager().destroy();
+          Navigator.pushNamed(context, '/login');
+      }
     }
   } catch (e) {
-    //print(e);
+    print(e);
     List<GlossaryWord> words = [];
     return words;
   }
-  List<GlossaryWord> words = [];
+  
+    List<GlossaryWord> words = [];
     return words;
+  
+
 }
 
 
 class _GlossaryPageState extends State<GlossaryPage> {
   
-  final TransactionWebClient _webClient = TransactionWebClient();
+ //Lista de palavras que aparece na tela 
+ List<GlossaryWord> words  = [];
 
-  //lista de dados completa
- List<GlossaryWord> words = [
-   GlossaryWord (id: 1,userId:1, englishWord: "Book", portugueseWord: "Livro", englishDefinition:"Texts grouped into pages texts grouped into pages", portugueseDefinition:"Textos agrupados em paginas"),
-  ];
-
-  // lista de dados que sera exibida
-  List<GlossaryWord> foundWords = [];
-
-
-  // Função que é chamada quando o campo de texto muda
-  void runFilter(String enteredKeyword) {
-    List<GlossaryWord>  results = [];
-
-     // Se o Campo de texto está em branco ou com apenas espaços exibe todos os registros
-    if (enteredKeyword.isEmpty) {
-      results = words;
+//Método que busca a lista de palavras da memória, caso não exista busca do banco
+void getWordsList (String key, BuildContext context )async
+{
+  //Verifica se a lista existe na sessão
+  bool containWords = await SessionManager().containsKey("Words");
+  if(containWords)
+  {
+    //limpa a lista da tela
+    words = [];
+    dynamic res = await SessionManager().get("Words");
+    
+    //verifica se há resultado
+    if(res != null && res != '')
+    {
+      //preenche a lista da tela com o elemento da memória
+      for (var element in res) 
+      {
+        words.add(GlossaryWord.fromJson(element));
+      }
     }
-     else {
-      // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
-      results = words.where((word) => word.englishWord.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
-    }
-
-    // Refresh the UI
-    setState(() {
-      foundWords = results;
-    });
+    
   }
+  else
+  {
+    //Caso a lista não exista em memória consulta o banco de dados
+    var listwords = await getWords(context);
+    String jsonEncodeWords = jsonEncode(listwords);
+
+    //adiciona a lista em memória
+    var sessionManager = SessionManager();
+    await sessionManager.set('Words', jsonEncodeWords);
+    words = listwords;
+  }
+
+  //Lista temporária que preenchera a tela
+  List<GlossaryWord>  results = [];
+
+  // Se o Campo de texto está em branco ou com apenas espaços exibe todos os registros
+  if (key.isEmpty) {
+    results = words;
+  }
+  else {
+  results = words;
+  // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
+  results = results.where((word) => word.englishWord.toLowerCase().contains(key.toLowerCase())).toList();
+  }
+
+ setState((){
+    //atualiza a interface gráfica
+    setState(() {
+      words = results;
+    });
+ });
+}
+
 
   @override
   Widget build(BuildContext context) {
-
-    
-
-
     return Padding(padding: EdgeInsets.all(20),
     child: Column(
       children: [const SizedBox(
         height: 20,
       ),
       
-      TextField(onChanged: (value) => runFilter(value),
+      TextField(onChanged: (value) => getWordsList(value,context),
         decoration: const InputDecoration(
         labelText: 'Search a word', suffixIcon: Icon(Icons.search) ),
       ),
@@ -112,69 +149,46 @@ class _GlossaryPageState extends State<GlossaryPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                       Text("Add new Word",style: GoogleFonts.arvo(fontSize: 18, fontWeight: FontWeight.w400,color: Colors.white),),
-                      Icon(Icons.add,color: Colors.white,) 
+                      // Icon(Icons.add,color: Colors.white,) 
                     ],)
                     ),
                   ),
                 ),
-                onTap: ()=>{
-                  setState((){
-                    Navigator.pushNamed(context, "/cword");
-                  })
-                },
+                onTap: (){
+                 // getWordsList();
+                }
+
+                  
+                  // setState((){
+                  //   Navigator.pushNamed(context, "/cword");
+                  // })
+
+                
                 ),
 
       const SizedBox(height: 20,),
 
       Expanded(
-          child: FutureBuilder<List<GlossaryWord>>(
-        future: getWords(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              break;
-            case ConnectionState.waiting:
-              return const CircularProgressIndicator();
-            case ConnectionState.active:
-              break;
-            case ConnectionState.done:
-              if (snapshot.hasData) {
-                final List<GlossaryWord>? transactions = snapshot.data;
-                if (transactions!.isNotEmpty) {
-                  return ListView.builder(
-                    itemCount: transactions.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.monetization_on),
-                          title: Text(
-                            transactions[index].englishWord.toString(),
-                            style: const TextStyle(
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Text(
-                            transactions[index].portugueseWord,
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
+          child:  ListView.builder(
+                itemCount: words.length,
+                itemBuilder: (context,index)=>
+                  words.isNotEmpty?
 
-                return const Text(
-                  'No transactions found',
-                );
-              }
-          }
-          return const Text('Unknow error');
-        },
-      ),
+                    GlossaryList(
+                      id: words[index].id,
+                      userId: words[index].userId,
+                      englishWord: words[index].englishWord,
+                      englishDefinition: words[index].englishDefinition,
+                      portugueseWord: words[index].portugueseWord,
+                      portugueseDefinition: words[index].portugueseDefinition, 
+                      
+                    )
+
+                  
+                :
+      const Text("No words found")
     ),
+    )
       ]
         )
         );
