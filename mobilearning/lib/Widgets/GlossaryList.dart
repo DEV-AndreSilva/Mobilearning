@@ -37,6 +37,11 @@ class _GlossaryListState extends State<GlossaryList> {
                 clipBehavior: Clip.antiAlias,
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 child: ExpansionTile(
+                  
+                  trailing: IconButton(icon: Icon(Icons.edit), onPressed: () {
+                     Navigator.of(context).pushNamed('/cword',
+                                  arguments: widget);
+                  },),
                   textColor: Colors.white,
                   title : Text(widget.englishWord,style: GoogleFonts.arvo(fontSize: 17,fontWeight: FontWeight.bold)),
                   subtitle: Text(widget.portugueseWord, style: GoogleFonts.arvo(fontSize: 17)),

@@ -20,7 +20,7 @@ class GlossaryPage extends StatefulWidget {
   State<GlossaryPage> createState() => _GlossaryPageState();
 }
  
-Future<List<GlossaryWord>> getWords(BuildContext context) async {
+Future<List<GlossaryWord>> getWords(BuildContext? context) async {
   try {
     Options opt = Options();
 
@@ -46,7 +46,7 @@ Future<List<GlossaryWord>> getWords(BuildContext context) async {
       else
       {
          await SessionManager().destroy();
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context!, '/login');
       }
     }
   } catch (e) {
@@ -67,8 +67,14 @@ class _GlossaryPageState extends State<GlossaryPage> {
  //Lista de palavras que aparece na tela 
  List<GlossaryWord> words  = [];
 
+_GlossaryPageState()
+{
+  getWordsList('', null);
+}
+
+
 //Método que busca a lista de palavras da memória, caso não exista busca do banco
-void getWordsList (String key, BuildContext context )async
+void getWordsList (String key, BuildContext? context )async
 {
   //Verifica se a lista existe na sessão
   bool containWords = await SessionManager().containsKey("Words");
@@ -155,7 +161,8 @@ void getWordsList (String key, BuildContext context )async
                   ),
                 ),
                 onTap: (){
-                 // getWordsList();
+                 
+                  Navigator.of(context).pushNamed('/cword');
                 }
 
                   

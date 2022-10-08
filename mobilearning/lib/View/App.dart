@@ -7,7 +7,6 @@ import 'LoginView.dart';
 import 'C_AlunosView.dart';
 import 'C_ProfessoresView.dart';
 import 'C_turma.dart';
-import 'C_termos.dart';
 
 
 class App extends StatelessWidget {
@@ -25,7 +24,6 @@ class App extends StatelessWidget {
       '/cprofessores': (context)=> CProfessores(),
       '/cword': (context)=> WordPage(),
       '/cturma':(context) => Cturma(),
-      '/ctermos':(context) => Ctermos()
      },
     );
     
