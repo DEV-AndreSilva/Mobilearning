@@ -2,11 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobilearning/View/WordPage.dart';
+import 'package:mobilearning/Widgets/WebQuest/WebQuestAvaliation.dart';
+import 'package:mobilearning/Widgets/WebQuest/WebQuestConclusion.dart';
+import 'package:mobilearning/Widgets/WebQuest/WebQuestInformation.dart';
+import 'package:mobilearning/Widgets/WebQuest/WebQuestProcess.dart';
+import 'package:mobilearning/Widgets/WebQuest/WebQuestReferences.dart';
+import 'package:mobilearning/Widgets/WebQuest/WebQuestTask.dart';
 import 'HomeView.dart';
 import 'LoginView.dart';
 import 'C_AlunosView.dart';
 import 'C_ProfessoresView.dart';
 import 'C_turma.dart';
+import '../Widgets/WebQuest/WebQuestIntroduction.dart';
 
 
 class App extends StatelessWidget {
@@ -24,6 +31,13 @@ class App extends StatelessWidget {
       '/cprofessores': (context)=> CProfessores(),
       '/cword': (context)=> WordPage(),
       '/cturma':(context) => Cturma(),
+      '/WebQuestIntroduction':(context) => WebQuestIntroduction(),
+      '/WebQuestTask':(context) => WebQuestTask(),
+      '/WebQuestProcess':(context) => WebQuestProcess(),
+      '/WebQuestInformation':(context) => WebQuestInformation(),
+      '/WebQuestAvaliation':(context) => WebQuestAvaliation(),
+      '/WebQuestConclusion':(context) => WebQuestConclusion(),
+      '/WebQuestReferences':(context) => WebQuestReferences(),
      },
     );
     

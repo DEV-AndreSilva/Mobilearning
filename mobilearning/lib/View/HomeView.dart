@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobilearning/View/ActivityPage.dart';
+import 'package:mobilearning/View/UserActivityPage.dart';
 import 'package:mobilearning/View/ChatPage.dart';
 import 'package:mobilearning/View/ManagementPage.dart';
 
@@ -16,7 +16,10 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+
+
 class _HomeState extends State<Home> {
+
 
   int currentTabIndex = 0;
   int userType =0;
@@ -24,7 +27,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
-  
     var tabPages = <Widget>[];
     var bottomNavBarItems = <BottomNavigationBarItem>[];
 

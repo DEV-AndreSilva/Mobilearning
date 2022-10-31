@@ -4,31 +4,21 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/progress_bar/gf_progress_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../Models/UserActivityModel.dart';
+import 'package:dart_date/dart_date.dart';
 
-class ActivityList extends StatefulWidget {
-  String  webQuest;
-  String  imageURL;
-  String title;
-  String currentStage;
-  String startDate;
-  String endDate;
-  double progress;
+class UserActivityList extends StatefulWidget {
+ UserActivity userActivity;
 
-  ActivityList({super.key, 
-    required this.webQuest,
-    required this.imageURL,
-    required this.title,
-    required this.currentStage,
-    required this.startDate,
-    required this.endDate,
-    required this.progress,
+  UserActivityList({super.key, 
+   required this.userActivity
   });
   
   @override
-  State<ActivityList> createState() => _ActivityListState();
+  State<UserActivityList> createState() => _UserActivityListState();
 }
 
-class _ActivityListState extends State<ActivityList> {
+class _UserActivityListState extends State<UserActivityList> {
   
   @override
   Widget build(BuildContext context) {
@@ -48,7 +38,7 @@ class _ActivityListState extends State<ActivityList> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ),
-              Text(widget.webQuest, style: TextStyle(fontSize: 20))
+              Text(widget.userActivity.activity.title, style: TextStyle(fontSize: 20))
             ],
           ),
           SizedBox(
@@ -71,12 +61,12 @@ class _ActivityListState extends State<ActivityList> {
                         width: larguraTela * 0.4,
                         margin: EdgeInsets.only(left: larguraTela / 10),
                         child: Text(
-                          "Title:",
+                          "SubTitle:",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(widget.title, style: TextStyle(fontSize: 20))
+                      Text(widget.userActivity.activity.subttitle, style: TextStyle(fontSize: 20))
                     ],
                   ),
                   Row(
@@ -91,7 +81,7 @@ class _ActivityListState extends State<ActivityList> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(widget.currentStage, style: TextStyle(fontSize: 20))
+                      Text(widget.userActivity.currentStage, style: TextStyle(fontSize: 20))
                     ],
                   ),
                   Row(
@@ -106,7 +96,8 @@ class _ActivityListState extends State<ActivityList> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(widget.startDate, style: TextStyle(fontSize: 20))
+                      Text( DateTime.parse(widget.userActivity.startDate).format('dd/MM/y')
+                      , style: TextStyle(fontSize: 20))
                     ],
                   ),
                   Row(
@@ -121,7 +112,7 @@ class _ActivityListState extends State<ActivityList> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(widget.endDate, style: TextStyle(fontSize: 20))
+                      Text(DateTime.parse(widget.userActivity.endDate).format('dd/MM/y'), style: TextStyle(fontSize: 20))
                     ],
                   ),
 
@@ -145,7 +136,7 @@ class _ActivityListState extends State<ActivityList> {
                     margin: EdgeInsets.only(left: larguraTela / 10, right: larguraTela/10, top: 10, bottom: 10),
                     child: Center(
                       child: GFProgressBar(
-                        percentage: widget.progress,
+                        percentage: (widget.userActivity.progress.toDouble())/100,
                         lineHeight: 20,
                         progressBarColor: Colors.green,
                       ),
@@ -176,7 +167,7 @@ class _ActivityListState extends State<ActivityList> {
                       ),
                       onTap: () => {
                         setState(() {
-                          Navigator.pushNamed(context, "/home");
+                          Navigator.pushNamed(context, "/WebQuestIntroduction", arguments: widget.userActivity);
                         })
                       },
                     ),

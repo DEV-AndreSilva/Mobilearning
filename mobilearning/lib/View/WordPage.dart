@@ -135,7 +135,6 @@ class _WordPageState extends State<WordPage> {
      
 
       bool isAlter = args != null ? true:false;
-      bool altered = false;
 
      if(args != null && alter)
      {

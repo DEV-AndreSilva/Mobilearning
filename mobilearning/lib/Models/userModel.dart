@@ -14,10 +14,14 @@ class User{
 
    factory User.fromJson( dynamic json) {
 
+    // print(json['Id']);
+    // print(json['Email']);
+    // print(json['Name']);
+
     return User(
-      Id:  json['ID'],
-      Email: json['UserId'].toString(),
-      Name: json['EnglishWord'].toString(),
+      Id:  json['Id'],
+      Email: json['Email'].toString(),
+      Name: json['Name'].toString(),
     );
   }
 

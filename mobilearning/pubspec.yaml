@@ -42,6 +42,7 @@ dependencies:
   dio:
   flutter_session_manager: ^1.0.3
   fluttertoast: ^8.0.9
+  dart_date: ^1.1.1
 
 
 dev_dependencies:
