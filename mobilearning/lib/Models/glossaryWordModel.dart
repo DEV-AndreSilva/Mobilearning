@@ -18,7 +18,7 @@ class GlossaryWord{
     });
 
    factory GlossaryWord.fromJson( dynamic json) {
-    // print(json['ID']);
+     print(json['id']);
     // print(json['UserId']);
     // print(json['PortugueseWord']);
     // print(json['EnglishWord']);
@@ -26,21 +26,21 @@ class GlossaryWord{
     // print(json['EnglishDefinition']);
 
     return GlossaryWord(
-      id:  json['ID'],
-      userId: json['UserId'],
-      englishWord: json['EnglishWord'].toString(),
-      portugueseWord: json['PortugueseWord'].toString(),
-      englishDefinition: json['EnglishDefinition'].toString(),
-      portugueseDefinition: json['PortugueseDefinition'].toString()
+      id:  json['id'],
+      userId: json['userId'],
+      englishWord: json['englishWord'].toString(),
+      portugueseWord: json['portugueseWord'].toString(),
+      englishDefinition: json['englishDefinition'].toString(),
+      portugueseDefinition: json['portugueseDefinition'].toString()
     );
   }
 
     Map toJson() => {
-        'ID': id,
-        'UserId': userId,
-        'EnglishWord':englishWord,
-        'PortugueseWord':portugueseWord,
-        'EnglishDefinition':englishDefinition,
-        'PortugueseDefinition':portugueseDefinition
+        'id': id,
+        'userId': userId,
+        'englishWord':englishWord,
+        'portugueseWord':portugueseWord,
+        'englishDefinition':englishDefinition,
+        'portugueseDefinition':portugueseDefinition
       };
 }

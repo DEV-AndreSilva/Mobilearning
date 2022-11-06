@@ -6,9 +6,12 @@ import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/glossaryWordModel.dart';
-    
+
+import '../Widgets/DrawerMobilearning.dart';
+
 class WordPage extends StatefulWidget {
   const WordPage({Key? key}) : super(key: key);
 
@@ -17,128 +20,157 @@ class WordPage extends StatefulWidget {
 }
 
 class _WordPageState extends State<WordPage> {
-
-      final englishWord = TextEditingController();
-      final portugueseWord = TextEditingController();
-      final englishDefinition = TextEditingController();
-      final portugueseDefinition = TextEditingController();
-      bool alter = true;
+  final englishWord = TextEditingController();
+  final portugueseWord = TextEditingController();
+  final englishDefinition = TextEditingController();
+  final portugueseDefinition = TextEditingController();
+  bool alter = true;
 
   @override
   Widget build(BuildContext context) {
-
-    void alterWord(int wordID , String englishWord, String englishDefinition,String portugueseWord, String portugueseDefinition)async
-    {
+    void alterWord(int wordID, String englishWord, String englishDefinition,
+        String portugueseWord, String portugueseDefinition) async {
       try {
-
         Options opt = Options();
-        String token= await SessionManager().get("BearerToken");
+        String token = await SessionManager().get("BearerToken");
 
-        if(token != null && token != '')
-        {
+        if (token != null && token != '') {
           opt.headers = {"authorization": "bearer $token"};
 
-          var response = await Dio().put('https://mobilearning-api.herokuapp.com/word/$wordID',
-           data: {
-            'PortugueseWord': portugueseWord,
-            'EnglishWord': englishWord,
-            'PortugueseDefinition':portugueseDefinition,
-            'EnglishDefinition':englishDefinition
-            }, options: opt);
+          var response = await Dio()
+              .put('https://mobilearning-api.herokuapp.com/word/$wordID',
+                  data: {
+                    'PortugueseWord': portugueseWord,
+                    'EnglishWord': englishWord,
+                    'PortugueseDefinition': portugueseDefinition,
+                    'EnglishDefinition': englishDefinition
+                  },
+                  options: opt);
 
-            //destroi a sessão de palavras para outra consulta ao banco
-            await SessionManager().remove("Words");
-            Navigator.pushNamed(context, '/home');
+          if (response.statusCode == 200) {
+            Fluttertoast.showToast(
+                msg: 'Palavra atualizada com sucesso!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                webPosition: 'center');
+          }
 
-
-
-        }
-        else
-        {
-            await SessionManager().destroy();
-            Navigator.pushNamed(context, '/login');
-        }
-    }
-    catch (e)
-    {
-      print(e);
-    }
-
-    }
-
-  void deleteWord(int wordID) async
-  {
-    try{
-         Options opt = Options();
-        String token= await SessionManager().get("BearerToken");
-
-        if(token != null && token != '')
-        {
-          opt.headers = {"authorization": "bearer $token"};
-
-          var response = await Dio().delete('https://mobilearning-api.herokuapp.com/word/$wordID', options: opt);
-
-            //destroi a sessão de palavras para outra consulta ao banco
+          //destroi a sessão de palavras para outra consulta ao banco
           await SessionManager().remove("Words");
-          Navigator.pushNamed(context, '/home');
+
+              Future.delayed(Duration(seconds: 3), () {
+                    setState(() {
+                        Navigator.pushNamed(context, '/home');
+                    });
+        });
+
+        } else {
+          await SessionManager().destroy();
+          Navigator.pushNamed(context, '/login');
         }
-
+      } catch (e) {
+        print(e);
+      }
     }
-    catch(e)
-    {
-      print(e); 
-    }
-  }
 
-    void createWord(String englishWord, String englishDefinition,String portugueseWord, String portugueseDefinition ) async
-    {
-        try {
-
+    void deleteWord(int wordID) async {
+      try {
         Options opt = Options();
-        String token= await SessionManager().get("BearerToken");
+        String token = await SessionManager().get("BearerToken");
 
-        if(token != null && token != '')
-        {
+        if (token != null && token != '') {
           opt.headers = {"authorization": "bearer $token"};
-          var response = await Dio().post('https://mobilearning-api.herokuapp.com/word',
-           data: {
-            'PortugueseWord': portugueseWord,
-            'EnglishWord': englishWord,
-            'PortugueseDefinition':portugueseDefinition,
-            'EnglishDefinition':englishDefinition
-            }, options: opt);
 
-            //destroi a sessão de palavras para outra consulta ao banco
-            await SessionManager().remove("Words");
-            Navigator.pushNamed(context, '/home');
+          var response = await Dio().delete(
+              'https://mobilearning-api.herokuapp.com/word/$wordID',
+              options: opt);
 
+          if (response.statusCode == 200) {
+            Fluttertoast.showToast(
+                msg: 'Palavra deletada com sucesso!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                webPosition: 'center');
+          }
 
+          //destroi a sessão de palavras para outra consulta ao banco
+          await SessionManager().remove("Words");
 
+              Future.delayed(Duration(seconds: 3), () {
+                    setState(() {
+                        Navigator.pushNamed(context, '/home');
+                    });
+        });
+          
         }
-        else
-        {
-            await SessionManager().destroy();
-            Navigator.pushNamed(context, '/login');
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    void createWord(String englishWord, String englishDefinition,
+        String portugueseWord, String portugueseDefinition) async {
+      try {
+        Options opt = Options();
+        String token = await SessionManager().get("BearerToken");
+
+        if (token != null && token != '') {
+          opt.headers = {"authorization": "bearer $token"};
+          var response =
+              await Dio().post('https://mobilearning-api.herokuapp.com/word',
+                  data: {
+                    'PortugueseWord': portugueseWord,
+                    'EnglishWord': englishWord,
+                    'PortugueseDefinition': portugueseDefinition,
+                    'EnglishDefinition': englishDefinition
+                  },
+                  options: opt);
+
+          if (response.statusCode == 200) {
+            Fluttertoast.showToast(
+                msg: 'Palavra cadastrada com sucesso!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                webPosition: 'center');
+          }
+
+          //destroi a sessão de palavras para outra consulta ao banco
+          await SessionManager().remove("Words");
+
+        Future.delayed(Duration(seconds: 3), () {
+                    setState(() {
+                        Navigator.pushNamed(context, '/home');
+                    });
+        });
+
+          
+        } else {
+          await SessionManager().destroy();
+          Navigator.pushNamed(context, '/login');
         }
+      } catch (e) {
+        print(e);
+      }
     }
-    catch (e)
-    {
-      print(e);
-    }
-  }
 
+    final dynamic args = ModalRoute.of(context)?.settings.arguments;
 
+    bool isAlter = args != null ? true : false;
 
-
-
-      final dynamic args = ModalRoute.of(context)?.settings.arguments;
-     
-
-      bool isAlter = args != null ? true:false;
-
-     if(args != null && alter)
-     {
-        GlossaryWord word = GlossaryWord(
+    if (args != null && alter) {
+      GlossaryWord word = GlossaryWord(
           id: args.id,
           userId: args.userId,
           englishWord: args.englishWord,
@@ -146,56 +178,19 @@ class _WordPageState extends State<WordPage> {
           englishDefinition: args.englishDefinition,
           portugueseDefinition: args.portugueseDefinition);
 
-          englishWord.text = word.englishWord;
-          portugueseWord.text = word.portugueseWord;
-          englishDefinition.text = word.englishDefinition;
-          portugueseDefinition.text = word.portugueseDefinition;
+      englishWord.text = word.englishWord;
+      portugueseWord.text = word.portugueseWord;
+      englishDefinition.text = word.englishDefinition;
+      portugueseDefinition.text = word.portugueseDefinition;
 
-          //controle da atualização da tela
-          alter = false;
-     }
+      //controle da atualização da tela
+      alter = false;
+    }
 
     var alturaTela = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              decoration:
-                  const BoxDecoration(color: Color.fromRGBO(21, 93, 177, 1)),
-              accountName: Text(
-                'André',
-                style: GoogleFonts.arvo(fontSize: 18),
-              ),
-              accountEmail: Text(
-                'andreluis2608@gmail.com',
-                style: GoogleFonts.arvo(fontSize: 18),
-              ),
-              currentAccountPicture: const CircleAvatar(
-                child: Text("SZ"),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: Text(
-                "My account",
-                style: GoogleFonts.arvo(fontSize: 16),
-              ),
-              onTap: () => {
-                Navigator.pushNamed(context, '/login'),
-              },
-            ),
-            ListTile(
-                leading: const Icon(Icons.logout),
-                title: Text('Logout', style: GoogleFonts.arvo(fontSize: 16)),
-                onTap: () => {
-                      Navigator.pushNamed(context, '/login'),
-                    })
-          ],
-        ),
-      ),
+      drawer: DrawerMobilearning(),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 93, 177, 1),
         title: Text(
@@ -214,16 +209,22 @@ class _WordPageState extends State<WordPage> {
           Form(
             child: Column(
               children: <Widget>[
-
                 Container(
-                  margin: EdgeInsets.only(top: alturaTela *0.025, right: 20),
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                    IconButton(icon: Icon(Icons.delete, size: 40,color: Colors.red,), onPressed: () => deleteWord(args.id),),
-                  ],)
-                ),
+                    margin: EdgeInsets.only(top: alturaTela * 0.025, right: 20),
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            size: 40,
+                            color: Colors.red,
+                          ),
+                          onPressed: () => deleteWord(args.id),
+                        ),
+                      ],
+                    )),
                 Container(
                   margin: EdgeInsets.only(
                       top: alturaTela * 0.025, right: 20, left: 20),
@@ -250,11 +251,8 @@ class _WordPageState extends State<WordPage> {
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
                       hintText: 'Write the new english word',
-                      prefixIcon: Icon(
-                        CarbonIcons.letter_aa_large,
-                        color: Colors.blue,
-                        size: 25.0
-                      ),
+                      prefixIcon: Icon(CarbonIcons.letter_aa_large,
+                          color: Colors.blue, size: 25.0),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 20,
@@ -292,11 +290,8 @@ class _WordPageState extends State<WordPage> {
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
                       hintText: 'Write the new portuguese word',
-                      prefixIcon: Icon(
-                       CarbonIcons.letter_bb,
-                        color: Colors.blue,
-                        size: 25.0
-                      ),
+                      prefixIcon: Icon(CarbonIcons.letter_bb,
+                          color: Colors.blue, size: 25.0),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 20,
@@ -305,10 +300,10 @@ class _WordPageState extends State<WordPage> {
                     ),
                   ),
                 ),
-                  Container(
+                Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(20),
-                    margin: const EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                     top: 10,
                     right: 20,
                     left: 20,
@@ -327,24 +322,20 @@ class _WordPageState extends State<WordPage> {
                     TextField(
                       controller: englishDefinition,
                       decoration: InputDecoration(
-                        hintText: "Write the english Definition",
-                        border: InputBorder.none,
+                          hintText: "Write the english Definition",
+                          border: InputBorder.none,
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1, color: Colors.blue)
-                         )
-                      
-                      ),
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.blue))),
                       keyboardType: TextInputType.multiline,
                       maxLines: 4,
-                      
                     ),
                   ]),
                 ),
-
-                 Container(
+                Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(20),
-                    margin: const EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                     top: 10,
                     right: 20,
                     left: 20,
@@ -362,22 +353,17 @@ class _WordPageState extends State<WordPage> {
                   child: Column(children: [
                     TextField(
                       controller: portugueseDefinition,
-                  
                       decoration: InputDecoration(
-                        hintText: "Write the portuguese Definition",
-                        border: InputBorder.none,
+                          hintText: "Write the portuguese Definition",
+                          border: InputBorder.none,
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1, color: Colors.blue)
-                         )
-                      
-                      ),
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.blue))),
                       keyboardType: TextInputType.multiline,
                       maxLines: 4,
-                      
                     ),
                   ]),
                 ),
-             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -421,26 +407,17 @@ class _WordPageState extends State<WordPage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-
-                            if(isAlter)
-                            {
-                              alterWord(
+                          if (isAlter) {
+                            alterWord(
                                 args.id,
                                 englishWord.text,
                                 englishDefinition.text,
                                 portugueseWord.text,
-                                portugueseDefinition.text
-                              );
-                            }
-                            else{
-                              createWord(
-                                englishWord.text,
-                                englishDefinition.text,
-                                portugueseWord.text,
-                                portugueseDefinition.text
-                              );
-                            }
-
+                                portugueseDefinition.text);
+                          } else {
+                            createWord(englishWord.text, englishDefinition.text,
+                                portugueseWord.text, portugueseDefinition.text);
+                          }
                         },
                         child: const Text(
                           'Confirmar',

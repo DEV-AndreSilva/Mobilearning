@@ -1,60 +1,26 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class WebQuestInformation extends StatefulWidget {
-  const WebQuestInformation({Key? key}) : super(key: key);
+import '../DrawerMobilearning.dart';
+
+class WebQuestEvaluationView extends StatefulWidget {
+  const WebQuestEvaluationView({Key? key}) : super(key: key);
 
   @override
-  State<WebQuestInformation> createState() => _WebQuestInformation();
+  State<WebQuestEvaluationView> createState() => _WebQuestEvaluationView();
 }
 
-class _WebQuestInformation extends State<WebQuestInformation> {
+class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
   @override
   Widget build(BuildContext context) {
     var alturaTela = MediaQuery.of(context).size.height;
     final dynamic args = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              decoration:
-                  const BoxDecoration(color: Color.fromRGBO(21, 93, 177, 1)),
-              accountName: Text(
-                'André',
-                style: GoogleFonts.arvo(fontSize: 18),
-              ),
-              accountEmail: Text(
-                'andreluis2608@gmail.com',
-                style: GoogleFonts.arvo(fontSize: 18),
-              ),
-              currentAccountPicture: const CircleAvatar(
-                child: Text("SZ"),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: Text(
-                "My account",
-                style: GoogleFonts.arvo(fontSize: 16),
-              ),
-              onTap: () => {
-                Navigator.pushNamed(context, '/login'),
-              },
-            ),
-            ListTile(
-                leading: const Icon(Icons.logout),
-                title: Text('Logout', style: GoogleFonts.arvo(fontSize: 16)),
-                onTap: () => {
-                      Navigator.pushNamed(context, '/login'),
-                    })
-          ],
-        ),
-      ),
+      drawer: DrawerMobilearning(),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 93, 177, 1),
         title: Text(
@@ -81,12 +47,12 @@ class _WebQuestInformation extends State<WebQuestInformation> {
                         children: [
                           Container(
                               margin: EdgeInsets.only(bottom: 20),
-                              child: Text('Information',
+                              child: Text('Avaliation',
                                   style: GoogleFonts.arvo(
                                       fontSize: 22,
                                       color: Color.fromARGB(255, 0, 0, 0)))),
                           Text(
-                            args.activity.information.toString(),
+                            args.activity.evaluation.toString(),
                             style: GoogleFonts.arvo(fontSize: 20),
                             maxLines: 50,
                           ),
@@ -111,7 +77,8 @@ class _WebQuestInformation extends State<WebQuestInformation> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
-                                Navigator.pushNamed(context, "/WebQuestProcess",
+                                Navigator.pushNamed(
+                                    context, "/WebQuestInformationView",
                                     arguments: args);
                               });
                             },
@@ -137,7 +104,7 @@ class _WebQuestInformation extends State<WebQuestInformation> {
                             onPressed: () {
                               setState(() {
                                 Navigator.pushNamed(
-                                    context, "/WebQuestAvaliation",
+                                    context, "/WebQuestConclusionView",
                                     arguments: args);
                               });
                             },

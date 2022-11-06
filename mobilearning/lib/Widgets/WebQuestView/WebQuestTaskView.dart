@@ -1,60 +1,26 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class WebQuestIntroduction extends StatefulWidget {
-  const WebQuestIntroduction({Key? key}) : super(key: key);
+import '../DrawerMobilearning.dart';
+
+class WebQuestTaskView extends StatefulWidget {
+  const WebQuestTaskView({Key? key}) : super(key: key);
 
   @override
-  State<WebQuestIntroduction> createState() => _WebQuestIntroduction();
+  State<WebQuestTaskView> createState() => _WebQuestTaskView();
 }
 
-class _WebQuestIntroduction extends State<WebQuestIntroduction> {
+class _WebQuestTaskView extends State<WebQuestTaskView> {
   @override
   Widget build(BuildContext context) {
     var alturaTela = MediaQuery.of(context).size.height;
     final dynamic args = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              decoration:
-                  const BoxDecoration(color: Color.fromRGBO(21, 93, 177, 1)),
-              accountName: Text(
-                'André',
-                style: GoogleFonts.arvo(fontSize: 18),
-              ),
-              accountEmail: Text(
-                'andreluis2608@gmail.com',
-                style: GoogleFonts.arvo(fontSize: 18),
-              ),
-              currentAccountPicture: const CircleAvatar(
-                child: Text("SZ"),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: Text(
-                "My account",
-                style: GoogleFonts.arvo(fontSize: 16),
-              ),
-              onTap: () => {
-                Navigator.pushNamed(context, '/login'),
-              },
-            ),
-            ListTile(
-                leading: const Icon(Icons.logout),
-                title: Text('Logout', style: GoogleFonts.arvo(fontSize: 16)),
-                onTap: () => {
-                      Navigator.pushNamed(context, '/login'),
-                    })
-          ],
-        ),
-      ),
+      drawer: DrawerMobilearning(),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 93, 177, 1),
         title: Text(
@@ -81,12 +47,12 @@ class _WebQuestIntroduction extends State<WebQuestIntroduction> {
                         children: [
                           Container(
                               margin: EdgeInsets.only(bottom: 20),
-                              child: Text('Introduction',
+                              child: Text('Task',
                                   style: GoogleFonts.arvo(
                                       fontSize: 22,
                                       color: Color.fromARGB(255, 0, 0, 0)))),
                           Text(
-                            args.activity.introduction.toString(),
+                            args.activity.task.toString(),
                             style: GoogleFonts.arvo(fontSize: 20),
                             maxLines: 50,
                           ),
@@ -111,7 +77,8 @@ class _WebQuestIntroduction extends State<WebQuestIntroduction> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
-                                Navigator.pushNamed(context, "/home",
+                                Navigator.pushNamed(
+                                    context, "/WebQuestIntroductionView",
                                     arguments: args);
                               });
                             },
@@ -136,7 +103,7 @@ class _WebQuestIntroduction extends State<WebQuestIntroduction> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
-                                Navigator.pushNamed(context, "/WebQuestTask",
+                                Navigator.pushNamed(context, "/WebQuestProcessView",
                                     arguments: args);
                               });
                             },

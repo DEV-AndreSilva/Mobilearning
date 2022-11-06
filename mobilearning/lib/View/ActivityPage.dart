@@ -5,42 +5,42 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:mobilearning/Widgets/ActivityList.dart';
 
-import '../Models/UserActivityModel.dart';
 import '../Models/activityModel.dart';
 import '../Models/userModel.dart';
-import '../Widgets/UserActivityList.dart';
 
-class UserActivityPage extends StatefulWidget {
-  const UserActivityPage({Key? key}) : super(key: key);
+class ActivityPage extends StatefulWidget {
+  const ActivityPage({Key? key}) : super(key: key);
 
   @override
-  State<UserActivityPage> createState() => _UserActivityPageState();
+  State<ActivityPage> createState() => _ActivityPageState();
 }
 
-Future<List<UserActivity>> GetActivitiesFromDataBase(BuildContext? context) async {
+Future<List<Activity>> GetActivitiesFromDataBase(
+    BuildContext? context) async {
   try {
     Options opt = Options();
 
     String? token = await SessionManager().get("BearerToken");
     dynamic user = await SessionManager().get("UserLogin");
 
-    if (token != null && token != '' && user != null && user!= '') {
+    if (token != null && token != '' && user != null && user != '') {
       opt.headers = {"authorization": "bearer $token"};
       User usuarioLogado = User.fromJson(user);
       String idUsuarioLogado = usuarioLogado.id.toString();
 
       var response = await Dio().get(
-          'https://mobilearning-api.herokuapp.com/userActivity/ListUserActivities?idUser=$idUsuarioLogado',
+          'https://mobilearning-api.herokuapp.com/activity/listActivities?idTeacher=${idUsuarioLogado}',
           options: opt);
-      List<UserActivity> activities = [];
+      List<Activity> activities = [];
 
       if (response.statusCode == 200) {
         List<dynamic> body = jsonDecode(response.data);
 
-         for (var element in body) {
-           activities.add(UserActivity.fromJson(element));
-         }
+        for (var element in body) {
+          activities.add(Activity.fromJson(element));
+        }
 
         return activities;
       } else {
@@ -50,18 +50,18 @@ Future<List<UserActivity>> GetActivitiesFromDataBase(BuildContext? context) asyn
     }
   } catch (e) {
     print(e);
-    List<UserActivity> words = [];
+    List<Activity> words = [];
     return words;
   }
 
-  List<UserActivity> words = [];
+  List<Activity> words = [];
   return words;
 }
 
-class _UserActivityPageState extends State<UserActivityPage> {
-  List<UserActivity> activities = [];
+class _ActivityPageState extends State<ActivityPage> {
+  List<Activity> activities = [];
 
-  _UserActivityPageState() {
+  _ActivityPageState() {
     //preenche a lista com todos os registros do banco de dados
     GetActivitiesFromMemory('', null);
   }
@@ -70,17 +70,17 @@ class _UserActivityPageState extends State<UserActivityPage> {
   void GetActivitiesFromMemory(String key, BuildContext? context) async {
     //Verifica se a lista existe na sessão
     bool containActivities =
-        await SessionManager().containsKey("UserActivities");
+        await SessionManager().containsKey("Activities");
     if (containActivities) {
       //limpa a lista da tela
       activities = [];
-      dynamic res = await SessionManager().get("UserActivities");
+      dynamic res = await SessionManager().get("Activities");
 
       //verifica se há resultado
       if (res != null && res != '') {
         //preenche a lista da tela com o elemento da memória
         for (var element in res) {
-          activities.add(UserActivity.fromJson(element));
+          activities.add(Activity.fromJson(element));
         }
       }
     } else {
@@ -90,12 +90,12 @@ class _UserActivityPageState extends State<UserActivityPage> {
 
       //adiciona a lista em memória
       var sessionManager = SessionManager();
-      await sessionManager.set('UserActivities', jsonEncodeWords);
+      await sessionManager.set('Activities', jsonEncodeWords);
       activities = listActivities;
     }
 
     //Lista temporária que preenchera a tela
-    List<UserActivity> results = [];
+    List<Activity> results = [];
 
     // Se o Campo de texto está em branco ou com apenas espaços exibe todos os registros
     if (key.isEmpty) {
@@ -104,8 +104,9 @@ class _UserActivityPageState extends State<UserActivityPage> {
       results = activities;
       // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
       results = results
-          .where((userActivity) =>
-              userActivity.activity.title.toLowerCase().contains(key.toLowerCase()))
+          .where((activity) => activity.title
+              .toLowerCase()
+              .contains(key.toLowerCase()))
           .toList();
     }
 
@@ -122,38 +123,33 @@ class _UserActivityPageState extends State<UserActivityPage> {
     return Column(
       children: [
         //search bar
-        Padding(
-          padding: EdgeInsets.only(top: 10, left: 25, right: 25),
-          child: TextField(
-            onChanged: (value) => GetActivitiesFromMemory(value, context),
-            decoration: InputDecoration(
-                hintText: "Search...",
-                hintStyle: TextStyle(color: Colors.grey.shade600),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey.shade600,
-                ),
-                filled: true,
-                fillColor: Colors.grey.shade100,
-                contentPadding: EdgeInsets.all(8),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.grey.shade100))),
-          ),
-        ),
-
-        SizedBox(
-          width: 16,
+        Container(
+          margin: EdgeInsets.only(bottom: 15),
+          child: Padding(padding: EdgeInsets.only(top: 10,left: 25,right: 25),
+                  child: TextField(
+                    onChanged: (value) => GetActivitiesFromMemory(value, context),
+                    decoration: InputDecoration(
+                      hintText: "Search...",
+                      hintStyle: TextStyle(color: Colors.grey.shade600),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey.shade600,),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: EdgeInsets.all(8),
+                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                        borderSide: BorderSide(color: Colors.grey.shade100) )
+                    ) ,
+                  ),),
         ),
 
         Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                controller: ScrollController(),
-                itemCount: activities.length,
-                itemBuilder: (context, index) => UserActivityList(
-                      userActivity: activities[index],
-                    ))),
+          child: ListView.builder(
+            shrinkWrap: true,
+            controller: ScrollController(),
+            itemCount: activities.length,
+            itemBuilder: (context, index) => ActivityList(activity: activities[index])
+          ),
+        ),
       ],
     );
   }

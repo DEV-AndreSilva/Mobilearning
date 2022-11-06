@@ -2,33 +2,35 @@
 class Activity
 {
   int id;
+  int idTeacher;
   String introduction;
   String task;
   String process;
   List<dynamic> information;
-  String avaliation;
+  String evaluation;
   String conclusion;
   List<dynamic> references;
-  String  subttitle;
+  String  subtitle;
   String  imageURL;
   String title;
 
   Activity({ 
     required this.id,
+    required this.idTeacher,
     required this.introduction,
     required this.task,
     required this.process,
     required this.information,
-    required this.avaliation,
+    required this.evaluation,
     required this.conclusion,
     required this.references,
-    required this.subttitle,
+    required this.subtitle,
     required this.imageURL,
     required this.title,
   });
 
    factory Activity.fromJson( dynamic json) {
-    // print(json['id']);
+     print(json['id']);
     // print(json['UserId']);
     // print(json['PortugueseWord']);
     // print(json['EnglishWord']);
@@ -37,14 +39,15 @@ class Activity
 
     return Activity(
       id:  json['id'],
+      idTeacher:  json['idTeacher'],
       introduction: json['introduction'].toString(),
       task: json['task'].toString(),
       process: json['process'].toString(),
       information: json['information'] as List<dynamic>,
-      avaliation: json['avaliation'].toString(),
+      evaluation: json['evaluation'].toString(),
       conclusion: json['conclusion'].toString(),
       references: json['references'] as List<dynamic>,
-      subttitle: json['subttitle'].toString(),
+      subtitle: json['subtitle'].toString(),
       imageURL: json['imageURL'].toString(),
       title: json['title'].toString(),
     );
@@ -56,10 +59,10 @@ class Activity
         'task':task,
         'process':process,
         'information':information,
-        'avaliation':avaliation,
+        'evaluation':evaluation,
         'conclusion':conclusion,
         'references':references,
-        'subttitle':subttitle,
+        'subtitle':subtitle,
         'imageURL':imageURL,
         'title':title,
       };

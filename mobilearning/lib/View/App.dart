@@ -2,18 +2,27 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobilearning/View/WordPage.dart';
-import 'package:mobilearning/Widgets/WebQuest/WebQuestAvaliation.dart';
-import 'package:mobilearning/Widgets/WebQuest/WebQuestConclusion.dart';
-import 'package:mobilearning/Widgets/WebQuest/WebQuestInformation.dart';
-import 'package:mobilearning/Widgets/WebQuest/WebQuestProcess.dart';
-import 'package:mobilearning/Widgets/WebQuest/WebQuestReferences.dart';
-import 'package:mobilearning/Widgets/WebQuest/WebQuestTask.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestBasicInfoManage.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestEvaluationView.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestConclusionView.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestInformationView.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestProcessView.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestReferencesView.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestTaskView.dart';
+import 'package:mobilearning/Widgets/WebQuestView/WebQuestIntroductionView.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestConclusionManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestEvaluationManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestInformationManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestIntroductionManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestProcessManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestReferencesManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestTaskManage.dart';
 import 'HomeView.dart';
 import 'LoginView.dart';
 import 'C_AlunosView.dart';
 import 'C_ProfessoresView.dart';
 import 'C_turma.dart';
-import '../Widgets/WebQuest/WebQuestIntroduction.dart';
+
 
 
 class App extends StatelessWidget {
@@ -31,13 +40,21 @@ class App extends StatelessWidget {
       '/cprofessores': (context)=> CProfessores(),
       '/cword': (context)=> WordPage(),
       '/cturma':(context) => Cturma(),
-      '/WebQuestIntroduction':(context) => WebQuestIntroduction(),
-      '/WebQuestTask':(context) => WebQuestTask(),
-      '/WebQuestProcess':(context) => WebQuestProcess(),
-      '/WebQuestInformation':(context) => WebQuestInformation(),
-      '/WebQuestAvaliation':(context) => WebQuestAvaliation(),
-      '/WebQuestConclusion':(context) => WebQuestConclusion(),
-      '/WebQuestReferences':(context) => WebQuestReferences(),
+      '/WebQuestIntroductionView':(context) => WebQuestIntroductionView(),
+      '/WebQuestTaskView':(context) => WebQuestTaskView(),
+      '/WebQuestProcessView':(context) => WebQuestProcessView(),
+      '/WebQuestInformationView':(context) => WebQuestInformationView(),
+      '/WebQuestEvaluationView':(context) => WebQuestEvaluationView(),
+      '/WebQuestConclusionView':(context) => WebQuestConclusionView(),
+      '/WebQuestReferencesView':(context) => WebQuestReferencesView(),
+      '/WebBasicInfoManage':(context) => WebBasicInfoManage(),
+      '/WebQuestIntroductionManage':(context) => WebQuestIntroductionManage(),
+      '/WebQuestTaskManage':(context) => WebQuestTaskManage(),
+      '/WebQuestProcessManage':(context) => WebQuestProcessManage(),
+      '/WebQuestInformationManage':(context) => WebQuestInformationManage(),
+      '/WebQuestEvaluationManage':(context) => WebQuestEvaluationManage(),
+      '/WebQuestConclusionManage':(context) => WebQuestConclusionManage(),
+      '/WebQuestReferencesManage':(context) => WebQuestReferencesManage(),
      },
     );
     

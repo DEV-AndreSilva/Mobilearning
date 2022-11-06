@@ -43,8 +43,7 @@ class _UserActivityListState extends State<UserActivityList> {
           ),
           SizedBox(
             width: larguraTela * 0.9,
-            child: ExtendedImage.network(
-              "https://1.bp.blogspot.com/-zOzUAxoUyVs/XTEnPsJxr2I/AAAAAAAAZjE/29FNb4Fb-mMbJkXGVIo7_wZZZjHvrxNDACLcBGAs/s2560/moraine-lake-2880x1800-landscape-banff-national-park-alberta-canada-18405.jpg",
+            child: ExtendedImage.network(widget.userActivity.activity.imageURL,
               shape: BoxShape.rectangle,
               borderRadius: const BorderRadius.all(Radius.circular(30)),
             ),
@@ -66,7 +65,7 @@ class _UserActivityListState extends State<UserActivityList> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(widget.userActivity.activity.subttitle, style: TextStyle(fontSize: 20))
+                      Text(widget.userActivity.activity.subtitle, style: TextStyle(fontSize: 20))
                     ],
                   ),
                   Row(
@@ -167,7 +166,7 @@ class _UserActivityListState extends State<UserActivityList> {
                       ),
                       onTap: () => {
                         setState(() {
-                          Navigator.pushNamed(context, "/WebQuestIntroduction", arguments: widget.userActivity);
+                          Navigator.pushNamed(context, "/WebQuestIntroductionView", arguments: widget.userActivity);
                         })
                       },
                     ),

@@ -33,7 +33,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
                   
                   children: [
                     Icon(Icons.person_add,size: 100,),
-                    Text("Manage Student", style: TextStyle(fontSize: 22),)
+                    Text("Students", style: TextStyle(fontSize: 22),)
                   ],
                 ),
               ),
@@ -50,7 +50,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
                 child: Column(
                   children: [
                     Icon(Icons.person_add,size: 100,),
-                    Text("Manage Teacher", style: TextStyle(fontSize: 22),)
+                    Text("Teachers", style: TextStyle(fontSize: 22),)
                   ],
                 ),
               ),
@@ -63,6 +63,9 @@ class _ManagmentPageState extends State<ManagmentPage> {
         children: [
           GestureDetector(
             onTap: (){
+                setState(() {
+                    Navigator.pushNamed(context, '/WebBasicInfoManage');
+                 });
 
               },
             child: Container(
@@ -71,7 +74,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
               child: Column(
                 children: [
                   Icon(Icons.add_box_rounded,size: 100,),
-                  Text("Manage Activity", style: TextStyle(fontSize: 22),)
+                  Text("Activities", style: TextStyle(fontSize: 22),)
                 ],
               ),
             ),
@@ -86,7 +89,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
               child: Column(
                 children: [
                   Icon(Icons.people_alt_rounded,size: 100,),
-                  Text("Manage Groups", style: TextStyle(fontSize: 22),)
+                  Text("Groups", style: TextStyle(fontSize: 22),)
                 ],
               ),
             ),
