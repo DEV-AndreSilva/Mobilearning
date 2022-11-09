@@ -104,7 +104,7 @@ class _ActivityPageState extends State<ActivityPage> {
       results = activities;
       // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
       results = results
-          .where((activity) => activity.title
+          .where((activity) => activity.title!
               .toLowerCase()
               .contains(key.toLowerCase()))
           .toList();

@@ -1,32 +1,32 @@
 
 class Activity
 {
-  int id;
-  int idTeacher;
-  String introduction;
-  String task;
-  String process;
-  List<dynamic> information;
-  String evaluation;
-  String conclusion;
-  List<dynamic> references;
-  String  subtitle;
-  String  imageURL;
-  String title;
+  int? id;
+  int? idTeacher;
+  String? introduction;
+  String? task;
+  String? process;
+  List<dynamic>? information;
+  String? evaluation;
+  String? conclusion;
+  List<dynamic>? references;
+  String?  subtitle;
+  String?  imageURL;
+  String? title;
 
   Activity({ 
-    required this.id,
-    required this.idTeacher,
-    required this.introduction,
-    required this.task,
-    required this.process,
-    required this.information,
-    required this.evaluation,
-    required this.conclusion,
-    required this.references,
-    required this.subtitle,
-    required this.imageURL,
-    required this.title,
+     this.id,
+     this.idTeacher,
+     this.introduction,
+     this.task,
+     this.process,
+     this.information,
+     this.evaluation,
+     this.conclusion,
+     this.references,
+     this.subtitle,
+     this.imageURL,
+     this.title,
   });
 
    factory Activity.fromJson( dynamic json) {

@@ -6,7 +6,9 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/activityModel.dart';
+import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
+import 'package:mobilearning/functions.dart';
 
 class WebQuestReferencesManage extends StatefulWidget {
   const WebQuestReferencesManage({Key? key}) : super(key: key);
@@ -16,78 +18,6 @@ class WebQuestReferencesManage extends StatefulWidget {
 }
 
 class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
-  void salvarEtapa(String route) async {
-    int idTeacher = 0;
-
-    bool containUser = await SessionManager().containsKey("UserLogin");
-    if (containUser) {
-      String stringIdTeacher = await SessionManager().get("UserLogin");
-      idTeacher = int.parse(stringIdTeacher);
-    }
-
-    Activity activity = Activity(
-        id: 0,
-        idTeacher: idTeacher,
-        introduction: "introduction",
-        task: "task",
-        process: "process",
-        information: [
-          'Link to information 1',
-          'Link to information 2',
-          'Link to information 3',
-          'andre'
-        ],
-        evaluation: "evaluation",
-        conclusion: "conclusion",
-        references: [],
-        subtitle: "subtitle",
-        imageURL: "imageURL",
-        title: "title");
-
-    try {
-      bool containWebquest = await SessionManager().containsKey("WebQuest");
-      if (containWebquest) {
-        dynamic activityMemory = await SessionManager().get("WebQuest");
-        activity = Activity(
-            id: 0,
-            idTeacher: idTeacher,
-            introduction: activityMemory["introduction"].toString(),
-            task: activityMemory["task"].toString(),
-            process: activityMemory["process"].toString(),
-            information: activityMemory["information"] as List<dynamic>,
-            evaluation: activityMemory["evaluation"].toString(),
-            conclusion: activityMemory["conclusion"].toString(),
-            references: activityMemory["references"] as List<dynamic>,
-            subtitle: activityMemory["subtitle"].toString(),
-            imageURL: activityMemory["imageURL"].toString(),
-            title: activityMemory["title"].toString());
-      }
-    } catch (ex) {
-      print(ex);
-    } finally {
-      SessionManager sessionManager = SessionManager();
-      activity.references = informationReferences;
-      await sessionManager.set('WebQuest', activity);
-
-      if (route != "") {
-        setState(() {
-          Navigator.pushNamed(context, route);
-        });
-      }
-    }
-  }
-
-  void recuperarEtapa() async {
-    bool containWebquest = await SessionManager().containsKey("WebQuest");
-    if (containWebquest) {
-      dynamic activityMemory = await SessionManager().get("WebQuest");
-
-      setState(() {
-        informationReferences = activityMemory["references"];
-      });
-    }
-  }
-
   void addReference(String resource) {
     if (resource != "") {
       setState(() {
@@ -106,7 +36,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
   }
 
   void salvarWebQuest() async {
-    salvarEtapa('');
+    salvarEtapa(controllers, null, informationReferences);
 
     try {
       Options opt = Options();
@@ -118,7 +48,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
         var response =
             await Dio().post("https://mobilearning-api.herokuapp.com/activity",
                 data: {
-                  "idTeacher":activityMemory['idTeacher'],
+                  "idTeacher": activityMemory['idTeacher'],
                   "introduction": activityMemory['introduction'].toString(),
                   "task": activityMemory['task'].toString(),
                   "process": activityMemory['process'].toString(),
@@ -146,6 +76,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
 
         //destroi a sessão de palavras para outra consulta ao banco
         await SessionManager().remove("WebQuest");
+        await SessionManager().remove("Activities");
 
         Future.delayed(Duration(seconds: 3), () {
           setState(() {
@@ -164,11 +95,32 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
   List<dynamic> informationReferences = [];
   final resourceController = TextEditingController();
 
+  Map<String, TextEditingController> controllers =
+      Map<String, TextEditingController>();
+
   @override
   void initState() {
     // TODO: implement initState
-    recuperarEtapa();
+    controllers.addAll({
+      'resource': resourceController,
+    });
+
+    recuperarLista();
     super.initState();
+  }
+
+  void recuperarLista() async {
+    bool containWebquest = await SessionManager().containsKey("WebQuest");
+    if (containWebquest) {
+      dynamic activityMemory = await SessionManager().get("WebQuest");
+      //carregar da memoria na tela
+      if (informationReferences != null &&
+          activityMemory["references"] != null) {
+        informationReferences = activityMemory["references"] as List<dynamic>;
+      }
+    }
+
+    setState(() {});
   }
 
   @override
@@ -277,7 +229,10 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    salvarEtapa("/WebQuestProcessManage");
+                    salvarEtapa(controllers, null, informationReferences);
+                    setState(() {
+                      Navigator.pushNamed(context, "/WebQuestConclusionManage");
+                    });
                   },
                   child: const Text(
                     'Voltar',

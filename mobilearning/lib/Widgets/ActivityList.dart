@@ -36,13 +36,13 @@ class _ActivityListState extends State<ActivityList> {
               ),
               Container(
                 width: larguraTela*0.45,
-                child: Text(widget.activity.title, style: TextStyle(fontSize: 20)))
+                child: Text(widget.activity.title!, style: TextStyle(fontSize: 20)))
             ],
           ),
           SizedBox(
             width: larguraTela * 0.9,
             child: ExtendedImage.network(
-              widget.activity.imageURL,
+              widget.activity.imageURL!,
               shape: BoxShape.rectangle,
               borderRadius: const BorderRadius.all(Radius.circular(30)),
             ),

@@ -105,7 +105,7 @@ class _UserActivityPageState extends State<UserActivityPage> {
       // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
       results = results
           .where((userActivity) =>
-              userActivity.activity.title.toLowerCase().contains(key.toLowerCase()))
+              userActivity.activity.title!.toLowerCase().contains(key.toLowerCase()))
           .toList();
     }
 

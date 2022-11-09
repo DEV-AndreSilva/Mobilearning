@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/activityModel.dart';
+import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
+import 'package:mobilearning/functions.dart';
 
 class WebQuestInformationManage extends StatefulWidget {
   const WebQuestInformationManage({Key? key}) : super(key: key);
@@ -15,76 +17,6 @@ class WebQuestInformationManage extends StatefulWidget {
 }
 
 class _WebQuestInformationManage extends State<WebQuestInformationManage> {
-  void salvarEtapa(String route) async {
-    int idTeacher = 0;
-
-    bool containUser = await SessionManager().containsKey("UserLogin");
-    if (containUser) {
-      String stringIdTeacher = await SessionManager().get("UserLogin");
-      idTeacher = int.parse(stringIdTeacher);
-    }
-
-    Activity activity = Activity(
-        id: 0,
-        idTeacher: idTeacher,
-        introduction: "introduction",
-        task: "task",
-        process: "process",
-        information: [
-          'Link to information 1',
-          'Link to information 2',
-          'Link to information 3',
-          'andre'
-        ],
-        evaluation: "evaluation",
-        conclusion: "conclusion",
-        references: [],
-        subtitle: "subtitle",
-        imageURL: "imageURL",
-        title: "title");
-
-    try {
-      bool containWebquest = await SessionManager().containsKey("WebQuest");
-      if (containWebquest) {
-        dynamic activityMemory = await SessionManager().get("WebQuest");
-        activity = Activity(
-            id: 0,
-            idTeacher: idTeacher,
-            introduction: activityMemory["introduction"].toString(),
-            task: activityMemory["task"].toString(),
-            process: activityMemory["process"].toString(),
-            information: activityMemory["information"] as List<dynamic>,
-            evaluation: activityMemory["evaluation"].toString(),
-            conclusion: activityMemory["conclusion"].toString(),
-            references: activityMemory["references"] as List<dynamic>,
-            subtitle: activityMemory["subtitle"].toString(),
-            imageURL: activityMemory["imageURL"].toString(),
-            title: activityMemory["title"].toString());
-      }
-    } catch (ex) {
-      print(ex);
-    } finally {
-      SessionManager sessionManager = SessionManager();
-      activity.information = informationResources;
-      await sessionManager.set('WebQuest', activity);
-
-      setState(() {
-        Navigator.pushNamed(context, route);
-      });
-    }
-  }
-
-  void recuperarEtapa() async {
-    bool containWebquest = await SessionManager().containsKey("WebQuest");
-    if (containWebquest) {
-      dynamic activityMemory = await SessionManager().get("WebQuest");
-
-      setState(() {
-        informationResources = activityMemory["information"];
-      });
-    }
-  }
-
   void addResource(String resource) {
     if (resource != "") {
       setState(() {
@@ -104,16 +36,40 @@ class _WebQuestInformationManage extends State<WebQuestInformationManage> {
 
   List<dynamic> informationResources = [];
   final resourceController = TextEditingController();
+  Map<String, TextEditingController> controllers =
+      Map<String, TextEditingController>();
 
   @override
   void initState() {
     // TODO: implement initState
-    recuperarEtapa();
+    controllers.addAll({
+      'resource': resourceController,
+    });
+
+    recuperarLista();
     super.initState();
+  }
+
+
+
+  void recuperarLista() async {
+    bool containWebquest = await SessionManager().containsKey("WebQuest");
+    if (containWebquest) {
+      dynamic activityMemory = await SessionManager().get("WebQuest");
+      //carregar da memoria na tela
+      if (informationResources != null &&
+          activityMemory["information"] != null) {
+        informationResources = activityMemory["information"] as List<dynamic>;
+      }
+    }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    
+
     var larguraTela = MediaQuery.of(context).size.width;
     return Scaffold(
       drawer: DrawerMobilearning(),
@@ -218,7 +174,10 @@ class _WebQuestInformationManage extends State<WebQuestInformationManage> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    salvarEtapa("/WebQuestProcessManage");
+                    salvarEtapa(controllers, informationResources, null);
+                    setState(() {
+                      Navigator.pushNamed(context, "/WebQuestProcessManage");
+                    });
                   },
                   child: const Text(
                     'Voltar',
@@ -240,7 +199,10 @@ class _WebQuestInformationManage extends State<WebQuestInformationManage> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    salvarEtapa("/WebQuestEvaluationManage");
+                    salvarEtapa(controllers, informationResources, null);
+                    setState(() {
+                      Navigator.pushNamed(context, "/WebQuestEvaluationManage");
+                    });
                   },
                   child: const Text(
                     'Avançar etapa',

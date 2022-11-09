@@ -38,12 +38,12 @@ class _UserActivityListState extends State<UserActivityList> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
               ),
-              Text(widget.userActivity.activity.title, style: TextStyle(fontSize: 20))
+              Text(widget.userActivity.activity.title!, style: TextStyle(fontSize: 20))
             ],
           ),
           SizedBox(
             width: larguraTela * 0.9,
-            child: ExtendedImage.network(widget.userActivity.activity.imageURL,
+            child: ExtendedImage.network(widget.userActivity.activity.imageURL!,
               shape: BoxShape.rectangle,
               borderRadius: const BorderRadius.all(Radius.circular(30)),
             ),
@@ -65,7 +65,7 @@ class _UserActivityListState extends State<UserActivityList> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(widget.userActivity.activity.subtitle, style: TextStyle(fontSize: 20))
+                      Text(widget.userActivity.activity.subtitle!, style: TextStyle(fontSize: 20))
                     ],
                   ),
                   Row(

@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
+import 'package:mobilearning/functions.dart';
 
 import '../../Models/activityModel.dart';
 
@@ -15,79 +17,20 @@ class WebQuestEvaluationManage extends StatefulWidget {
 }
 
 class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
-  void salvarEtapa(String route) async {
-    int idTeacher = 0;
-
-    bool containUser = await SessionManager().containsKey("UserLogin");
-    if (containUser) {
-      String stringIdTeacher = await SessionManager().get("UserLogin");
-      idTeacher = int.parse(stringIdTeacher);
-    }
-
-    Activity activity = Activity(
-        id: 0,
-        idTeacher: idTeacher,
-        introduction: "Write a introduction ...",
-        task: "Write the task ...",
-        process: "The process is ....",
-        information: [
-          'Link to information 1',
-          'Link to information 2',
-          'Link to information 3',
-          'andre'
-        ],
-        evaluation: "Evaluation method ....",
-        conclusion: "The conclusion ...",
-        references: [],
-        subtitle: "subtitle",
-        imageURL: "imageURL",
-        title: "title");
-
-    try {
-      bool containWebquest = await SessionManager().containsKey("WebQuest");
-      if (containWebquest) {
-        dynamic activityMemory = await SessionManager().get("WebQuest");
-        activity = Activity(
-            id: 0,
-            idTeacher: idTeacher,
-            introduction: activityMemory["introduction"].toString(),
-            task: activityMemory["task"].toString(),
-            process: activityMemory["process"].toString(),
-            information: activityMemory["information"] as List<dynamic>,
-            evaluation: activityMemory["evaluation"].toString(),
-            conclusion: activityMemory["conclusion"].toString(),
-            references: activityMemory["references"] as List<dynamic>,
-            subtitle: activityMemory["subtitle"].toString(),
-            imageURL: activityMemory["imageURL"].toString(),
-            title: activityMemory["title"].toString());
-      }
-    } catch (ex) {
-      print(ex);
-    } finally {
-      SessionManager sessionManager = SessionManager();
-      activity.evaluation = EvaluationController.text;
-      await sessionManager.set('WebQuest', activity);
-
-      setState(() {
-        Navigator.pushNamed(context, route);
-      });
-    }
-  }
-
-  void recuperarEtapa() async {
-    bool containWebquest = await SessionManager().containsKey("WebQuest");
-    if (containWebquest) {
-      dynamic activityMemory = await SessionManager().get("WebQuest");
-      EvaluationController.text = activityMemory["evaluation"].toString();
-    }
-  }
-
   final EvaluationController = TextEditingController();
+
+  Map<String, TextEditingController> controllers =
+      Map<String, TextEditingController>();
 
   @override
   void initState() {
     // TODO: implement initState
-    recuperarEtapa();
+
+    controllers.addAll({
+      'evaluation': EvaluationController,
+    });
+
+    recuperarEtapa(controllers, null, null);
     super.initState();
   }
 
@@ -187,7 +130,11 @@ class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              salvarEtapa("/WebQuestInformationManage");
+                              salvarEtapa(controllers, null, null);
+                              setState(() {
+                                Navigator.pushNamed(
+                                    context, "/WebQuestInformationManage");
+                              });
                             },
                             child: const Text(
                               'Voltar',
@@ -209,7 +156,11 @@ class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              salvarEtapa("/WebQuestConclusionManage");
+                              salvarEtapa(controllers, null, null);
+                              setState(() {
+                                Navigator.pushNamed(
+                                    context, "/WebQuestConclusionManage");
+                              });
                             },
                             child: const Text(
                               'Avançar etapa',

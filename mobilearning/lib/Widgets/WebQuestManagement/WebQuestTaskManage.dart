@@ -1,11 +1,10 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
+import 'package:mobilearning/functions.dart';
 
-import '../../Models/activityModel.dart';
 
 class WebQuestTaskManage extends StatefulWidget {
   const WebQuestTaskManage({Key? key}) : super(key: key);
@@ -15,74 +14,18 @@ class WebQuestTaskManage extends StatefulWidget {
 }
 
 class _WebQuestTaskManage extends State<WebQuestTaskManage> {
-  void salvarEtapa(String route) async {
-    int idTeacher = 0;
-
-    bool containUser = await SessionManager().containsKey("UserLogin");
-    if (containUser) {
-      String stringIdTeacher = await SessionManager().get("UserLogin");
-      idTeacher = int.parse(stringIdTeacher);
-    }
-
-    Activity activity = Activity(
-        id: 0,
-        idTeacher: idTeacher,
-        introduction: "introduction",
-        task: "task",
-        process: "process",
-        information: [],
-        evaluation: "evaluation",
-        conclusion: "conclusion",
-        references: [],
-        subtitle: "subtitle",
-        imageURL: "imageURL",
-        title: "title");
-
-    try {
-      bool containWebquest = await SessionManager().containsKey("WebQuest");
-      if (containWebquest) {
-        dynamic activityMemory = await SessionManager().get("WebQuest");
-        activity = Activity(
-            id: 0,
-            idTeacher: idTeacher,
-            introduction: activityMemory["introduction"].toString(),
-            task: activityMemory["task"].toString(),
-            process: activityMemory["process"].toString(),
-            information: activityMemory["information"] as List<dynamic>,
-            evaluation: activityMemory["evaluation"].toString(),
-            conclusion: activityMemory["conclusion"].toString(),
-            references: activityMemory["references"] as List<dynamic>,
-            subtitle: activityMemory["subtitle"].toString(),
-            imageURL: activityMemory["imageURL"].toString(),
-            title: activityMemory["title"].toString());
-      }
-    } catch (ex) {
-      print(ex);
-    } finally {
-      SessionManager sessionManager = SessionManager();
-      activity.task = taskController.text;
-      await sessionManager.set('WebQuest', activity);
-
-      setState(() {
-        Navigator.pushNamed(context, route);
-      });
-    }
-  }
-
-  void recuperarEtapa() async {
-    bool containWebquest = await SessionManager().containsKey("WebQuest");
-    if (containWebquest) {
-      dynamic activityMemory = await SessionManager().get("WebQuest");
-      taskController.text = activityMemory["task"].toString();
-    }
-  }
-
   final taskController = TextEditingController();
+  Map<String, TextEditingController> controllers =
+      Map<String, TextEditingController>();
 
   @override
   void initState() {
     // TODO: implement initState
-    recuperarEtapa();
+    controllers.addAll({
+      'task': taskController,
+    });
+
+    recuperarEtapa(controllers, null, null);
     super.initState();
   }
 
@@ -182,7 +125,11 @@ class _WebQuestTaskManage extends State<WebQuestTaskManage> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              salvarEtapa("/WebQuestIntroductionManage");
+                              salvarEtapa(controllers,null, null);
+                              setState(() {
+                                Navigator.pushNamed(
+                                    context, "/WebQuestIntroductionManage");
+                              });
                             },
                             child: const Text(
                               'Voltar etapa',
@@ -204,7 +151,11 @@ class _WebQuestTaskManage extends State<WebQuestTaskManage> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              salvarEtapa("/WebQuestProcessManage");
+                              salvarEtapa(controllers, null, null);
+                              setState(() {
+                                Navigator.pushNamed(
+                                    context, "/WebQuestProcessManage");
+                              });
                             },
                             child: const Text(
                               'Avançar etapa',
