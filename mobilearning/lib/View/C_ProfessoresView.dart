@@ -24,7 +24,6 @@ class _CProfessoresState extends State<CProfessores> {
   final passwordController = TextEditingController();
   final graduationController = TextEditingController();
 
-  
   // Initial Selected Value
   String dropdownvalue = 'Graduate student';
 
@@ -45,8 +44,7 @@ class _CProfessoresState extends State<CProfessores> {
         Options opt = Options();
         String token = await SessionManager().get("BearerToken");
 
-        if(graduation == "")
-          graduation ="Graduate student";
+        if (graduation == "") graduation = "Graduate student";
 
         if (token != null && token != '') {
           opt.headers = {"authorization": "bearer $token"};
@@ -91,17 +89,15 @@ class _CProfessoresState extends State<CProfessores> {
         }
       } catch (e) {
         print(e);
-         Fluttertoast.showToast(
-                msg: 'Professor ja cadastrado no sistema!',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 3,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0,
-                webPosition: 'center');
-          
-
+        Fluttertoast.showToast(
+            msg: 'Professor ja cadastrado no sistema!',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+            webPosition: 'center');
       }
     }
 
@@ -128,8 +124,13 @@ class _CProfessoresState extends State<CProfessores> {
             child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(
-                      top: alturaTela * 0.2, right: 20, left: 20),
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    child: Text('Create Teacher',
+                        style: GoogleFonts.arvo(
+                            fontSize: 22,
+                            color: Color.fromARGB(255, 0, 0, 0)))),
+                Container(
+                  margin: EdgeInsets.only(right: 20, left: 20),
                   height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -265,7 +266,7 @@ class _CProfessoresState extends State<CProfessores> {
                         ),
                       ],
                     )),
-                                Container(
+                Container(
                   margin: const EdgeInsets.only(
                     top: 10,
                     right: 20,
@@ -430,7 +431,6 @@ class _CProfessoresState extends State<CProfessores> {
                     ),
                   ),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

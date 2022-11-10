@@ -129,7 +129,7 @@ class _WebQuestIntroductionManage extends State<WebQuestIntroductionManage> {
                               salvarEtapa(controllers, null, null);
                               setState(() {
                                 Navigator.pushNamed(
-                                    context, "/WebBasicInfoManage");
+                                    context, "/WebQuestBasicInfoManage");
                               });
                             },
                             child: const Text(

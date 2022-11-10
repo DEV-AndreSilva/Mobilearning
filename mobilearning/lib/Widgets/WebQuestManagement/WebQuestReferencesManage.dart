@@ -35,57 +35,178 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
     return null;
   }
 
+  String verficarPreenchimentoCampos(
+      dynamic activityMemory, List<dynamic> references) {
+    String mensagem = "Preencha as etapas: ";
+    String preencher = "";
+
+    if (activityMemory['introduction'] == null)
+      preencher += " - introduction";
+    else if (activityMemory['introduction'] == "")
+      preencher += " - introduction";
+
+    if (activityMemory['task'] == null)
+      preencher += " - task";
+    else if (activityMemory['task'] == "") preencher += " - task";
+
+    if (activityMemory['process'] == null)
+      preencher += " - process";
+    else if (activityMemory['process'] == "") preencher += " - process";
+
+    if (activityMemory['information'] == null)
+      preencher += " - information";
+    else if (activityMemory['information'].length == 0)
+      preencher += " - information";
+
+    if (activityMemory['evaluation'] == null)
+      preencher += " - evaluation";
+    else if (activityMemory['evaluation'] == "") preencher += " - evaluation";
+
+    if (activityMemory['conclusion'] == null)
+      preencher += " - conclusion";
+    else if (activityMemory['conclusion'] == "") preencher += " - conclusion";
+
+    if (activityMemory['title'] == null)
+      preencher += " - title";
+    else if (activityMemory['title'] == "") preencher += " - title";
+
+    if (activityMemory['subtitle'] == null)
+      preencher += " - subtitle";
+    else if (activityMemory['subtitle'] == "") preencher += " - subtitle";
+
+    if (activityMemory['imageURL'] == null)
+      preencher += " - imageURL";
+    else if (activityMemory['imageURL'] == "") preencher += " - imageURL";
+
+    if (references.length == 0) preencher += " - References";
+
+    if (preencher == "")
+      return preencher;
+    else
+      return mensagem + preencher;
+  }
+
   void salvarWebQuest() async {
     salvarEtapa(controllers, null, informationReferences);
 
     try {
-      Options opt = Options();
-      String token = await SessionManager().get("BearerToken");
-      dynamic activityMemory = await SessionManager().get("WebQuest");
+      //Sessão possui token
+      bool containToken = await SessionManager().containsKey("BearerToken");
+      //Sessão possui WebQuest
+      bool containWebquest = await SessionManager().containsKey("WebQuest");
+      //Sessão possui login
+      bool containUser = await SessionManager().containsKey("UserLogin");
 
-      if (token != null && token != '') {
-        opt.headers = {"authorization": "bearer $token"};
-        var response =
-            await Dio().post("https://mobilearning-api.herokuapp.com/activity",
+      //verifica se os tokens foram carregados
+      if (containToken && containWebquest && containUser) {
+        String token = await SessionManager().get("BearerToken");
+        dynamic activityMemory = await SessionManager().get("WebQuest");
+        dynamic user = await SessionManager().get("UserLogin");
+        User jsonUser = User.fromJson(user);
+        int idTeacher = jsonUser.id;
+
+        //verifica se os campos obrigatórios para cadastro da webquest foram preenchidos
+        var preencher =
+            verficarPreenchimentoCampos(activityMemory, informationReferences);
+
+        if (preencher == '') {
+          Options opt = Options();
+          opt.headers = {"authorization": "bearer $token"};
+
+          if (activityMemory['id'] != null) {
+            var response = await Dio().put(
+                "https://mobilearning-api.herokuapp.com/activity/update?id=${activityMemory['id']}",
                 data: {
-                  "idTeacher": activityMemory['idTeacher'],
+                  "idTeacher": idTeacher,
                   "introduction": activityMemory['introduction'].toString(),
                   "task": activityMemory['task'].toString(),
                   "process": activityMemory['process'].toString(),
                   "information": activityMemory['information'] as List<dynamic>,
                   "evaluation": activityMemory['evaluation'].toString(),
                   "conclusion": activityMemory['conclusion'].toString(),
-                  "references": activityMemory['references'] as List<dynamic>,
+                  "references": informationReferences,
                   "title": activityMemory['title'].toString(),
                   "subtitle": activityMemory['subtitle'].toString(),
                   "imageURL": activityMemory['imageURL'].toString()
                 },
                 options: opt);
 
-        if (response.statusCode == 200) {
+            //verifica se atividade foi cadastrada
+            if (response.statusCode == 200) {
+              Fluttertoast.showToast(
+                  msg: 'WebQuest atualizada com sucesso!',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 3,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                  webPosition: 'center');
+            }
+
+            //destroi a sessão de palavras para outra consulta ao banco
+            await SessionManager().remove("WebQuest");
+            await SessionManager().remove("Activities");
+
+            Future.delayed(Duration(seconds: 3), () {
+              setState(() {
+                Navigator.pushNamed(context, '/home');
+              });
+            });
+          } else {
+            var response = await Dio().post(
+                "https://mobilearning-api.herokuapp.com/activity",
+                data: {
+                  "idTeacher": idTeacher,
+                  "introduction": activityMemory['introduction'].toString(),
+                  "task": activityMemory['task'].toString(),
+                  "process": activityMemory['process'].toString(),
+                  "information": activityMemory['information'] as List<dynamic>,
+                  "evaluation": activityMemory['evaluation'].toString(),
+                  "conclusion": activityMemory['conclusion'].toString(),
+                  "references": informationReferences,
+                  "title": activityMemory['title'].toString(),
+                  "subtitle": activityMemory['subtitle'].toString(),
+                  "imageURL": activityMemory['imageURL'].toString()
+                },
+                options: opt);
+
+            //verifica se atividade foi cadastrada
+            if (response.statusCode == 200) {
+              Fluttertoast.showToast(
+                  msg: 'WebQuest cadastrada com sucesso!',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 3,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                  webPosition: 'center');
+            }
+
+            //destroi a sessão de palavras para outra consulta ao banco
+            await SessionManager().remove("WebQuest");
+            await SessionManager().remove("Activities");
+
+            Future.delayed(Duration(seconds: 3), () {
+              setState(() {
+                Navigator.pushNamed(context, '/home');
+              });
+            });
+          }
+        } else {
           Fluttertoast.showToast(
-              msg: 'WebQuest cadastrada com sucesso!',
+              msg: preencher,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 3,
-              backgroundColor: Colors.green,
+              timeInSecForIosWeb: 5,
+              backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16.0,
               webPosition: 'center');
         }
-
-        //destroi a sessão de palavras para outra consulta ao banco
-        await SessionManager().remove("WebQuest");
-        await SessionManager().remove("Activities");
-
-        Future.delayed(Duration(seconds: 3), () {
-          setState(() {
-            Navigator.pushNamed(context, '/home');
-          });
-        });
       } else {
-        await SessionManager().destroy();
-        Navigator.pushNamed(context, '/login');
+        print("objetos da memória necessários para cadastro não encontrado");
       }
     } catch (e) {
       print(e);

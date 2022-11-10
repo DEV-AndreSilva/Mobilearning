@@ -14,8 +14,12 @@ class ActivityPage extends StatefulWidget {
   const ActivityPage({Key? key}) : super(key: key);
 
   @override
-  State<ActivityPage> createState() => _ActivityPageState();
+  State<ActivityPage> createState() => ActivityPageState();
+
+
 }
+
+class ActivityPageState extends State<ActivityPage> {
 
 Future<List<Activity>> GetActivitiesFromDataBase(
     BuildContext? context) async {
@@ -58,10 +62,10 @@ Future<List<Activity>> GetActivitiesFromDataBase(
   return words;
 }
 
-class _ActivityPageState extends State<ActivityPage> {
+
   List<Activity> activities = [];
 
-  _ActivityPageState() {
+  ActivityPageState() {
     //preenche a lista com todos os registros do banco de dados
     GetActivitiesFromMemory('', null);
   }

@@ -119,13 +119,11 @@ void getWordsList (String key, BuildContext? context )async
   // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
   results = results.where((word) => word.englishWord.toLowerCase().contains(key.toLowerCase())).toList();
   }
-
- setState((){
     //atualiza a interface gráfica
     setState(() {
       words = results;
     });
- });
+ 
 }
 
 

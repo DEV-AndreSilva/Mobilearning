@@ -24,36 +24,33 @@ class _HomeState extends State<Home> {
   int currentTabIndex = 0;
   int userType = 1;
 
-  Future<int> returnTypeUser() async {
+  void returnTypeUser() async {
     var sessionManager = SessionManager();
     final dynamic args = ModalRoute.of(context)?.settings.arguments;
 
-try{
-    if (args != null) {
-      if (args.type != null) {
-        userType = int.parse(args.type);
-        await sessionManager.set('UserType', userType);
-      }
-    } else {
-      bool containUserType = await SessionManager().containsKey("UserType");
-      if (containUserType) {
-        dynamic Type = await SessionManager().get("UserType");
-        userType = int.parse(Type.toString());
+    try {
+      if (args != null) {
+        if (args.type != null) {
+          userType = int.parse(args.type);
+          await sessionManager.set('UserType', userType);
+        }
       } else {
-        await SessionManager().destroy();
-        setState(() {
-          Navigator.pushNamed(context, '/login');
-        });
+        bool containUserType = await SessionManager().containsKey("UserType");
+        if (containUserType) {
+          dynamic Type = await SessionManager().get("UserType");
+          userType = int.parse(Type.toString());
+        } else {
+          await SessionManager().destroy();
+          setState(() {
+            Navigator.pushNamed(context, '/login');
+          });
+        }
       }
-    }
+    } catch (ex) {}
 
-}
-catch(ex)
-{
-  
-}
-
-    return userType;
+    setState(() {
+      
+    });
   }
 
  

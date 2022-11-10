@@ -108,13 +108,11 @@ class _UserActivityPageState extends State<UserActivityPage> {
               userActivity.activity.title!.toLowerCase().contains(key.toLowerCase()))
           .toList();
     }
-
-    setState(() {
       //atualiza a interface gráfica
       setState(() {
         activities = results;
       });
-    });
+    
   }
 
   @override

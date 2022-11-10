@@ -33,8 +33,6 @@ class _CAlunosState extends State<CAlunos> {
   // List of items in our dropdown menu
   var items = ['Basic', 'Intermediate', 'Advanced'];
 
-
-
   @override
   Widget build(BuildContext context) {
     var alturaTela = MediaQuery.of(context).size.height;
@@ -91,7 +89,6 @@ class _CAlunosState extends State<CAlunos> {
       }
     }
 
-
     return Scaffold(
       drawer: DrawerMobilearning(),
       appBar: AppBar(
@@ -113,8 +110,13 @@ class _CAlunosState extends State<CAlunos> {
             child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(
-                      top: alturaTela * 0.1, right: 20, left: 20),
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    child: Text('Create Student',
+                        style: GoogleFonts.arvo(
+                            fontSize: 22,
+                            color: Color.fromARGB(255, 0, 0, 0)))),
+                Container(
+                  margin: EdgeInsets.only(right: 20, left: 20),
                   height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,

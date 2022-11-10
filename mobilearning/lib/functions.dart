@@ -66,6 +66,11 @@ void salvarEtapa(Map<String, TextEditingController> controllers,
       dynamic activityMemory = await SessionManager().get("WebQuest");
 
       //carregar activityMemory em activity
+
+      if (activityMemory['id'] != ""  &&  activityMemory['id'] != null) {
+        activity.id = activityMemory['id'];
+      }
+
       if (activityMemory['introduction'] != ""  &&  activityMemory['introduction'] != null) {
         activity.introduction = activityMemory['introduction'].toString();
       }
@@ -172,3 +177,10 @@ void salvarEtapa(Map<String, TextEditingController> controllers,
     await sessionManager.set('WebQuest', activity);
   }
 }
+
+void limparSessao()async
+{
+   await SessionManager().remove("WebQuest");
+}
+
+

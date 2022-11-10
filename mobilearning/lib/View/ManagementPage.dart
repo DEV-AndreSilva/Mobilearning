@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, file_names
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
- class ManagmentPage extends StatefulWidget {
+class ManagmentPage extends StatefulWidget {
   const ManagmentPage({super.key});
 
   @override
@@ -12,89 +13,112 @@ import 'package:flutter/material.dart';
 class _ManagmentPageState extends State<ManagmentPage> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+
+    var larguraTela = MediaQuery.of(context).size.width;
+
+
+    return Column(children: [
+      Container(
+          margin: EdgeInsets.only(bottom: 20, top: 20),
+          child: Text('Management',
+              style: GoogleFonts.arvo(
+                  fontSize: 22, color: Color.fromARGB(255, 0, 0, 0)))),
       Container(
         margin: EdgeInsets.only(bottom: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            GestureDetector(
-              onTap: (){
-                 setState(() {
-                    Navigator.pushNamed(context, '/calunos');
-                 });
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Color.fromRGBO(129,201,250,1)),
-                child: Column(
-                  
-                  children: [
-                    Icon(Icons.person_add,size: 100,),
-                    Text("Students", style: TextStyle(fontSize: 22),)
-                  ],
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              Navigator.pushNamed(context, '/calunos');
+            });
+          },
+          child: Container(
+            width: larguraTela*0.8,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
+            
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromRGBO(129, 201, 250, 1)),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.person_add,
+                  size: 100,
                 ),
-              ),
-            ),
-           GestureDetector(
-            onTap: (){
-                setState(() {
-                    Navigator.pushNamed(context, '/cprofessores');
-                 });
-              },
-             child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Color.fromRGBO(129,201,250,1)),
-                child: Column(
-                  children: [
-                    Icon(Icons.person_add,size: 100,),
-                    Text("Teachers", style: TextStyle(fontSize: 22),)
-                  ],
-                ),
-              ),
-           ),
-          ]),
-      ),
-
-          Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          GestureDetector(
-            onTap: (){
-                setState(() {
-                    Navigator.pushNamed(context, '/WebBasicInfoManage');
-                 });
-
-              },
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Color.fromRGBO(129,201,250,1)),
-              child: Column(
-                children: [
-                  Icon(Icons.add_box_rounded,size: 100,),
-                  Text("Activities", style: TextStyle(fontSize: 22),)
-                ],
-              ),
+                Text(
+                  "Students",
+                  style: TextStyle(fontSize: 22),
+                )
+              ],
             ),
           ),
-         GestureDetector(
-          onTap: (){
-
-              },
-           child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Color.fromRGBO(129,201,250,1)),
-              child: Column(
-                children: [
-                  Icon(Icons.people_alt_rounded,size: 100,),
-                  Text("Groups", style: TextStyle(fontSize: 22),)
-                ],
-              ),
+        ),
+      ),
+            Container(
+        margin: EdgeInsets.only(bottom: 30),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              Navigator.pushNamed(context, '/cprofessores');
+            });
+          },
+          child: Container(
+            width: larguraTela*0.8,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
+            
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromRGBO(129, 201, 250, 1)),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.school,
+                  size: 100,
+                ),
+                Text(
+                  "Teachers",
+                  style: TextStyle(fontSize: 22),
+                )
+              ],
             ),
-         ),
-        ]),
+          ),
+        ),
+      ),
+    
+                  Container(
+        margin: EdgeInsets.only(bottom: 30),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              Navigator.pushNamed(context, '/WebQuestBasicInfoManage');
+            });
+          },
+          child: Container(
+            width: larguraTela*0.8,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
+            
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Color.fromRGBO(129, 201, 250, 1)),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.work,
+                  size: 100,
+                ),
+                Text(
+                  "Activities",
+                  style: TextStyle(fontSize: 22),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    
+         
     ]);
   }
 }

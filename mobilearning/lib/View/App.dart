@@ -47,7 +47,7 @@ class App extends StatelessWidget {
       '/WebQuestEvaluationView':(context) => WebQuestEvaluationView(),
       '/WebQuestConclusionView':(context) => WebQuestConclusionView(),
       '/WebQuestReferencesView':(context) => WebQuestReferencesView(),
-      '/WebBasicInfoManage':(context) => WebBasicInfoManage(),
+      '/WebQuestBasicInfoManage':(context) => WebBasicInfoManage(),
       '/WebQuestIntroductionManage':(context) => WebQuestIntroductionManage(),
       '/WebQuestTaskManage':(context) => WebQuestTaskManage(),
       '/WebQuestProcessManage':(context) => WebQuestProcessManage(),

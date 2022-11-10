@@ -217,7 +217,8 @@ class _WebBasicInfoManage extends State<WebBasicInfoManage> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              salvarEtapa(controllers, null, null);
+                              //salvarEtapa(controllers, null, null);
+                              limparSessao();
                               setState(() {
                                 Navigator.pushNamed(context, "/home");
                               });
