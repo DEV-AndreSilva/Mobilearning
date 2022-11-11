@@ -352,7 +352,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                   onPressed: () {
                     salvarEtapa(controllers, null, informationReferences);
                     setState(() {
-                      Navigator.pushNamed(context, "/WebQuestConclusionManage");
+                      Navigator.pushNamed(context, "/WebQuestRelationManage");
                     });
                   },
                   child: const Text(

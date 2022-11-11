@@ -3,33 +3,37 @@
 
 import 'package:mobilearning/Models/userModel.dart';
 
-class Aluno {
+class Student {
   int id;
   String nivel;
-  User user;
+  int userId;
+  String name;
 
 
-  Aluno(
+  Student(
       {
       required this.id,
-      required this.user,
-      required this.nivel
+      required this.userId,
+      required this.nivel,
+      required this.name
       });
 
-  factory Aluno.fromJson(dynamic json) {
+  factory Student.fromJson(dynamic json) {
      print(json['id']);
      print(json['user']);
 
-    return Aluno(
+    return Student(
       id: json['id'],
       nivel: json['nivel'],
-      user: User.fromJson(json['user'])
+      userId:json['userId'],
+      name: json['name']
     );
   }
 
   Map toJson() => {
         'id': id,
-        'user': user,
-        'nivel':nivel
+        'userId': userId,
+        'nivel':nivel,
+        'name':name
       };
 }

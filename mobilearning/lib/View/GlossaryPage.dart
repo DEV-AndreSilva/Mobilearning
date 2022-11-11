@@ -26,7 +26,7 @@ Future<List<GlossaryWord>> getWords(BuildContext? context) async {
 
     String token= await SessionManager().get("BearerToken");
 
-    if(token != null && token != '')
+    if(token != '')
     {
       opt.headers = {"authorization": "bearer $token"};
     var response = await Dio().get('https://mobilearning-api.herokuapp.com/word', options: opt);
@@ -120,6 +120,7 @@ void getWordsList (String key, BuildContext? context )async
   results = results.where((word) => word.englishWord.toLowerCase().contains(key.toLowerCase())).toList();
   }
     //atualiza a interface gráfica
+    if(mounted)
     setState(() {
       words = results;
     });

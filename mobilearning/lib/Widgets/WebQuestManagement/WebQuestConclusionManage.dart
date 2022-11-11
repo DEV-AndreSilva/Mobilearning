@@ -159,7 +159,7 @@ class _WebQuestConclusionManage extends State<WebQuestConclusionManage> {
                               salvarEtapa(controllers, null, null);
                               setState(() {
                                 Navigator.pushNamed(
-                                    context, "/WebQuestReferencesManage");
+                                    context, "/WebQuestRelationManage");
                               });
                             },
                             child: const Text(

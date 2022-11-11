@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilearning/View/WordPage.dart';
 import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestBasicInfoManage.dart';
+import 'package:mobilearning/Widgets/WebQuestManagement/WebQuestRelationStudentManage.dart';
 import 'package:mobilearning/Widgets/WebQuestView/WebQuestEvaluationView.dart';
 import 'package:mobilearning/Widgets/WebQuestView/WebQuestConclusionView.dart';
 import 'package:mobilearning/Widgets/WebQuestView/WebQuestInformationView.dart';
@@ -54,6 +55,7 @@ class App extends StatelessWidget {
       '/WebQuestInformationManage':(context) => WebQuestInformationManage(),
       '/WebQuestEvaluationManage':(context) => WebQuestEvaluationManage(),
       '/WebQuestConclusionManage':(context) => WebQuestConclusionManage(),
+      '/WebQuestRelationManage':(context) => WebQuestRelationStudentManage(),
       '/WebQuestReferencesManage':(context) => WebQuestReferencesManage(),
      },
     );
