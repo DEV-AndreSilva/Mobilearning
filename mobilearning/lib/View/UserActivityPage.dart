@@ -109,6 +109,7 @@ class _UserActivityPageState extends State<UserActivityPage> {
           .toList();
     }
       //atualiza a interface gráfica
+      if(mounted)
       setState(() {
         activities = results;
       });

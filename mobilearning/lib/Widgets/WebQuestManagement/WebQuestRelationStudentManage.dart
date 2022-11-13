@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +21,31 @@ class WebQuestRelationStudentManage extends StatefulWidget {
 
 class _WebQuestRelationStudentManage
     extends State<WebQuestRelationStudentManage> {
-  void addRelation(UserActivitResume resource) {
-    if (resource != "") {
+  void addRelation(UserActivitResume student) {
+    if (student != "") 
+    {
       setState(() {
-        studentsRelation.add(resource);
-        studentController.clear();
+        studentsDatabase.remove(student);
+        studentsRelation.add(student);
       });
     }
   }
 
-  void deleteRelation(int index) {
+  void removeRelation(UserActivitResume student) 
+  {
     setState(() {
-      studentsRelation.removeAt(index);
+        studentsRelation.remove(student);
+        studentsDatabase.add(student);
     });
 
     return null;
+  }
+
+  void salvarEtapaRelation( List<UserActivitResume> listRelated)
+  {
+   var session = SessionManager();
+   String jsonEncodeUserActivityResume = jsonEncode(listRelated);
+   session.set("studentsRelation", jsonEncodeUserActivityResume);
   }
 
   List<UserActivitResume> studentsRelation = [];
@@ -84,8 +95,19 @@ class _WebQuestRelationStudentManage
 
     //recupera a lista dos estudantes relacionados a atividade
       dynamic activityMemory = await SessionManager().get("WebQuest");
+      bool containListRelated = await SessionManager().containsKey("studentsRelation");
 
-      if (activityMemory['id'] != null && containToken) {
+      if(containListRelated)
+      {
+        dynamic studentsRelationMemory = await SessionManager().get("studentsRelation");
+        //List<dynamic> studentsMemoryJson = jsonDecode( studentsRelationMemory);
+        studentsRelationMemory.forEach((element) {
+              studentsRelationTemp.add(UserActivitResume.fromJsonStudent(element));
+        });
+      }
+
+      else if (activityMemory['id'] != null && containToken) 
+      {
         String token = await SessionManager().get("BearerToken");
         opt.headers = {"authorization": "bearer $token"};
         var responseStudentsRelation = await Dio().get(
@@ -101,11 +123,35 @@ class _WebQuestRelationStudentManage
         }
       }
 
+      var listIDStudentRelated = [];
+      
+    
+      studentsDatabaseTemp.forEach((databasetemp) 
+      {
+          studentsRelationTemp.forEach((element) {
+            if(element.idUser == databasetemp.idUser)
+            {
+              if(!listIDStudentRelated.contains(element.idUser))
+              {
+                listIDStudentRelated.add(element.idUser);
+              }
+            }
+          });
 
-  
+      });
 
-    studentsDatabase = studentsDatabaseTemp;
+      studentsDatabaseTemp.forEach((element) {
+          if(!listIDStudentRelated.contains(element.idUser))
+          {
+            studentsDatabase.add(element);
+          }
+
+      });
+
     studentsRelation = studentsRelationTemp;
+
+    SessionManager().set("studentsRelationOld", jsonEncode(studentsRelation));
+
 
     setState(() {
 
@@ -163,25 +209,28 @@ class _WebQuestRelationStudentManage
                               ? Colors.grey[100]
                               : Colors.grey[300]),
                       padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                right: 10,
-                                left: 10,
-                              ),
-                              width: larguraTela * 0.5,
-                              child: Text(
-                                studentsDatabase[index].name.toString(),
-                                overflow: TextOverflow.fade,
-                                style: GoogleFonts.arvo(fontSize: 15),
-                              )),
-                          Container(
-                            child: Text("Add Relation"),
-                            margin: EdgeInsets.only(right: 10, left: 10),
-                          ),
-                          Icon(Icons.add_reaction),
-                        ],
+                      child: GestureDetector(
+                        onTap: () => addRelation(studentsDatabase[index]),
+                        child: Row(
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(
+                                  right: 10,
+                                  left: 10,
+                                ),
+                                width: larguraTela * 0.5,
+                                child: Text(
+                                  studentsDatabase[index].name.toString(),
+                                  overflow: TextOverflow.fade,
+                                  style: GoogleFonts.arvo(fontSize: 15),
+                                )),
+                            Container(
+                              child: Text("Add Relation"),
+                              margin: EdgeInsets.only(right: 10, left: 10),
+                            ),
+                            Icon(Icons.add_reaction),
+                          ],
+                        ),
                       ),
                     );
                   }),
@@ -206,25 +255,28 @@ class _WebQuestRelationStudentManage
                               ? Colors.grey[100]
                               : Colors.grey[300]),
                       padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                right: 10,
-                                left: 10,
-                              ),
-                              width: larguraTela * 0.5,
-                              child: Text(
-                                studentsRelation[index].name.toString(),
-                                overflow: TextOverflow.fade,
-                                style: GoogleFonts.arvo(fontSize: 15),
-                              )),
-                          Container(
-                            child: Text("Remove Relation"),
-                            margin: EdgeInsets.only(right: 10, left: 10),
-                          ),
-                          Icon(Icons.delete_forever),
-                        ],
+                      child: GestureDetector(
+                        onTap: () => removeRelation(studentsRelation[index]),
+                        child: Row(
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(
+                                  right: 10,
+                                  left: 10,
+                                ),
+                                width: larguraTela * 0.5,
+                                child: Text(
+                                  studentsRelation[index].name.toString(),
+                                  overflow: TextOverflow.fade,
+                                  style: GoogleFonts.arvo(fontSize: 15),
+                                )),
+                            Container(
+                              child: Text("Remove Relation"),
+                              margin: EdgeInsets.only(right: 10, left: 10),
+                            ),
+                            Icon(Icons.delete_forever),
+                          ],
+                        ),
                       ),
                     );
                   }),
@@ -272,6 +324,7 @@ class _WebQuestRelationStudentManage
                 ),
                 child: TextButton(
                   onPressed: () {
+                    salvarEtapaRelation(studentsRelation);
                     setState(() {
                       Navigator.pushNamed(context, "/WebQuestReferencesManage");
                     });

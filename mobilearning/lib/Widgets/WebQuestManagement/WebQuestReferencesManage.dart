@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/Models/UserActivityResumeModel.dart';
 import 'package:mobilearning/Models/activityModel.dart';
+import 'package:mobilearning/Models/studentModel.dart';
 import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
 import 'package:mobilearning/functions.dart';
@@ -131,6 +133,75 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                 },
                 options: opt);
 
+            bool containListStudentRelated = await SessionManager().containsKey("studentsRelation");
+
+            //carrego as atividades da memória
+            dynamic studentsRelationMemory ="";
+            dynamic studentsRelationOld = "";
+            if (containListStudentRelated) 
+            {
+              List<UserActivitResume> studentsMemory = [];
+              List<UserActivitResume> studentsMemoryOld = [];
+
+              
+               studentsRelationMemory = await SessionManager().get("studentsRelation");
+               studentsRelationOld = await SessionManager().get("studentsRelationOld");
+
+              studentsRelationMemory.forEach((element) {
+              studentsMemory.add(UserActivitResume.fromJsonStudent(element));
+               });
+
+               studentsRelationOld.forEach((element) {
+              studentsMemoryOld.add(UserActivitResume.fromJsonStudent(element));
+               });
+
+              List<int> idsUsersNew = [];
+              List<int> idsUsersOld = [];
+
+              //crio a lista com os ids dos novos e dos antigos
+              studentsMemory.forEach((elementNew) 
+              {
+                idsUsersNew.add(elementNew.idUser!);  
+              });
+
+              studentsMemoryOld.forEach((elementOld) 
+              {
+                idsUsersOld.add(elementOld.idUser!);  
+              });
+
+              //removo os antigos que não tem na lista nova [1,2,3] [1,2]
+              List<int> idsRemove = idsUsersOld.toSet().difference(idsUsersNew.toSet()).toList();
+
+              //adiciono os novos que não tem na lista antiga
+              List<int> idsAdd = idsUsersNew.toSet().difference(idsUsersOld.toSet()).toList();
+
+              idsAdd.forEach((idUser) async {
+
+                var response = await Dio().post(
+                "https://mobilearning-api.herokuapp.com/userActivity",
+                data: {
+                  "idUser":idUser,
+                  "idActivity":activityMemory['id'],
+                  "currentStage": "introduction",
+                  "progress":"10"
+                },
+                options: opt);
+
+               });
+
+               
+            idsRemove.forEach((idUser)async {
+
+                var response = await Dio().delete(
+                "https://mobilearning-api.herokuapp.com/userActivity/delete?idUser=${idUser}&idActivity=${activityMemory['id']}",
+                options: opt);
+
+
+            });
+
+            }
+
+
             //verifica se atividade foi cadastrada
             if (response.statusCode == 200) {
               Fluttertoast.showToast(
@@ -144,16 +215,20 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                   webPosition: 'center');
             }
 
-            //destroi a sessão de palavras para outra consulta ao banco
-            await SessionManager().remove("WebQuest");
-            await SessionManager().remove("Activities");
-
             Future.delayed(Duration(seconds: 3), () {
               setState(() {
                 Navigator.pushNamed(context, '/home');
               });
             });
           } else {
+            bool containListStudentRelated =
+                await SessionManager().containsKey("studentsRelation");
+            dynamic studentsRelationMemory ="";
+            if (containListStudentRelated) {
+               studentsRelationMemory =
+                  await SessionManager().get("studentsRelation");
+            }
+
             var response = await Dio().post(
                 "https://mobilearning-api.herokuapp.com/activity",
                 data: {
@@ -167,7 +242,8 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                   "references": informationReferences,
                   "title": activityMemory['title'].toString(),
                   "subtitle": activityMemory['subtitle'].toString(),
-                  "imageURL": activityMemory['imageURL'].toString()
+                  "imageURL": activityMemory['imageURL'].toString(),
+                  "usersActivity": studentsRelationMemory
                 },
                 options: opt);
 
@@ -184,10 +260,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                   webPosition: 'center');
             }
 
-            //destroi a sessão de palavras para outra consulta ao banco
-            await SessionManager().remove("WebQuest");
-            await SessionManager().remove("Activities");
-
+           
             Future.delayed(Duration(seconds: 3), () {
               setState(() {
                 Navigator.pushNamed(context, '/home');
@@ -210,6 +283,14 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
       }
     } catch (e) {
       print(e);
+    }
+    finally
+    {
+       //destroi a sessão de palavras para outra consulta ao banco
+        await SessionManager().remove("WebQuest");
+        await SessionManager().remove("Activities");
+        await SessionManager().remove("studentsRelation");
+        await SessionManager().remove("studentsRelationOld");
     }
   }
 
