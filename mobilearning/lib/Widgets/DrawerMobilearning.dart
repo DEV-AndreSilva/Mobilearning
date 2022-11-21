@@ -53,13 +53,21 @@ class _DrawerMobilearningState extends State<DrawerMobilearning> {
             onTap: ()=>{
                 Navigator.pushNamed(context, '/login'),
             },),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Home", style: GoogleFonts.arvo(fontSize: 16),),
+              onTap: () => {
+                Navigator.of(context).popUntil(ModalRoute.withName('/home'))
+              },
+            ),
             ListTile(leading: Icon(Icons.logout),
             title: Text('Logout', style: GoogleFonts.arvo(fontSize: 16)),
              onTap: ()async {
                 await SessionManager().destroy();
 
                 Navigator.of(context).popUntil(ModalRoute.withName('/login'));
-                })
+                }),
+            
             
         ],
       ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/functions.dart';
 
 import '../DrawerMobilearning.dart';
 
@@ -45,8 +46,37 @@ class _WebQuestTaskView extends State<WebQuestTaskView> {
                       margin: EdgeInsets.fromLTRB(10, 10, 10, 20),
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 100,
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 225, 110, 22),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    if (args.progress != 100)
+                                      SalvarProgressoWebQuest(args, 'Task');
+
+                                    setState(() {
+                                      Navigator.pushNamed(context, "/home");
+                                    });
+                                  },
+                                  child: Text(
+                                    "Quit",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           Container(
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: EdgeInsets.only(bottom: 20, top: 20),
                               child: Text('Task',
                                   style: GoogleFonts.arvo(
                                       fontSize: 22,
@@ -102,8 +132,12 @@ class _WebQuestTaskView extends State<WebQuestTaskView> {
                           ),
                           child: TextButton(
                             onPressed: () {
+                              if (args.progress != 100)
+                                SalvarProgressoWebQuest(args, 'Task');
+
                               setState(() {
-                                Navigator.pushNamed(context, "/WebQuestProcessView",
+                                Navigator.pushNamed(
+                                    context, "/WebQuestProcessView",
                                     arguments: args);
                               });
                             },

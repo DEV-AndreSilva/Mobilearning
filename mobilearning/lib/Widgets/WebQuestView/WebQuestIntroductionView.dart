@@ -1,8 +1,10 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/functions.dart';
 
 import '../DrawerMobilearning.dart';
 
@@ -45,8 +47,38 @@ class _WebQuestIntroductionView extends State<WebQuestIntroductionView> {
                       margin: EdgeInsets.fromLTRB(10, 10, 10, 20),
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 100,
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 225, 110, 22),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    if (args.progress != 100)
+                                      SalvarProgressoWebQuest(
+                                          args, 'Introduction');
+                                    
+                                      setState(() {
+                                        Navigator.pushNamed(context, "/home");
+                                      });
+                                    
+                                  },
+                                  child: Text( "Quit",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           Container(
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: EdgeInsets.only(bottom: 20, top: 20),
                               child: Text('Introduction',
                                   style: GoogleFonts.arvo(
                                       fontSize: 22,
@@ -77,7 +109,7 @@ class _WebQuestIntroductionView extends State<WebQuestIntroductionView> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
-                                Navigator.pushNamed(context, "/home" );
+                                Navigator.pushNamed(context, "/home");
                               });
                             },
                             child: const Text(
@@ -100,10 +132,14 @@ class _WebQuestIntroductionView extends State<WebQuestIntroductionView> {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              setState(() {
-                                Navigator.pushNamed(context, "/WebQuestTaskView",
-                                    arguments: args);
-                              });
+                              if (args.progress != 100)
+                                SalvarProgressoWebQuest(args, 'Introduction');
+                              
+                                setState(() {
+                                  Navigator.pushNamed(
+                                      context, "/WebQuestTaskView",
+                                      arguments: args);
+                                });
                             },
                             child: const Text(
                               'Avançar etapa',

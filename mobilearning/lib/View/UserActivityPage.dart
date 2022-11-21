@@ -63,36 +63,16 @@ class _UserActivityPageState extends State<UserActivityPage> {
 
   _UserActivityPageState() {
     //preenche a lista com todos os registros do banco de dados
-    GetActivitiesFromMemory('', null);
+    GetActivities('', null);
   }
 
 //Método que busca a lista de palavras da memória, caso não exista chama busca do banco de dados
-  void GetActivitiesFromMemory(String key, BuildContext? context) async {
-    //Verifica se a lista existe na sessão
-    bool containActivities =
-        await SessionManager().containsKey("UserActivities");
-    if (containActivities) {
-      //limpa a lista da tela
-      activities = [];
-      dynamic res = await SessionManager().get("UserActivities");
-
-      //verifica se há resultado
-      if (res != null && res != '') {
-        //preenche a lista da tela com o elemento da memória
-        for (var element in res) {
-          activities.add(UserActivity.fromJson(element));
-        }
-      }
-    } else {
-      //Caso a lista não exista em memória consulta o banco de dados
-      var listActivities = await GetActivitiesFromDataBase(context);
-      String jsonEncodeWords = jsonEncode(listActivities);
-
-      //adiciona a lista em memória
-      var sessionManager = SessionManager();
-      await sessionManager.set('UserActivities', jsonEncodeWords);
-      activities = listActivities;
-    }
+  void GetActivities(String key, BuildContext? context) async {
+  
+    //Caso a lista não exista em memória consulta o banco de dados
+    var listActivities = await GetActivitiesFromDataBase(context);
+    
+    activities = listActivities;
 
     //Lista temporária que preenchera a tela
     List<UserActivity> results = [];
@@ -124,7 +104,7 @@ class _UserActivityPageState extends State<UserActivityPage> {
         Padding(
           padding: EdgeInsets.only(top: 10, left: 25, right: 25),
           child: TextField(
-            onChanged: (value) => GetActivitiesFromMemory(value, context),
+            onChanged: (value) => GetActivities(value, context),
             decoration: InputDecoration(
                 hintText: "Search...",
                 hintStyle: TextStyle(color: Colors.grey.shade600),

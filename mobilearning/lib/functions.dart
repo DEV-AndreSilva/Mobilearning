@@ -1,7 +1,12 @@
+import 'dart:ffi';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilearning/Models/activityModel.dart';
 import 'package:mobilearning/Models/userModel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void recuperarEtapa(Map<String, TextEditingController> controllers,
     List<dynamic>? informationResources, List<dynamic>? references) async {
@@ -184,3 +189,112 @@ void limparSessao()async
 }
 
 
+  void SalvarProgressoWebQuest(dynamic args, String stage) async {
+    if (args != null) {
+      Options opt = Options();
+      double progress = 0.0;
+
+      String token = await SessionManager().get("BearerToken");
+      switch(stage)
+      {
+        case "Introduction":
+        progress = 14.2;
+        break;
+
+        case "Task":
+        progress = 28.4;
+        break;
+
+        case "Process":
+        progress = 42.6;
+        break;
+
+        case "Information":
+        progress = 56.8;
+        break;
+
+        case "Evaluation":
+        progress = 71.0;
+        break;
+
+        case "Conclusion":
+        progress = 85.2;
+        break;
+
+        case "References":
+        progress = 100;
+        break;
+        
+        default:break;
+      }
+
+      if (token != '') {
+        opt.headers = {"authorization": "bearer $token"};
+        var response = await Dio().put(
+            'https://mobilearning-api.herokuapp.com/userActivity/update?id=${args.id}',
+            data: {
+              "idUser": args.idUser,
+              "idActivity": args.idActivity,
+              "currentStage": stage,
+              "progress": progress.toString(),
+            },
+            options: opt);
+
+        if (response.statusCode != 200) {
+            print("Erro ao salvar progresso");
+        }
+      }
+    }
+  }
+
+  String getRouteContinue (String stage)
+  {
+    String route = "";
+
+     switch(stage)
+      {
+        case "Introduction":
+        route = "/WebQuestIntroductionView";
+        break;
+
+        case "Task":
+        route = "/WebQuestTaskView";
+        break;
+
+        case "Process":
+        route = "/WebQuestProcessView";
+        break;
+
+        case "Information":
+        route = "/WebQuestInformationView";
+        break;
+
+        case "Evaluation":
+        route = "/WebQuestEvaluationView";
+        break;
+
+        case "Conclusion":
+        route = "/WebQuestConclusionView";
+        break;
+
+        case "References":
+        route = "/WebQuestReferencesView";
+        break;
+        
+        default:break;
+      }
+
+    return route;
+  }
+
+void launchURL(String url) async =>
+    await canLaunch(url) ? await launch(url) : Fluttertoast.showToast(
+          msg: 'Link invalido, contate seu professor',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 4,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          webPosition: 'center');
+  

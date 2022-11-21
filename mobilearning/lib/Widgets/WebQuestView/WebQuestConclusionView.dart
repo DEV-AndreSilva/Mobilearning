@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
+import 'package:mobilearning/functions.dart';
 
 class WebQuestConclusionView extends StatefulWidget {
   const WebQuestConclusionView({Key? key}) : super(key: key);
@@ -44,8 +45,39 @@ class _WebQuestConclusionView extends State<WebQuestConclusionView> {
                       margin: EdgeInsets.fromLTRB(10, 10, 10, 20),
                       child: Column(
                         children: [
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 100,
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 225, 110, 22),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    if (args.progress != 100)
+                                      SalvarProgressoWebQuest(
+                                          args, 'Conclusion');
+                                    
+                                      setState(() {
+                                        Navigator.pushNamed(context, "/home");
+                                      });
+                                    
+                                  },
+                                  child: Text( "Quit",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           Container(
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: EdgeInsets.only(bottom: 20, top: 20),
                               child: Text('Conclusion',
                                   style: GoogleFonts.arvo(
                                       fontSize: 22,
@@ -77,7 +109,7 @@ class _WebQuestConclusionView extends State<WebQuestConclusionView> {
                             onPressed: () {
                               setState(() {
                                 Navigator.pushNamed(
-                                    context, "/WebQuestAvaliationView",
+                                    context, "/WebQuestEvaluationView",
                                     arguments: args);
                               });
                             },
@@ -102,6 +134,9 @@ class _WebQuestConclusionView extends State<WebQuestConclusionView> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
+                                if (args.progress != 100)
+                                SalvarProgressoWebQuest(args, 'Conclusion');
+
                                 Navigator.pushNamed(
                                     context, "/WebQuestReferencesView",
                                     arguments: args);

@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/functions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../DrawerMobilearning.dart';
 
@@ -45,17 +48,59 @@ class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
                       margin: EdgeInsets.fromLTRB(10, 10, 10, 20),
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 100,
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 225, 110, 22),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    if (args.progress != 100)
+                                      SalvarProgressoWebQuest(
+                                          args, 'Evaluation');
+                                    
+                                      setState(() {
+                                        Navigator.pushNamed(context, "/home");
+                                      });
+                                    
+                                  },
+                                  child: Text( "Quit",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           Container(
-                              margin: EdgeInsets.only(bottom: 20),
-                              child: Text('Avaliation',
+                              margin: EdgeInsets.only(bottom: 20, top: 20),
+                              child: Text('Evaluation',
                                   style: GoogleFonts.arvo(
                                       fontSize: 22,
                                       color: Color.fromARGB(255, 0, 0, 0)))),
-                          Text(
-                            args.activity.evaluation.toString(),
-                            style: GoogleFonts.arvo(fontSize: 20),
-                            maxLines: 50,
-                          ),
+                                      
+                          Container(
+                              margin: EdgeInsets.only(bottom: 20, right: 10, left: 10),
+                              child: Text('Clique no link para iniciar sua avaliação',
+                                  style: GoogleFonts.arvo(
+                                      fontSize: 18,
+                                      color: Color.fromARGB(255, 0, 0, 0)))),
+
+                           Container(
+                          margin: EdgeInsets.only(bottom: 15, right: 10, left: 10),
+                          child: TextButton(
+                              child: Text(args.activity.evaluation.toString(),
+                                  overflow: TextOverflow.fade,
+                                  style: GoogleFonts.arvo(fontSize: 18)),
+                              onPressed: () {
+                                launchURL(args.activity.evaluation.toString());
+                              }))
                         ],
                       ),
                     ),
@@ -102,6 +147,9 @@ class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
                           ),
                           child: TextButton(
                             onPressed: () {
+                              if (args.progress != 100)
+                                SalvarProgressoWebQuest(args, 'Evaluation');
+
                               setState(() {
                                 Navigator.pushNamed(
                                     context, "/WebQuestConclusionView",
