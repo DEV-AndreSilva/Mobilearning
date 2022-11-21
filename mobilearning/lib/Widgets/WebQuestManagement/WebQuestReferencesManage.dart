@@ -183,7 +183,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                   "idUser":idUser,
                   "idActivity":activityMemory['id'],
                   "currentStage": "introduction",
-                  "progress":"10"
+                  "progress":"14"
                 },
                 options: opt);
 
@@ -267,6 +267,13 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
               });
             });
           }
+
+        //destroi a sessão de palavras para outra consulta ao banco
+        await SessionManager().remove("WebQuest");
+        await SessionManager().remove("Activities");
+        await SessionManager().remove("studentsRelation");
+        await SessionManager().remove("studentsRelationOld");
+
         } else {
           Fluttertoast.showToast(
               msg: preencher,
@@ -284,14 +291,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
     } catch (e) {
       print(e);
     }
-    finally
-    {
-       //destroi a sessão de palavras para outra consulta ao banco
-        await SessionManager().remove("WebQuest");
-        await SessionManager().remove("Activities");
-        await SessionManager().remove("studentsRelation");
-        await SessionManager().remove("studentsRelationOld");
-    }
+
   }
 
   List<dynamic> informationReferences = [];

@@ -27,6 +27,11 @@ class _WebQuestRelationStudentManage
       setState(() {
         studentsDatabase.remove(student);
         studentsRelation.add(student);
+
+        finalStudentsDatabase.remove(student);
+        finalStudentsRelation.add(student);
+
+
       });
     }
   }
@@ -36,6 +41,10 @@ class _WebQuestRelationStudentManage
     setState(() {
         studentsRelation.remove(student);
         studentsDatabase.add(student);
+
+        finalStudentsRelation.remove(student);
+        finalStudentsDatabase.add(student);
+
     });
 
     return null;
@@ -50,6 +59,9 @@ class _WebQuestRelationStudentManage
 
   List<UserActivitResume> studentsRelation = [];
   List<UserActivitResume> studentsDatabase = [];
+  
+  List<UserActivitResume> finalStudentsRelation = [];
+  List<UserActivitResume> finalStudentsDatabase = [];
 
   final studentController = TextEditingController();
 
@@ -143,13 +155,20 @@ class _WebQuestRelationStudentManage
       studentsDatabaseTemp.forEach((element) {
           if(!listIDStudentRelated.contains(element.idUser))
           {
+            //lista de estudantes do banco que aparece em tela
             studentsDatabase.add(element);
           }
 
       });
 
+    //lista de estudantes relacionados que aparece em tela
     studentsRelation = studentsRelationTemp;
 
+   //Listas auxiliares para o filtro de alunos 
+   finalStudentsRelation = List.from( studentsRelation);
+   finalStudentsDatabase = List.from(studentsDatabase);
+
+    //registros antigos que talvez serão excluidos da base
     SessionManager().set("studentsRelationOld", jsonEncode(studentsRelation));
 
 
@@ -157,6 +176,35 @@ class _WebQuestRelationStudentManage
 
        
     });
+  }
+
+  void filterStudent(String filter)
+  {
+      //Lista temporária que preenchera a tela
+  List<UserActivitResume>  studentsDatabaseFiltered = [];
+  List<UserActivitResume>  studentsRelatedFiltered = [];
+
+  // Se o Campo de texto está em branco ou com apenas espaços exibe todos os registros
+  if (filter.isEmpty) {
+    studentsDatabaseFiltered = finalStudentsDatabase;
+    studentsRelatedFiltered = finalStudentsRelation;
+  }
+  else {
+  studentsRelatedFiltered = finalStudentsRelation;
+  studentsDatabaseFiltered = finalStudentsDatabase;
+
+  // Preenche a nova lista de resultados apenas com os nomes que possuem o texto procurado
+  studentsRelatedFiltered = studentsRelatedFiltered.where((student) => student.name!.toLowerCase().contains(filter.toLowerCase())).toList();
+  studentsDatabaseFiltered = studentsDatabaseFiltered.where((student) => student.name!.toLowerCase().contains(filter.toLowerCase())).toList();
+
+  }
+    //atualiza a interface gráfica
+    if(mounted)
+    setState(() {
+      studentsDatabase = studentsDatabaseFiltered;
+      studentsRelation = studentsRelatedFiltered;
+    });
+ 
   }
 
   @override
@@ -189,7 +237,7 @@ class _WebQuestRelationStudentManage
             padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: TextField(
               controller: studentController,
-              onChanged: (value) => {},
+              onChanged: (value) => filterStudent(value),
               decoration: const InputDecoration(
                   labelText: 'Type a student name',
                   suffixIcon: Icon(Icons.school_outlined)),
@@ -324,7 +372,7 @@ class _WebQuestRelationStudentManage
                 ),
                 child: TextButton(
                   onPressed: () {
-                    salvarEtapaRelation(studentsRelation);
+                    salvarEtapaRelation(finalStudentsRelation);
                     setState(() {
                       Navigator.pushNamed(context, "/WebQuestReferencesManage");
                     });
