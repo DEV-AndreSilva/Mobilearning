@@ -27,11 +27,17 @@ class _ChatPageState extends State<ChatPage> {
     if (textSearch != "") {
       return FirebaseFirestore.instance
           .collection("Users")
-          .where("userUid", isNotEqualTo: widget.idUserLogin,)
+          .where(
+            "userUid",
+            isNotEqualTo: widget.idUserLogin,
+          )
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => ChatUsers.fromJson(doc.data()))
-              .where((element) => element.name.toUpperCase().startsWith(textSearch.toUpperCase())).toList());
+              .where((element) => element.name
+                  .toUpperCase()
+                  .startsWith(textSearch.toUpperCase()))
+              .toList());
     } else {
       return FirebaseFirestore.instance
           .collection("Users")
