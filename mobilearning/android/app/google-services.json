@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "221270246748",
+    "project_id": "mobilearning-chat",
+    "storage_bucket": "mobilearning-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221270246748:android:bd44f564d492b33e86ed99",
+        "android_client_info": {
+          "package_name": "com.example.mobilearning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221270246748-nu298lmvuji4grg4l98d6omr4ofu3o8p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-JsXJ299jHfxRle5Gk31-tbkJwc-xioE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221270246748-nu298lmvuji4grg4l98d6omr4ofu3o8p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

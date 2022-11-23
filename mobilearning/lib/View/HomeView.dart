@@ -23,6 +23,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int currentTabIndex = 0;
   int userType = 1;
+  int idUserLogin = 0;
 
   void returnTypeUser() async {
     var sessionManager = SessionManager();
@@ -53,11 +54,25 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void returnIDuser ()async
+  {
+     bool containUserLogin = await SessionManager().containsKey("UserLoginID");
+        if (containUserLogin) 
+        {
+           dynamic id = await SessionManager().get("UserLoginID");
+            idUserLogin = int.parse(id.toString());
+        }
+    setState(() {
+      
+    });
+  }
+
  
 
   @override
   Widget build(BuildContext context) {
     returnTypeUser();
+    returnIDuser();
 
     var tabPages = <Widget>[];
     var bottomNavBarItems = <BottomNavigationBarItem>[];
@@ -66,7 +81,7 @@ class _HomeState extends State<Home> {
     if (userType == 1) {
       //páginas do bottomNavbar
       tabPages = <Widget>[
-        Center(child: ChatPage()),
+        Center(child: ChatPage(idUserLogin: idUserLogin,)),
         Center(child: UserActivityPage()),
         Center(child: GlossaryPage()),
       ];
@@ -85,7 +100,7 @@ class _HomeState extends State<Home> {
       //páginas do bottomNavbar
       tabPages = <Widget>[
         Center(child: ManagmentPage()),
-        Center(child: ChatPage()),
+        Center(child: ChatPage(idUserLogin: idUserLogin,)),
         Center(child: ActivityPage()),
       ];
 

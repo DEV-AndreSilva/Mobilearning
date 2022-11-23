@@ -43,6 +43,7 @@ class _LoginState extends State<Login> {
       var sessionManager = SessionManager();
 
       await sessionManager.set('UserLogin', jsonEncodeUser);
+      await sessionManager.set('UserLoginID', id);
       await sessionManager.set('BearerToken', token);
 
       Navigator.pushNamed(context, '/home', arguments: user);
