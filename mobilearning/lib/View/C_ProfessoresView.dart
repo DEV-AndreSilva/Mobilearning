@@ -1,10 +1,14 @@
 // ignore_for_file: file_names
 
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/Models/chatUsersModel.dart';
 
 import '../Widgets/DrawerMobilearning.dart';
 
@@ -65,6 +69,22 @@ class _CProfessoresState extends State<CProfessores> {
                   options: opt);
 
           if (response.statusCode == 200) {
+            var responseId = jsonDecode(response.data);
+            var userID = responseId['idUser'];
+
+            ChatUsers usuario = ChatUsers(
+                imageURL:
+                    "https://th.bing.com/th/id/OIP.NIjCKgHbDTjdTPDD6oLuRgHaHa?pid=ImgDet&rs=1",
+                messageText: "hello",
+                name: nomeController.text,
+                time: DateTime.now(),
+                userUid: userID);
+
+            var docUser = FirebaseFirestore.instance
+                .collection("Users")
+                .doc(userID.toString());
+            await docUser.set(usuario.toJson());
+
             nomeController.clear();
             emailController.clear();
             cpfController.clear();

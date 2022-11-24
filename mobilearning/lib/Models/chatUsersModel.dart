@@ -21,4 +21,13 @@ class ChatUsers {
         time: json['time'].toDate(),
         userUid: json['userUid']);
   }
+
+   Map<String, dynamic> toJson() => {
+    "name": this.name,
+    "messageText":this.messageText,
+    "imageURL": this.imageURL,
+    "time": this.time,
+    "userUid": this.userUid
+ };
+
 }

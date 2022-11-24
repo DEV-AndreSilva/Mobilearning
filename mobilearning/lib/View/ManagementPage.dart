@@ -32,7 +32,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
             });
           },
           child: Container(
-            width: larguraTela*0.8,
+            width: larguraTela*0.7,
             alignment: Alignment.center,
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
             
@@ -63,7 +63,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
             });
           },
           child: Container(
-            width: larguraTela*0.8,
+            width: larguraTela*0.7,
             alignment: Alignment.center,
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
             
@@ -77,7 +77,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
                   size: 100,
                 ),
                 Text(
-                  "Teachers",
+                  "Professors",
                   style: TextStyle(fontSize: 22),
                 )
               ],
@@ -95,7 +95,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
             });
           },
           child: Container(
-            width: larguraTela*0.8,
+            width: larguraTela*0.7,
             alignment: Alignment.center,
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
             

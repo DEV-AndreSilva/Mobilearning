@@ -1,10 +1,14 @@
 // ignore_for_file: file_names
 
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobilearning/Models/chatUsersModel.dart';
 import 'package:mobilearning/Models/studentModel.dart';
 import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
@@ -45,23 +49,39 @@ class _CAlunosState extends State<CAlunos> {
 
         if (token != null && token != '') {
           opt.headers = {"authorization": "bearer $token"};
-          var response = await Dio()
-              .post('https://mobilearning-api.herokuapp.com/student/create',
-                  data: {
-                    'nivel': nivel.toString(),
-                    'user': {
-                      "name": nome,
-                      "email": email,
-                      "address": address,
-                      "cpf": cpf,
-                      "phone": phone,
-                      "password": password,
-                      "type": "1"
-                    }
-                  },
-                  options: opt);
+          var response = await Dio().post(
+              'https://mobilearning-api.herokuapp.com/student/create',
+              data: {
+                'nivel': nivel.toString() == "" ? "basic" : nivel.toString(),
+                'user': {
+                  "name": nome,
+                  "email": email,
+                  "address": address,
+                  "cpf": cpf,
+                  "phone": phone,
+                  "password": password,
+                  "type": "1"
+                }
+              },
+              options: opt);
 
           if (response.statusCode == 200) {
+            var responseId = jsonDecode(response.data);
+            var userID = responseId['idUser'];
+
+            ChatUsers usuario = ChatUsers(
+                imageURL:
+                    "https://th.bing.com/th/id/OIP.NIjCKgHbDTjdTPDD6oLuRgHaHa?pid=ImgDet&rs=1",
+                messageText: "hello",
+                name: nomeController.text,
+                time: DateTime.now(),
+                userUid: userID);
+
+            var docUser = FirebaseFirestore.instance
+                .collection("Users")
+                .doc(userID.toString());
+            await docUser.set(usuario.toJson());
+
             nomeController.clear();
             emailController.clear();
             cpfController.clear();
