@@ -74,8 +74,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    emailController.text ="maura@gmail.com";
-    passowordController.text ="123456";
+    //emailController.text ="teste@gmail.com";
+    //passowordController.text ="123456";
 
     return Scaffold(
         backgroundColor: Colors.grey[250],

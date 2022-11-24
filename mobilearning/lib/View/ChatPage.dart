@@ -110,9 +110,7 @@ class _ChatPageState extends State<ChatPage> {
           }
         },
       )),
-      SizedBox(
-        width: 16,
-      ),
+   
     ]);
   }
 }
