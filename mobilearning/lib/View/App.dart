@@ -22,7 +22,7 @@ import 'HomeView.dart';
 import 'LoginView.dart';
 import 'C_AlunosView.dart';
 import 'C_ProfessoresView.dart';
-import 'C_turma.dart';
+import 'Perfil.dart';
 
 
 
@@ -40,7 +40,7 @@ class App extends StatelessWidget {
       '/calunos': (context)=> CAlunos(),
       '/cprofessores': (context)=> CProfessores(),
       '/cword': (context)=> WordPage(),
-      '/cturma':(context) => Cturma(),
+      '/perfil':(context) => Perfil(),
       '/WebQuestIntroductionView':(context) => WebQuestIntroductionView(),
       '/WebQuestTaskView':(context) => WebQuestTaskView(),
       '/WebQuestProcessView':(context) => WebQuestProcessView(),

@@ -65,7 +65,7 @@ class _DrawerMobilearningState extends State<DrawerMobilearning> {
               style: GoogleFonts.arvo(fontSize: 16),
             ),
             onTap: () => {
-              Navigator.pushNamed(context, '/login'),
+              Navigator.pushNamed(context, '/perfil'),
             },
           ),
           ListTile(

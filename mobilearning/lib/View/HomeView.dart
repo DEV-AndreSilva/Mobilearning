@@ -56,10 +56,17 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+        returnTypeUser();
+    returnIDuser();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
-    returnTypeUser();
-    returnIDuser();
+
     
     
 
