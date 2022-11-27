@@ -288,7 +288,7 @@ void limparSessao()async
 
 void launchURL(String url) async =>
     await canLaunch(url) ? await launch(url) : Fluttertoast.showToast(
-          msg: 'Link invalido, contate seu professor',
+          msg: 'Invalid link, contact your professor',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 4,

@@ -37,7 +37,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
 
   String verficarPreenchimentoCampos(
       dynamic activityMemory, List<dynamic> references) {
-    String mensagem = "Preencha as etapas: ";
+    String mensagem = "Complete the steps: ";
     String preencher = "";
 
     if (activityMemory['introduction'] == null)
@@ -203,7 +203,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
             //verifica se atividade foi cadastrada
             if (response.statusCode == 200) {
               Fluttertoast.showToast(
-                  msg: 'WebQuest atualizada com sucesso!',
+                  msg: 'WebQuest updated with success!',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
                   timeInSecForIosWeb: 3,
@@ -248,7 +248,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
             //verifica se atividade foi cadastrada
             if (response.statusCode == 200) {
               Fluttertoast.showToast(
-                  msg: 'WebQuest cadastrada com sucesso!',
+                  msg: 'WebQuest created with success!',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
                   timeInSecForIosWeb: 3,

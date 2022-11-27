@@ -63,9 +63,8 @@ class _DrawerMobilearningState extends State<DrawerMobilearning> {
             ListTile(leading: Icon(Icons.logout),
             title: Text('Logout', style: GoogleFonts.arvo(fontSize: 16)),
              onTap: ()async {
-                await SessionManager().destroy();
-
                 Navigator.of(context).popUntil(ModalRoute.withName('/login'));
+                await SessionManager().destroy();
                 }),
             
             

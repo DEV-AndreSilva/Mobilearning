@@ -49,7 +49,7 @@ class _ActivityListState extends State<ActivityList> {
     //verifica se atividade foi cadastrada
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-          msg: 'WebQuest Deletada com sucesso!',
+          msg: 'WebQuest deleted with success!',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,

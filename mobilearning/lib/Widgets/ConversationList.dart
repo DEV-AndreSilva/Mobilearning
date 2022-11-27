@@ -8,7 +8,6 @@ class ConversationList extends StatefulWidget {
   int idUserLogin;
   int userUid;
   String name;
-  String messageText;
   String imageURL;
   DateTime createTime;
   String status;
@@ -19,7 +18,6 @@ class ConversationList extends StatefulWidget {
       required this.idUserLogin,
       required this.userUid,
       required this.name,
-      required this.messageText,
       required this.imageURL,
       required this.createTime,
       required this.status,
