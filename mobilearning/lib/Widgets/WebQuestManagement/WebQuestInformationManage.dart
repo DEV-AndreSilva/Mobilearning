@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobilearning/Models/activityModel.dart';
-import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
 import 'package:mobilearning/functions.dart';
 
@@ -41,6 +39,7 @@ class _WebQuestInformationManage extends State<WebQuestInformationManage> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     controllers.addAll({
       'resource': resourceController,
@@ -57,8 +56,7 @@ class _WebQuestInformationManage extends State<WebQuestInformationManage> {
     if (containWebquest) {
       dynamic activityMemory = await SessionManager().get("WebQuest");
       //carregar da memoria na tela
-      if (informationResources != null &&
-          activityMemory["information"] != null) {
+      if (activityMemory["information"] != null) {
         informationResources = activityMemory["information"] as List<dynamic>;
       }
     }

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors
+// ignore_for_file: file_names, prefer_const_constructors, unused_local_variable
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +6,6 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/Models/UserActivityResumeModel.dart';
-import 'package:mobilearning/Models/activityModel.dart';
-import 'package:mobilearning/Models/studentModel.dart';
 import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
 import 'package:mobilearning/functions.dart';
@@ -302,6 +300,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     controllers.addAll({
       'resource': resourceController,
@@ -316,8 +315,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
     if (containWebquest) {
       dynamic activityMemory = await SessionManager().get("WebQuest");
       //carregar da memoria na tela
-      if (informationReferences != null &&
-          activityMemory["references"] != null) {
+      if (activityMemory["references"] != null) {
         informationReferences = activityMemory["references"] as List<dynamic>;
       }
     }
