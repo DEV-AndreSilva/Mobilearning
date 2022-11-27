@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, file_names
+// ignore_for_file: prefer_const_constructors, file_names, must_be_immutable
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,7 +57,9 @@ class _ChatPageState extends State<ChatPage> {
         name: chat.name,
         messageText: chat.messageText,
         imageURL: chat.imageURL,
-        time: chat.time,
+        createTime: chat.createTime,
+        status: chat.status,
+        lastLogin: chat.lastLogin,
       );
     }
   }

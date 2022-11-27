@@ -1,23 +1,23 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, file_names, must_be_immutable
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, file_names, must_be_immutable, unused_local_variable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:mobilearning/Models/chatMessageModel.dart';
-import 'package:mobilearning/Models/userModel.dart';
 
 class ChatDetailPage extends StatefulWidget {
   int userUid;
   String imageURL;
   String name;
   int idUserLogin;
+  String status;
 
   ChatDetailPage(
       {super.key,
       required this.userUid,
       required this.imageURL,
       required this.name,
-      required this.idUserLogin});
+      required this.idUserLogin,
+      required this.status});
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -26,11 +26,8 @@ class ChatDetailPage extends StatefulWidget {
 class _ChatDetailPageState extends State<ChatDetailPage> {
 
    var _scrollController = ScrollController();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+
+
 
   Stream<List<ChatMessage>> readMessages() {
     String docName = "";
@@ -179,7 +176,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           height: 6,
                         ),
                         Text(
-                          "Online",
+                          widget.status.toString(),
                           style: TextStyle(color: Colors.white70, fontSize: 16),
                         ),
                       ]),
