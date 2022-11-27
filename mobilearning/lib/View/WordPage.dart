@@ -165,7 +165,7 @@ class _WordPageState extends State<WordPage> {
         String engWord, String portWord, String engDefin, String portdef) {
       if (engWord == "" || portWord == "" || engDefin == "" || portdef == "") {
         Fluttertoast.showToast(
-            msg: "Complete all fields !",
+            msg: "Complete all fields!",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 4,

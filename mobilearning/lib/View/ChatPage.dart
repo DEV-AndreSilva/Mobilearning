@@ -55,7 +55,6 @@ class _ChatPageState extends State<ChatPage> {
         idUserLogin: widget.idUserLogin,
         userUid: chat.userUid,
         name: chat.name,
-        messageText: chat.messageText,
         imageURL: chat.imageURL,
         createTime: chat.createTime,
         status: chat.status,

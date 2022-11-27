@@ -73,7 +73,6 @@ class _CAlunosState extends State<CAlunos> {
             ChatUsers usuario = ChatUsers(
                 imageURL:
                     "https://th.bing.com/th/id/OIP.NIjCKgHbDTjdTPDD6oLuRgHaHa?pid=ImgDet&rs=1",
-                messageText: "hello",
                 name: nomeController.text,
                 createTime: DateTime.now(),
                 userUid: userID,

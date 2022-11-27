@@ -79,7 +79,6 @@ class _CProfessoresState extends State<CProfessores> {
             ChatUsers usuario = ChatUsers(
                 imageURL:
                     "https://th.bing.com/th/id/OIP.NIjCKgHbDTjdTPDD6oLuRgHaHa?pid=ImgDet&rs=1",
-                messageText: "hello",
                 name: nomeController.text,
                 createTime: DateTime.now(),
                 userUid: userID,
@@ -117,7 +116,7 @@ class _CProfessoresState extends State<CProfessores> {
       } catch (e) {
         print(e);
         Fluttertoast.showToast(
-            msg: 'Teacher already registered in the system',
+            msg: 'Professor already registered in the system',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 3,
