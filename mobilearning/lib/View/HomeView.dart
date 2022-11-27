@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,51 +24,44 @@ class _HomeState extends State<Home> {
   int idUserLogin = 0;
 
   void returnTypeUser() async {
-    var sessionManager = SessionManager();
-    final dynamic args = ModalRoute.of(context)?.settings.arguments;
 
     try {
-      if (args != null) {
-        if (args.type != null) {
-          userType = int.parse(args.type);
-          await sessionManager.set('UserType', userType);
-        }
-      } else {
-        bool containUserType = await SessionManager().containsKey("UserType");
-        if (containUserType) {
-          dynamic Type = await SessionManager().get("UserType");
-          userType = int.parse(Type.toString());
-        } else {
-          await SessionManager().destroy();
-          setState(() {
-            Navigator.pushNamed(context, '/login');
-          });
-        }
+      bool containUserType = await SessionManager().containsKey("UserType");
+      if (containUserType) 
+      {
+        dynamic Type = await SessionManager().get("UserType");
+        userType = int.parse(Type.toString());
+      } 
+      else 
+      {
+        print("Could not find user type!");
+          
+        if(mounted)
+        setState(() {
+          Navigator.pushNamed(context, '/login');
+        });
       }
     } catch (ex) {}
 
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
-  void returnIDuser ()async
-  {
-     bool containUserLogin = await SessionManager().containsKey("UserLoginID");
-        if (containUserLogin) 
-        {
-           dynamic id = await SessionManager().get("UserLoginID");
-            idUserLogin = int.parse(id.toString());
-        }
-    setState(() {
-      
-    });
+  void returnIDuser() async {
+    bool containUserLogin = await SessionManager().containsKey("UserLoginID");
+    if (containUserLogin) {
+      dynamic id = await SessionManager().get("UserLoginID");
+      idUserLogin = int.parse(id.toString());
+    }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+
     returnTypeUser();
     returnIDuser();
+    
+    
 
     var tabPages = <Widget>[];
     var bottomNavBarItems = <BottomNavigationBarItem>[];
@@ -78,7 +70,10 @@ class _HomeState extends State<Home> {
     if (userType == 1) {
       //páginas do bottomNavbar
       tabPages = <Widget>[
-        Center(child: ChatPage(idUserLogin: idUserLogin,)),
+        Center(
+            child: ChatPage(
+          idUserLogin: idUserLogin,
+        )),
         Center(child: UserActivityPage()),
         Center(child: GlossaryPage()),
       ];
@@ -97,7 +92,10 @@ class _HomeState extends State<Home> {
       //páginas do bottomNavbar
       tabPages = <Widget>[
         Center(child: ManagmentPage()),
-        Center(child: ChatPage(idUserLogin: idUserLogin,)),
+        Center(
+            child: ChatPage(
+          idUserLogin: idUserLogin,
+        )),
         Center(child: ActivityPage()),
       ];
 

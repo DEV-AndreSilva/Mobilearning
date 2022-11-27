@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
@@ -53,7 +54,12 @@ class _LoginState extends State<Login> {
 
       await sessionManager.set('UserLogin', jsonEncodeUser);
       await sessionManager.set('UserLoginID', id);
+      await sessionManager.set('UserType', userType);
       await sessionManager.set('BearerToken', token);
+
+      final docUser = FirebaseFirestore.instance.collection("Users").doc(id.toString());
+
+      docUser.update({'status':'Online'});
 
       Navigator.pushNamed(context, '/home', arguments: user);
     } catch (e) {
@@ -63,7 +69,7 @@ class _LoginState extends State<Login> {
       passowordController.clear();
 
       Fluttertoast.showToast(
-          msg: 'Usuario e senha invalidos!',
+          msg: 'User and/or password are invalid!',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
