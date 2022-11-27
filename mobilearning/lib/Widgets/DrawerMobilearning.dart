@@ -87,7 +87,8 @@ class _DrawerMobilearningState extends State<DrawerMobilearning> {
 
                 docUser.update({'status': 'Offline'});
 
-                Navigator.of(context).popUntil(ModalRoute.withName('/login'));
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                //Navigator.of(context).(ModalRoute.withName('/login'));
                 await SessionManager().destroy();
               }),
         ],
