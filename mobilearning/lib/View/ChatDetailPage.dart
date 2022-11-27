@@ -24,6 +24,8 @@ class ChatDetailPage extends StatefulWidget {
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
+
+   var _scrollController = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +39,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     } else {
       docName = widget.idUserLogin.toString() + widget.userUid.toString();
     }
+    
 
     return FirebaseFirestore.instance
         .collection("UsersMessages")
@@ -47,6 +50,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         .map((snapshot) => snapshot.docs
             .map((doc) => ChatMessage.fromJson(doc.data()))
             .toList());
+
+    
   }
 
   Future<bool> docExists(String docName) async {
@@ -129,20 +134,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   final textMessageController = TextEditingController();
 
-  List<ChatMessage> messages = [
-    // ChatMessage(messageContent: "Hello André", messageType: "receiver"),
-    // ChatMessage(messageContent: "How are you?", messageType: "receiver"),
-    // ChatMessage(messageContent: "I'm good and you?", messageType: "sender"),
-    // ChatMessage(messageContent: "I'm good too", messageType: "receiver"),
-    // ChatMessage(messageContent: "Do you need anything?", messageType: "sender"),
-
-    // ChatMessage(messageContent: "Hello André", messageType: "receiver"),
-    // ChatMessage(messageContent: "How are you?", messageType: "receiver"),
-    // ChatMessage(messageContent: "I'm good and you?", messageType: "sender"),
-    // ChatMessage(messageContent: "I'm good too", messageType: "receiver"),
-    // ChatMessage(messageContent: "Do you need anything?", messageType: "sender"),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,6 +205,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   final messages = snapshot.data!;
 
                   return ListView(
+                    controller: _scrollController,
                     children: messages.map(buildMessage).toList(),
                   );
                 } else {
@@ -228,13 +220,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 height: 90,
                 child: Row(
                   children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.attach_file),
-                      ),
-                    ),
                     Flexible(
                       child: Container(
                           margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
@@ -247,16 +232,21 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                             controller: textMessageController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              suffixIcon: Icon(Icons.face),
+                              
                             ),
                             onSubmitted: (value) {
                               sendMessage(value);
-                              // if (value.isEmpty)
-                              //   setState(() => showMicIcon = true);
-                              // else
-                              //   setState(() => showMicIcon = false);
                             },
                           )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                      child: IconButton(
+                        onPressed: () {
+                          sendMessage(textMessageController.text);
+                        },
+                        icon: Icon(Icons.send),
+                      ),
                     ),
                   ],
                 ),

@@ -96,6 +96,7 @@ class _WebQuestIntroductionView extends State<WebQuestIntroductionView> {
                       children: [
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -113,13 +114,14 @@ class _WebQuestIntroductionView extends State<WebQuestIntroductionView> {
                               });
                             },
                             child: const Text(
-                              'Voltar etapa',
+                              'Back',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -142,7 +144,7 @@ class _WebQuestIntroductionView extends State<WebQuestIntroductionView> {
                                 });
                             },
                             child: const Text(
-                              'Avançar etapa',
+                              'Next step',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),

@@ -2,9 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,6 +35,8 @@ class _CProfessoresState extends State<CProfessores> {
 
   // List of items in our dropdown menu
   var items = ['Graduate student', 'Master’s program', 'PHD'];
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +98,7 @@ class _CProfessoresState extends State<CProfessores> {
             graduationController.clear();
 
             Fluttertoast.showToast(
-                msg: 'Professor cadastrado com sucesso!',
+                msg: 'Professor successfully registered!',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 3,
@@ -110,7 +114,7 @@ class _CProfessoresState extends State<CProfessores> {
       } catch (e) {
         print(e);
         Fluttertoast.showToast(
-            msg: 'Professor ja cadastrado no sistema!',
+            msg: 'Teacher already registered in the system',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 3,
@@ -141,6 +145,7 @@ class _CProfessoresState extends State<CProfessores> {
       body: ListView(
         children: [
           Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 Container(
@@ -151,7 +156,6 @@ class _CProfessoresState extends State<CProfessores> {
                             color: Color.fromARGB(255, 0, 0, 0)))),
                 Container(
                   margin: EdgeInsets.only(right: 20, left: 20),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -166,14 +170,14 @@ class _CProfessoresState extends State<CProfessores> {
                     controller: nomeController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite seu nome";
+                        return "Write your name";
                       }
                       return null;
                     },
                     keyboardType: TextInputType.name,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
-                      hintText: 'Nome Completo',
+                      hintText: 'Full name',
                       prefixIcon: Icon(
                         Icons.person,
                         color: Colors.blue,
@@ -192,7 +196,6 @@ class _CProfessoresState extends State<CProfessores> {
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -207,8 +210,14 @@ class _CProfessoresState extends State<CProfessores> {
                     controller: emailController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite um E-mail";
+                        return "Write an E-mail";
                       }
+                      final validaEmail = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      if (!validaEmail.hasMatch(value)) {
+                        return "Write a valid e-mail ";
+                      }
+
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
@@ -233,7 +242,6 @@ class _CProfessoresState extends State<CProfessores> {
                       right: 20,
                       left: 20,
                     ),
-                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(50),
@@ -292,7 +300,6 @@ class _CProfessoresState extends State<CProfessores> {
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -305,13 +312,17 @@ class _CProfessoresState extends State<CProfessores> {
                   ),
                   child: TextFormField(
                     controller: cpfController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CpfInputFormatter()
+                    ],
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite seu CPF: ";
+                        return "Write your CPF: ";
                       }
                       return null;
                     },
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.number,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
                       hintText: 'CPF',
@@ -333,7 +344,6 @@ class _CProfessoresState extends State<CProfessores> {
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -348,7 +358,7 @@ class _CProfessoresState extends State<CProfessores> {
                     controller: addressController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite seu endereço: ";
+                        return "Write your address";
                       }
                       return null;
                     },
@@ -374,7 +384,6 @@ class _CProfessoresState extends State<CProfessores> {
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -387,16 +396,20 @@ class _CProfessoresState extends State<CProfessores> {
                   ),
                   child: TextFormField(
                     controller: phoneController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      TelefoneInputFormatter(),
+                    ],
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite seu telefone";
+                        return "Write your phone";
                       }
                       return null;
                     },
                     keyboardType: TextInputType.phone,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
-                      hintText: 'Telefone Ex: (17) 98888-8888',
+                      hintText: 'Phone Ex: (17) 98888-8888',
                       prefixIcon: Icon(
                         Icons.phone,
                         color: Colors.blue,
@@ -415,7 +428,6 @@ class _CProfessoresState extends State<CProfessores> {
                     right: 20,
                     left: 20,
                   ),
-                  height: 50,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -430,7 +442,7 @@ class _CProfessoresState extends State<CProfessores> {
                     controller: passwordController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Digite sua senha";
+                        return "Write your password";
                       }
                       return null;
                     },
@@ -438,7 +450,7 @@ class _CProfessoresState extends State<CProfessores> {
                     obscureText: true,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
-                      hintText: 'Senha',
+                      hintText: 'Password',
                       prefixIcon: Icon(
                         Icons.vpn_key,
                         color: Colors.blue,
@@ -455,7 +467,7 @@ class _CProfessoresState extends State<CProfessores> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 50,
+                      width: 100,
                       margin: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 25,
@@ -473,13 +485,13 @@ class _CProfessoresState extends State<CProfessores> {
                           });
                         },
                         child: const Text(
-                          'Voltar',
+                          'Return',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                     Container(
-                      height: 50,
+                      width: 100,
                       margin: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 25,
@@ -492,17 +504,19 @@ class _CProfessoresState extends State<CProfessores> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          CadastrarProfessor(
-                              nomeController.text,
-                              emailController.text,
-                              cpfController.text,
-                              addressController.text,
-                              phoneController.text,
-                              passwordController.text,
-                              graduationController.text);
+                          if (_formKey.currentState!.validate()) {
+                            CadastrarProfessor(
+                                nomeController.text,
+                                emailController.text,
+                                cpfController.text,
+                                addressController.text,
+                                phoneController.text,
+                                passwordController.text,
+                                graduationController.text);
+                          }
                         },
                         child: const Text(
-                          'Confirmar',
+                          'Confirm',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

@@ -60,7 +60,7 @@ class _UserActivityListState extends State<UserActivityList> {
                         width: larguraTela * 0.4,
                         margin: EdgeInsets.only(left: larguraTela / 10),
                         child: Text(
-                          "SubTitle:",
+                          "Subtitle:",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),

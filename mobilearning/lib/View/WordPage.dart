@@ -25,6 +25,7 @@ class _WordPageState extends State<WordPage> {
   final englishDefinition = TextEditingController();
   final portugueseDefinition = TextEditingController();
   bool alter = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +63,11 @@ class _WordPageState extends State<WordPage> {
           //destroi a sessão de palavras para outra consulta ao banco
           await SessionManager().remove("Words");
 
-              Future.delayed(Duration(seconds: 3), () {
-                    setState(() {
-                        Navigator.pushNamed(context, '/home');
-                    });
-        });
-
+          Future.delayed(Duration(seconds: 3), () {
+            setState(() {
+              Navigator.pushNamed(context, '/home');
+            });
+          });
         } else {
           await SessionManager().destroy();
           Navigator.pushNamed(context, '/login');
@@ -104,12 +104,11 @@ class _WordPageState extends State<WordPage> {
           //destroi a sessão de palavras para outra consulta ao banco
           await SessionManager().remove("Words");
 
-              Future.delayed(Duration(seconds: 3), () {
-                    setState(() {
-                        Navigator.pushNamed(context, '/home');
-                    });
-        });
-          
+          Future.delayed(Duration(seconds: 3), () {
+            setState(() {
+              Navigator.pushNamed(context, '/home');
+            });
+          });
         }
       } catch (e) {
         print(e);
@@ -142,20 +141,18 @@ class _WordPageState extends State<WordPage> {
                 timeInSecForIosWeb: 3,
                 backgroundColor: Colors.green,
                 textColor: Colors.white,
-                fontSize: 16.0,
+                fontSize: 18.0,
                 webPosition: 'center');
           }
 
           //destroi a sessão de palavras para outra consulta ao banco
           await SessionManager().remove("Words");
 
-        Future.delayed(Duration(seconds: 3), () {
-                    setState(() {
-                        Navigator.pushNamed(context, '/home');
-                    });
-        });
-
-          
+          Future.delayed(Duration(seconds: 3), () {
+            setState(() {
+              Navigator.pushNamed(context, '/home');
+            });
+          });
         } else {
           await SessionManager().destroy();
           Navigator.pushNamed(context, '/login');
@@ -163,6 +160,28 @@ class _WordPageState extends State<WordPage> {
       } catch (e) {
         print(e);
       }
+    }
+
+    bool validateForm(String engWord, String portWord, String engDefin, String portdef)
+    {
+
+      if(engWord == ""  || portWord =="" || engDefin =="" || portdef =="")
+      {
+         Fluttertoast.showToast(
+                msg: "Complete all fields !",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 4,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.white,
+                fontSize: 18.0,
+                webPosition: 'center');
+          
+          return false;
+      }
+      
+        
+        return true;
     }
 
     final dynamic args = ModalRoute.of(context)?.settings.arguments;
@@ -207,6 +226,7 @@ class _WordPageState extends State<WordPage> {
       body: ListView(
         children: [
           Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 Container(
@@ -241,12 +261,6 @@ class _WordPageState extends State<WordPage> {
                   ),
                   child: TextFormField(
                     controller: englishWord,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Write the new english word";
-                      }
-                      return null;
-                    },
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
@@ -280,12 +294,6 @@ class _WordPageState extends State<WordPage> {
                   ),
                   child: TextFormField(
                     controller: portugueseWord,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Write the new portuguese word";
-                      }
-                      return null;
-                    },
                     keyboardType: TextInputType.text,
                     cursorColor: Colors.blue,
                     decoration: const InputDecoration(
@@ -322,7 +330,7 @@ class _WordPageState extends State<WordPage> {
                     TextField(
                       controller: englishDefinition,
                       decoration: InputDecoration(
-                          hintText: "Write the english Definition",
+                          hintText: "Write the english definition",
                           border: InputBorder.none,
                           focusedBorder: OutlineInputBorder(
                               borderSide:
@@ -354,7 +362,7 @@ class _WordPageState extends State<WordPage> {
                     TextField(
                       controller: portugueseDefinition,
                       decoration: InputDecoration(
-                          hintText: "Write the portuguese Definition",
+                          hintText: "Write the portuguese definition",
                           border: InputBorder.none,
                           focusedBorder: OutlineInputBorder(
                               borderSide:
@@ -407,16 +415,24 @@ class _WordPageState extends State<WordPage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          if (isAlter) {
-                            alterWord(
-                                args.id,
-                                englishWord.text,
-                                englishDefinition.text,
-                                portugueseWord.text,
-                                portugueseDefinition.text);
-                          } else {
-                            createWord(englishWord.text, englishDefinition.text,
-                                portugueseWord.text, portugueseDefinition.text);
+                          if (validateForm(englishWord.text,
+                                  englishDefinition.text,
+                                  portugueseWord.text,
+                                  portugueseDefinition.text)) {
+                            if (isAlter) {
+                              alterWord(
+                                  args.id,
+                                  englishWord.text,
+                                  englishDefinition.text,
+                                  portugueseWord.text,
+                                  portugueseDefinition.text);
+                            } else {
+                              createWord(
+                                  englishWord.text,
+                                  englishDefinition.text,
+                                  portugueseWord.text,
+                                  portugueseDefinition.text);
+                            }
                           }
                         },
                         child: const Text(

@@ -118,6 +118,7 @@ class _WebQuestConclusionManage extends State<WebQuestConclusionManage> {
                       children: [
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -137,13 +138,14 @@ class _WebQuestConclusionManage extends State<WebQuestConclusionManage> {
                               });
                             },
                             child: const Text(
-                              'Voltar',
+                              'Back',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -163,7 +165,7 @@ class _WebQuestConclusionManage extends State<WebQuestConclusionManage> {
                               });
                             },
                             child: const Text(
-                              'Avançar etapa',
+                              'Next step',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),

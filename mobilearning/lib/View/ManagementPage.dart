@@ -13,13 +13,12 @@ class ManagmentPage extends StatefulWidget {
 class _ManagmentPageState extends State<ManagmentPage> {
   @override
   Widget build(BuildContext context) {
-
     var larguraTela = MediaQuery.of(context).size.width;
 
-
-    return Column(children: [
+    return ListView(children: [
       Container(
-          margin: EdgeInsets.only(bottom: 20, top: 20),
+        alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: 20, top: 20, ),
           child: Text('Management',
               style: GoogleFonts.arvo(
                   fontSize: 22, color: Color.fromARGB(255, 0, 0, 0)))),
@@ -32,10 +31,10 @@ class _ManagmentPageState extends State<ManagmentPage> {
             });
           },
           child: Container(
-            width: larguraTela*0.7,
+            width: larguraTela * 0.7,
             alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 25, right: 25),
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
-            
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Color.fromRGBO(129, 201, 250, 1)),
@@ -54,7 +53,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
           ),
         ),
       ),
-            Container(
+      Container(
         margin: EdgeInsets.only(bottom: 30),
         child: GestureDetector(
           onTap: () {
@@ -63,10 +62,10 @@ class _ManagmentPageState extends State<ManagmentPage> {
             });
           },
           child: Container(
-            width: larguraTela*0.7,
+            width: larguraTela * 0.7,
             alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 25, right: 25),
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
-            
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Color.fromRGBO(129, 201, 250, 1)),
@@ -85,8 +84,7 @@ class _ManagmentPageState extends State<ManagmentPage> {
           ),
         ),
       ),
-    
-                  Container(
+      Container(
         margin: EdgeInsets.only(bottom: 30),
         child: GestureDetector(
           onTap: () {
@@ -95,10 +93,10 @@ class _ManagmentPageState extends State<ManagmentPage> {
             });
           },
           child: Container(
-            width: larguraTela*0.7,
+            width: larguraTela * 0.7,
             alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 25, right: 25),
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 50, right: 50),
-            
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Color.fromRGBO(129, 201, 250, 1)),
@@ -117,8 +115,6 @@ class _ManagmentPageState extends State<ManagmentPage> {
           ),
         ),
       ),
-    
-         
     ]);
   }
 }

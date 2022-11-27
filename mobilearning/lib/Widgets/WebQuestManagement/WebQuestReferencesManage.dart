@@ -419,6 +419,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
             children: [
               Container(
                 height: 50,
+                width: 100,
                 margin: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 25,
@@ -437,7 +438,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                     });
                   },
                   child: const Text(
-                    'Voltar',
+                    'Back',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -459,7 +460,7 @@ class _WebQuestReferencesManage extends State<WebQuestReferencesManage> {
                     salvarWebQuest();
                   },
                   child: const Text(
-                    'Salvar Webquest',
+                    'Save Webquest',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

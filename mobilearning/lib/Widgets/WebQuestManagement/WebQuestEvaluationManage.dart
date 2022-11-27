@@ -97,7 +97,7 @@ class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
                               keyboardType: TextInputType.multiline,
                               cursorColor: Colors.blue,
                               decoration: const InputDecoration(
-                                hintText: 'avaliação ...',
+                                hintText: 'Evaluation ...',
                                 prefixIcon: Icon(
                                   Icons.menu_book,
                                   color: Colors.blue,
@@ -118,6 +118,7 @@ class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
                       children: [
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -137,13 +138,14 @@ class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
                               });
                             },
                             child: const Text(
-                              'Voltar',
+                              'Back',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -163,7 +165,7 @@ class _WebQuestEvaluationManage extends State<WebQuestEvaluationManage> {
                               });
                             },
                             child: const Text(
-                              'Avançar etapa',
+                              'Next step',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),

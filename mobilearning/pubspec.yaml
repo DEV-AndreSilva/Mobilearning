@@ -45,6 +45,7 @@ dependencies:
   dart_date: ^1.1.1
   url_launcher: 6.0.5
   cloud_firestore:
+  brasil_fields: ^1.7.0
 
 
 

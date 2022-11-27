@@ -85,6 +85,7 @@ class _WebQuestReferencesView extends State<WebQuestReferencesView> {
             children: [
               Container(
                 height: 50,
+                width: 100,
                 margin: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 25,
@@ -103,7 +104,7 @@ class _WebQuestReferencesView extends State<WebQuestReferencesView> {
                     });
                   },
                   child: const Text(
-                    'Voltar etapa',
+                    'Back',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -131,7 +132,7 @@ class _WebQuestReferencesView extends State<WebQuestReferencesView> {
                     });
                   },
                   child: Text(
-                    args.progress != 100 ? 'End Webquest' : "Quit",
+                    args.progress != 100 ? 'End webquest' : "Quit",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

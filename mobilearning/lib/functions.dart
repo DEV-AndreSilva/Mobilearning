@@ -253,31 +253,31 @@ void limparSessao()async
 
      switch(stage)
       {
-        case "Introduction":
+        case "Introduction": case "introduction":
         route = "/WebQuestIntroductionView";
         break;
 
-        case "Task":
+        case "Task":case "task":
         route = "/WebQuestTaskView";
         break;
 
-        case "Process":
+        case "Process":case "process":
         route = "/WebQuestProcessView";
         break;
 
-        case "Information":
+        case "Information":case "information":
         route = "/WebQuestInformationView";
         break;
 
-        case "Evaluation":
+        case "Evaluation":case "evaluation":
         route = "/WebQuestEvaluationView";
         break;
 
-        case "Conclusion":
+        case "Conclusion":case "conclusion":
         route = "/WebQuestConclusionView";
         break;
 
-        case "References":
+        case "References":case "references":
         route = "/WebQuestReferencesView";
         break;
         

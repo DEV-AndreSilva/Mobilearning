@@ -87,7 +87,7 @@ class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
                                       
                           Container(
                               margin: EdgeInsets.only(bottom: 20, right: 10, left: 10),
-                              child: Text('Clique no link para iniciar sua avaliação',
+                              child: Text('Click on the link to start your assessment',
                                   style: GoogleFonts.arvo(
                                       fontSize: 18,
                                       color: Color.fromARGB(255, 0, 0, 0)))),
@@ -109,6 +109,7 @@ class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
                       children: [
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -128,13 +129,14 @@ class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
                               });
                             },
                             child: const Text(
-                              'Voltar etapa',
+                              'Back',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
                         Container(
                           height: 50,
+                          width: 100,
                           margin: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 25,
@@ -157,7 +159,7 @@ class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
                               });
                             },
                             child: const Text(
-                              'Avançar etapa',
+                              'Next step',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
