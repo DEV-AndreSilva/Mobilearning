@@ -25,7 +25,7 @@ class ChatUsers {
         name: json['name'],
         messageText: json['messageText'],
         imageURL: json['imageURL'],
-        createTime: json['time'].toDate(),
+        createTime: json['createTime'].toDate(),
         userUid: json['userUid'],
         lastLogin: json['lastLogin'].toDate(),
         status: json['status']

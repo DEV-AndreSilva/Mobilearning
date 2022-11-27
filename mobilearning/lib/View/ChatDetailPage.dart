@@ -181,11 +181,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                         ),
                       ]),
                 ),
-                Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                  size: 25,
-                ),
+                // Icon(
+                //   Icons.settings,
+                //   color: Colors.white,
+                //   size: 25,
+                // ),
               ]),
             ),
           ),
@@ -231,7 +231,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                               border: InputBorder.none,
                               
                             ),
-                            onSubmitted: (value) {
+                            onSubmitted: (value) 
+                            {
+                              if(value != "")
                               sendMessage(value);
                             },
                           )),
@@ -240,6 +242,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                       margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                       child: IconButton(
                         onPressed: () {
+                          if(textMessageController.text != "")
                           sendMessage(textMessageController.text);
                         },
                         icon: Icon(Icons.send),
