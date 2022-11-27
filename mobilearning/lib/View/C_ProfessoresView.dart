@@ -54,7 +54,7 @@ class _CProfessoresState extends State<CProfessores> {
 
         if (graduation == "") graduation = "Graduate student";
 
-        if (token != null && token != '') {
+        if (token != '') {
           opt.headers = {"authorization": "bearer $token"};
           var response = await Dio()
               .post('https://mobilearning-api.herokuapp.com/teacher/create',
@@ -81,8 +81,11 @@ class _CProfessoresState extends State<CProfessores> {
                     "https://th.bing.com/th/id/OIP.NIjCKgHbDTjdTPDD6oLuRgHaHa?pid=ImgDet&rs=1",
                 messageText: "hello",
                 name: nomeController.text,
-                time: DateTime.now(),
-                userUid: userID);
+                createTime: DateTime.now(),
+                userUid: userID,
+                lastLogin: DateTime.now(),
+                status: "Offline"
+                );
 
             var docUser = FirebaseFirestore.instance
                 .collection("Users")
@@ -125,7 +128,6 @@ class _CProfessoresState extends State<CProfessores> {
       }
     }
 
-    var alturaTela = MediaQuery.of(context).size.height;
 
     return Scaffold(
       drawer: DrawerMobilearning(),

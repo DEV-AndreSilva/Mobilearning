@@ -41,7 +41,6 @@ class _CAlunosState extends State<CAlunos> {
 
   @override
   Widget build(BuildContext context) {
-    var alturaTela = MediaQuery.of(context).size.height;
 
     void CadastrarAluno(String nome, String email, String cpf, String address,
         String phone, String password, String nivel) async {
@@ -49,7 +48,7 @@ class _CAlunosState extends State<CAlunos> {
         Options opt = Options();
         String token = await SessionManager().get("BearerToken");
 
-        if (token != null && token != '') {
+        if (token != '') {
           opt.headers = {"authorization": "bearer $token"};
           var response = await Dio().post(
               'https://mobilearning-api.herokuapp.com/student/create',
@@ -76,8 +75,11 @@ class _CAlunosState extends State<CAlunos> {
                     "https://th.bing.com/th/id/OIP.NIjCKgHbDTjdTPDD6oLuRgHaHa?pid=ImgDet&rs=1",
                 messageText: "hello",
                 name: nomeController.text,
-                time: DateTime.now(),
-                userUid: userID);
+                createTime: DateTime.now(),
+                userUid: userID,
+                lastLogin: DateTime.now(),
+                status: "Offline"
+                );
 
             var docUser = FirebaseFirestore.instance
                 .collection("Users")
