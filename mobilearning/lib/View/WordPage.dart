@@ -50,7 +50,7 @@ class _WordPageState extends State<WordPage> {
 
           if (response.statusCode == 200) {
             Fluttertoast.showToast(
-                msg: 'Palavra atualizada com sucesso!',
+                msg: 'Word updated with success!',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 3,
@@ -91,7 +91,7 @@ class _WordPageState extends State<WordPage> {
 
           if (response.statusCode == 200) {
             Fluttertoast.showToast(
-                msg: 'Palavra deletada com sucesso!',
+                msg: 'Word deleted with success!',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 3,
@@ -135,7 +135,7 @@ class _WordPageState extends State<WordPage> {
 
           if (response.statusCode == 200) {
             Fluttertoast.showToast(
-                msg: 'Palavra cadastrada com sucesso!',
+                msg: 'Word created with success!',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIosWeb: 3,
