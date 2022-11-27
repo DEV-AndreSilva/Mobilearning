@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, import_of_legacy_library_into_null_safe, avoid_function_literals_in_foreach_calls
 
 
-import 'package:mobilearning/Models/userModel.dart';
 
 class Student {
   int id;

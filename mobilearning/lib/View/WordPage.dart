@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, file_names
 
-import 'dart:math';
 
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:dio/dio.dart';
@@ -35,7 +34,7 @@ class _WordPageState extends State<WordPage> {
         Options opt = Options();
         String token = await SessionManager().get("BearerToken");
 
-        if (token != null && token != '') {
+        if (token != '') {
           opt.headers = {"authorization": "bearer $token"};
 
           var response = await Dio()
@@ -82,7 +81,7 @@ class _WordPageState extends State<WordPage> {
         Options opt = Options();
         String token = await SessionManager().get("BearerToken");
 
-        if (token != null && token != '') {
+        if (token != '') {
           opt.headers = {"authorization": "bearer $token"};
 
           var response = await Dio().delete(
@@ -121,7 +120,7 @@ class _WordPageState extends State<WordPage> {
         Options opt = Options();
         String token = await SessionManager().get("BearerToken");
 
-        if (token != null && token != '') {
+        if (token != '') {
           opt.headers = {"authorization": "bearer $token"};
           var response =
               await Dio().post('https://mobilearning-api.herokuapp.com/word',
@@ -162,26 +161,23 @@ class _WordPageState extends State<WordPage> {
       }
     }
 
-    bool validateForm(String engWord, String portWord, String engDefin, String portdef)
-    {
+    bool validateForm(
+        String engWord, String portWord, String engDefin, String portdef) {
+      if (engWord == "" || portWord == "" || engDefin == "" || portdef == "") {
+        Fluttertoast.showToast(
+            msg: "Complete all fields !",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 4,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.white,
+            fontSize: 18.0,
+            webPosition: 'center');
 
-      if(engWord == ""  || portWord =="" || engDefin =="" || portdef =="")
-      {
-         Fluttertoast.showToast(
-                msg: "Complete all fields !",
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 4,
-                backgroundColor: Colors.redAccent,
-                textColor: Colors.white,
-                fontSize: 18.0,
-                webPosition: 'center');
-          
-          return false;
+        return false;
       }
-      
-        
-        return true;
+
+      return true;
     }
 
     final dynamic args = ModalRoute.of(context)?.settings.arguments;
@@ -229,22 +225,30 @@ class _WordPageState extends State<WordPage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                args !=null ?
                 Container(
+                  
                     margin: EdgeInsets.only(top: alturaTela * 0.025, right: 20),
                     alignment: Alignment.centerRight,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         IconButton(
+                          
                           icon: Icon(
                             Icons.delete,
                             size: 40,
                             color: Colors.red,
                           ),
-                          onPressed: () => deleteWord(args.id),
+                          onPressed: () {
+                            if (args.id != 0) {
+                              return deleteWord(args.id);
+                            } 
+                          },
                         ),
                       ],
-                    )),
+                    ))
+                    : Container(),
                 Container(
                   margin: EdgeInsets.only(
                       top: alturaTela * 0.025, right: 20, left: 20),
@@ -415,10 +419,11 @@ class _WordPageState extends State<WordPage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          if (validateForm(englishWord.text,
-                                  englishDefinition.text,
-                                  portugueseWord.text,
-                                  portugueseDefinition.text)) {
+                          if (validateForm(
+                              englishWord.text,
+                              englishDefinition.text,
+                              portugueseWord.text,
+                              portugueseDefinition.text)) {
                             if (isAlter) {
                               alterWord(
                                   args.id,

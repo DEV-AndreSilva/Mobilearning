@@ -2,7 +2,6 @@
 
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:mobilearning/View/ChatDetailPage.dart';
 
 class ConversationList extends StatefulWidget {

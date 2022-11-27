@@ -1,11 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_session_manager/flutter_session_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobilearning/functions.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../DrawerMobilearning.dart';
 
@@ -19,7 +16,6 @@ class WebQuestEvaluationView extends StatefulWidget {
 class _WebQuestEvaluationView extends State<WebQuestEvaluationView> {
   @override
   Widget build(BuildContext context) {
-    var alturaTela = MediaQuery.of(context).size.height;
     final dynamic args = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(

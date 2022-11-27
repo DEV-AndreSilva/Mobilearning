@@ -90,7 +90,6 @@ class _ActivityListState extends State<ActivityList> {
   @override
   Widget build(BuildContext context) {
     var larguraTela = MediaQuery.of(context).size.width;
-    var alturaTela = MediaQuery.of(context).size.height;
 
     return Card(
       child: Column(

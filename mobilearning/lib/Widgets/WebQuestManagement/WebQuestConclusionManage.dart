@@ -1,13 +1,10 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
 import 'package:mobilearning/functions.dart';
 
-import '../../Models/activityModel.dart';
 
 class WebQuestConclusionManage extends StatefulWidget {
   const WebQuestConclusionManage({Key? key}) : super(key: key);
@@ -24,6 +21,7 @@ class _WebQuestConclusionManage extends State<WebQuestConclusionManage> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
 
     controllers.addAll({

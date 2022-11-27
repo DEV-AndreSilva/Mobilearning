@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 
 import '../Models/UserActivityModel.dart';
-import '../Models/activityModel.dart';
 import '../Models/userModel.dart';
 import '../Widgets/UserActivityList.dart';
 

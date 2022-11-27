@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -128,6 +127,7 @@ class _LoginState extends State<Login> {
                             {
                               return "Write a valid e-mail ";
                             }
+                            return null;
                           },
                           decoration: InputDecoration( hintText: "E-mail"),
                           style: GoogleFonts.arvo(fontSize: 18),
@@ -150,6 +150,7 @@ class _LoginState extends State<Login> {
                             {
                               return "Write your password";
                             }
+                            return null;
                           },
                           controller: passowordController,
                           obscureText: true,
