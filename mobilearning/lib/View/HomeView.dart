@@ -24,22 +24,18 @@ class _HomeState extends State<Home> {
   int idUserLogin = 0;
 
   void returnTypeUser() async {
-
     try {
       bool containUserType = await SessionManager().containsKey("UserType");
-      if (containUserType) 
-      {
+      if (containUserType) {
         dynamic Type = await SessionManager().get("UserType");
         userType = int.parse(Type.toString());
-      } 
-      else 
-      {
+      } else {
         print("Could not find user type!");
-          
-        if(mounted)
-        setState(() {
-          Navigator.pushNamed(context, '/login');
-        });
+
+        if (mounted)
+          setState(() {
+            Navigator.pushNamed(context, '/login');
+          });
       }
     } catch (ex) {}
 
@@ -57,19 +53,15 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-        returnTypeUser();
+    returnTypeUser();
     returnIDuser();
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-    
-    
-
     var tabPages = <Widget>[];
     var bottomNavBarItems = <BottomNavigationBarItem>[];
 

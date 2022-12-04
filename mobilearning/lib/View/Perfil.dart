@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobilearning/Models/chatUsersModel.dart';
 import 'package:mobilearning/Models/userModel.dart';
 import 'package:mobilearning/Widgets/DrawerMobilearning.dart';
 
@@ -30,23 +29,11 @@ class _PerfilState extends State<Perfil> {
   final addressController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-  final nivelController = TextEditingController();
-
-  // Initial Selected Value
-  String dropdownvalueStudent = 'Basic';
-
-  // List of items in our dropdown menu
-  var itemsStudent = ['Basic', 'Intermediate', 'Advanced'];
-
-  String dropdownvalueProfessor = 'Graduate student';
-
-  // List of items in our dropdown menu
-  var itemsProfessor = ['Graduate student', 'Master’s program', 'PHD'];
 
   final _formKey = GlobalKey<FormState>();
 
-  void getUserMemory() async {
-    bool containUserLogin = await SessionManager().containsKey("UserLoginID");
+  void getUserDataBase() async {
+    bool containUserLogin = await SessionManager().containsKey("UserLogin");
     if (containUserLogin) {
       var userJson = await SessionManager().get("UserLogin");
       User user = User.fromJson(userJson);
@@ -60,12 +47,87 @@ class _PerfilState extends State<Perfil> {
     }
   }
 
-  void update() {}
-  
+  void update() async {
+    bool containUserLoginID = await SessionManager().containsKey("UserLoginID");
+    bool containToken = await SessionManager().containsKey("BearerToken");
+    bool containUserType = await SessionManager().containsKey("UserType");
+
+    if (containToken && containUserLoginID && containUserType) {
+      Options opt = Options();
+      var token = await SessionManager().get("BearerToken");
+      var userLoginID = await SessionManager().get("UserLoginID");
+      var userType = await SessionManager().get("UserType");
+
+      try {
+        opt.headers = {"authorization": "bearer $token"};
+        var response = await Dio()
+            .put('https://mobilearning-api.herokuapp.com/user/UpdateUser',
+                data: {
+                  "id": userLoginID,
+                  "name": nomeController.text,
+                  "email": emailController.text,
+                  "address": addressController.text,
+                  "cpf": cpfController.text,
+                  "phone": phoneController.text,
+                  "password": passwordController.text,
+                  "type": userType.toString()
+                },
+                options: opt);
+
+        if (response.statusCode == 200) {
+          Fluttertoast.showToast(
+              msg: 'User updated with success!',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 3,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0,
+              webPosition: 'center');
+
+          //atualiza o nome do usuário no Firestore
+          final docUser = FirebaseFirestore.instance
+              .collection("Users")
+              .doc(userLoginID.toString());
+          docUser.update({'name': nomeController.text});
+
+          //atualiza o registro em memória do usuário
+          User user = User(
+              id: userLoginID,
+              name: nomeController.text,
+              email: emailController.text,
+              address: addressController.text,
+              cpf: cpfController.text,
+              phone: phoneController.text,
+              password: passwordController.text,
+              type: userType.toString());
+
+          String jsonEncodeUser = jsonEncode(user);
+          var sessionManager = SessionManager();
+          sessionManager.remove('UserLogin');
+          await sessionManager.set('UserLogin', jsonEncodeUser);
+
+          setState(() {});
+        }
+      } catch (ex) {
+        Fluttertoast.showToast(
+            msg: 'Error updating user',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+            webPosition: 'center');
+      }
+    }
+  }
+
   @override
   void initState() {
-    getUserMemory();
+    getUserDataBase();
 
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }
@@ -226,66 +288,6 @@ class _PerfilState extends State<Perfil> {
                   ),
                 ),
                 Container(
-                    margin: const EdgeInsets.only(
-                      top: 10,
-                      right: 20,
-                      left: 20,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(50),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 3,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(10, 0, 15, 0),
-                          child: Icon(
-                            Icons.featured_play_list_outlined,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        Text(
-                          "Nivel",
-                          style:
-                              TextStyle(color: Color.fromARGB(200, 53, 50, 50)),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(20, 0, 10, 0),
-                          child: DropdownButton(
-
-                              // Initial Value
-                              value: dropdownvalueProfessor,
-
-                              // Down Arrow Icon
-                              icon: const Icon(Icons.keyboard_arrow_down),
-
-                              // Array list of items
-                              items: itemsProfessor.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownvalueProfessor = newValue!;
-                                  nivelController.text = newValue;
-                                });
-                              }),
-                        ),
-                      ],
-                    )),
-                //
-
-                Container(
                   margin: const EdgeInsets.only(
                     top: 10,
                     right: 20,
@@ -410,7 +412,6 @@ class _PerfilState extends State<Perfil> {
                     ),
                   ),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
