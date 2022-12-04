@@ -381,6 +381,7 @@ class _WordPageState extends State<WordPage> {
                   children: [
                     Container(
                       height: 50,
+                      width: 100,
                       margin: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 25,
@@ -399,13 +400,14 @@ class _WordPageState extends State<WordPage> {
                           });
                         },
                         child: const Text(
-                          'Voltar',
+                          'Return',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                     Container(
                       height: 50,
+                      width:120,
                       margin: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 25,
@@ -441,7 +443,7 @@ class _WordPageState extends State<WordPage> {
                           }
                         },
                         child: const Text(
-                          'Confirmar',
+                          'Confirm',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
