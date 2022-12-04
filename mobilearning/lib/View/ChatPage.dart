@@ -20,33 +20,20 @@ class _ChatPageState extends State<ChatPage> {
   List<ChatUsers> chatUsers = [];
 
   void runFilter(String filter) {
-    textSearch = filter;
+    setState(() {
+    textSearch = filter;  
+    });
+    
   }
 
   Stream<List<ChatUsers>> readUsersList() {
-    if (textSearch != "") {
-      return FirebaseFirestore.instance
-          .collection("Users")
-          .where(
-            "userUid",
-            isNotEqualTo: widget.idUserLogin,
-          )
-          .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => ChatUsers.fromJson(doc.data()))
-              .where((element) => element.name
-                  .toUpperCase()
-                  .startsWith(textSearch.toUpperCase()))
-              .toList());
-    } else {
-      return FirebaseFirestore.instance
-          .collection("Users")
-          .where("userUid", isNotEqualTo: widget.idUserLogin)
-          .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => ChatUsers.fromJson(doc.data()))
-              .toList());
-    }
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .where("userUid", isNotEqualTo: widget.idUserLogin)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChatUsers.fromJson(doc.data()))
+            .toList());
   }
 
   Widget buildChatUsers(ChatUsers chat) {
@@ -99,7 +86,17 @@ class _ChatPageState extends State<ChatPage> {
           if (snapshot.hasError) {
             return Text("Algo deu errado ${snapshot.error}");
           } else if (snapshot.hasData) {
-            final chatUsers = snapshot.data!;
+            var chatUsers = snapshot.data!.where((element) {
+              if (textSearch != "") {
+                if (element.name.toUpperCase().contains(textSearch.toUpperCase())) {
+                  return true;
+                } else {
+                  return false;
+                }
+              } else {
+                return true;
+              }
+            });
 
             return ListView(
               children: chatUsers.map(buildChatUsers).toList(),
@@ -111,7 +108,6 @@ class _ChatPageState extends State<ChatPage> {
           }
         },
       )),
-   
     ]);
   }
 }
